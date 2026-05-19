@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="theme-color" content="#5dbb63" />
+<meta name="description" content="Animal Feed Chain - a free educational game that teaches the food chain and ecosystem balance to children." />
+<title>Animal Feed Chain - Educational Food Chain Game</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ====================== MAIN GAME CONTAINER ====================== -->
+<div id="app">
+
+  <!-- ============ LOADING SCREEN ============ -->
+  <section id="screen-loading" class="screen active">
+    <div class="loading-content">
+      <div class="loading-emoji">🌱🐰🦊🐺</div>
+      <h1>Animal Feed Chain</h1>
+      <div class="loading-bar"><div class="loading-fill"></div></div>
+      <p class="loading-text">Loading nature...</p>
+    </div>
+  </section>
+
+  <!-- ============ MAIN MENU ============ -->
+  <section id="screen-menu" class="screen">
+    <div class="menu-clouds">
+      <div class="cloud cloud-1">☁️</div>
+      <div class="cloud cloud-2">☁️</div>
+      <div class="cloud cloud-3">☁️</div>
+    </div>
+    <div class="menu-content">
+      <h1 class="game-title">
+        <span>🌱</span><span>🐛</span><span>🐔</span><span>🦊</span><span>🐺</span>
+      </h1>
+      <h2 class="game-subtitle" data-i18n="game.title">Animal Feed Chain</h2>
+      <p class="game-tagline" data-i18n="game.tagline">Learn the food chain by feeding animals!</p>
+
+      <div class="menu-buttons">
+        <button class="btn btn-primary" id="btn-play" data-i18n="menu.play">▶ Play</button>
+        <button class="btn btn-secondary" id="btn-how-to-play" data-i18n="menu.howToPlay">How to Play</button>
+        <button class="btn btn-secondary" id="btn-achievements" data-i18n="menu.achievements">🏆 Achievements</button>
+        <button class="btn btn-secondary" id="btn-facts" data-i18n="menu.facts">📚 Nature Facts</button>
+        <button class="btn btn-secondary" id="btn-settings" data-i18n="menu.settings">⚙ Settings</button>
+      </div>
+
+      <div class="menu-footer">
+        <div class="lang-selector">
+          <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+          <button class="lang-btn" data-lang="sq">🇦🇱 SQ</button>
+          <button class="lang-btn" data-lang="de">🇩🇪 DE</button>
+        </div>
+        <p class="free-badge" data-i18n="menu.freeBadge">100% Free • No Ads • For Kids</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MODE SELECTION ============ -->
+  <section id="screen-modes" class="screen">
+    <header class="screen-header">
+      <button class="btn-icon" id="btn-modes-back">←</button>
+      <h2 data-i18n="modes.title">Choose an Ecosystem</h2>
+      <div></div>
+    </header>
+    <div class="mode-grid" id="mode-grid">
+      <button class="mode-card" data-mode="farm">
+        <div class="mode-icon">🚜</div>
+        <h3 data-i18n="mode.farm">Farm</h3>
+        <p data-i18n="mode.farm.desc">Feed chickens, cows and sheep</p>
+      </button>
+      <button class="mode-card" data-mode="forest">
+        <div class="mode-icon">🌲</div>
+        <h3 data-i18n="mode.forest">Forest</h3>
+        <p data-i18n="mode.forest.desc">Rabbits, foxes and wolves</p>
+      </button>
+      <button class="mode-card" data-mode="ocean">
+        <div class="mode-icon">🌊</div>
+        <h3 data-i18n="mode.ocean">Ocean</h3>
+        <p data-i18n="mode.ocean.desc">Plankton, fish and sharks</p>
+      </button>
+      <button class="mode-card" data-mode="savannah">
+        <div class="mode-icon">🦒</div>
+        <h3 data-i18n="mode.savannah">Savannah</h3>
+        <p data-i18n="mode.savannah.desc">Zebras, lions and elephants</p>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ DIFFICULTY SELECTION ============ -->
+  <section id="screen-difficulty" class="screen">
+    <header class="screen-header">
+      <button class="btn-icon" id="btn-difficulty-back">←</button>
+      <h2 data-i18n="difficulty.title">Choose Difficulty</h2>
+      <div></div>
+    </header>
+    <div class="difficulty-grid">
+      <button class="difficulty-card" data-difficulty="easy">
+        <div class="difficulty-icon">🌟</div>
+        <h3 data-i18n="diff.easy">Easy</h3>
+        <p data-i18n="diff.easy.desc">Visual hints, glowing targets, slow gameplay</p>
+      </button>
+      <button class="difficulty-card" data-difficulty="medium">
+        <div class="difficulty-icon">🔥</div>
+        <h3 data-i18n="diff.medium">Medium</h3>
+        <p data-i18n="diff.medium.desc">No hints, more animals, faster gameplay</p>
+      </button>
+      <button class="difficulty-card" data-difficulty="hard">
+        <div class="difficulty-icon">⚡</div>
+        <h3 data-i18n="diff.hard">Hard</h3>
+        <p data-i18n="diff.hard.desc">Fake foods, poisonous traps, time limits</p>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ GAME PLAY SCREEN ============ -->
+  <section id="screen-game" class="screen">
+    <!-- Animated background canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- HUD top bar -->
+    <header class="hud">
+      <div class="hud-left">
+        <button class="btn-icon" id="btn-pause">⏸</button>
+        <div class="hud-stat" title="Score">
+          <span class="hud-icon">⭐</span>
+          <span id="hud-score">0</span>
+        </div>
+        <div class="hud-stat" title="Combo">
+          <span class="hud-icon">🔥</span>
+          <span id="hud-combo">x1</span>
+        </div>
+      </div>
+      <div class="hud-center">
+        <div class="hud-phase">
+          <span data-i18n="hud.phase">Phase</span>
+          <span id="hud-phase">1</span>
+        </div>
+        <div class="hud-timer-wrap" id="hud-timer-wrap" style="display:none;">
+          <div class="hud-timer-bar"><div id="hud-timer-fill"></div></div>
+        </div>
+      </div>
+      <div class="hud-right">
+        <div class="hud-lives" id="hud-lives" title="Lives">
+          <span>❤️</span><span>❤️</span><span>❤️</span>
+        </div>
+        <button class="btn-icon" id="btn-fullscreen">⛶</button>
+      </div>
+    </header>
+
+    <!-- Power-ups bar -->
+    <div class="powerup-bar">
+      <button class="powerup-btn" data-power="vet" title="Veterinarian">
+        <span class="pw-icon">💉</span>
+        <span class="pw-count" id="pw-vet">1</span>
+      </button>
+      <button class="powerup-btn" data-power="rain" title="Rain">
+        <span class="pw-icon">🌧️</span>
+        <span class="pw-count" id="pw-rain">1</span>
+      </button>
+      <button class="powerup-btn" data-power="shield" title="Protection Shield">
+        <span class="pw-icon">🛡️</span>
+        <span class="pw-count" id="pw-shield">1</span>
+      </button>
+      <button class="powerup-btn" data-power="slow" title="Slow Motion">
+        <span class="pw-icon">🐌</span>
+        <span class="pw-count" id="pw-slow">1</span>
+      </button>
+    </div>
+
+    <!-- Educational message bubble -->
+    <div class="edu-bubble" id="edu-bubble"></div>
+
+    <!-- Play area -->
+    <div class="play-area">
+      <div class="side side-left" id="side-left">
+        <div class="side-label" data-i18n="play.foods">Foods</div>
+        <div class="side-items" id="left-items"></div>
+      </div>
+      <div class="side-divider"></div>
+      <div class="side side-right" id="side-right">
+        <div class="side-label" data-i18n="play.animals">Animals</div>
+        <div class="side-items" id="right-items"></div>
+      </div>
+    </div>
+
+    <!-- Floating effects layer -->
+    <div class="fx-layer" id="fx-layer"></div>
+
+    <!-- Weather effects -->
+    <div class="weather-layer" id="weather-layer"></div>
+  </section>
+
+  <!-- ============ PAUSE OVERLAY ============ -->
+  <div id="overlay-pause" class="overlay">
+    <div class="overlay-card">
+      <h2 data-i18n="pause.title">⏸ Paused</h2>
+      <button class="btn btn-primary" id="btn-resume" data-i18n="pause.resume">▶ Resume</button>
+      <button class="btn btn-secondary" id="btn-restart" data-i18n="pause.restart">🔁 Restart</button>
+      <button class="btn btn-secondary" id="btn-quit" data-i18n="pause.quit">🏠 Main Menu</button>
+      <div class="setting-row">
+        <label data-i18n="settings.music">Music</label>
+        <label class="switch"><input type="checkbox" id="toggle-music" checked><span></span></label>
+      </div>
+      <div class="setting-row">
+        <label data-i18n="settings.sfx">Sound Effects</label>
+        <label class="switch"><input type="checkbox" id="toggle-sfx" checked><span></span></label>
+      </div>
+      <div class="setting-row">
+        <label data-i18n="settings.voice">Voice Narration</label>
+        <label class="switch"><input type="checkbox" id="toggle-voice" checked><span></span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PHASE COMPLETE / FOOD CHAIN ============ -->
+  <div id="overlay-chain" class="overlay">
+    <div class="overlay-card big">
+      <h2 data-i18n="chain.title">🌟 Food Chain Discovered!</h2>
+      <div class="chain-display" id="chain-display"></div>
+      <p class="chain-narration" id="chain-narration"></p>
+      <button class="btn btn-primary" id="btn-chain-next" data-i18n="chain.next">Next Phase →</button>
+    </div>
+  </div>
+
+  <!-- ============ GAME OVER ============ -->
+  <div id="overlay-gameover" class="overlay">
+    <div class="overlay-card big">
+      <div class="gameover-emoji">💔</div>
+      <h2 data-i18n="gameover.title">Game Over</h2>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <div class="summary-label" data-i18n="summary.score">Score</div>
+          <div class="summary-value" id="go-score">0</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label" data-i18n="summary.health">Ecosystem Health</div>
+          <div class="summary-value" id="go-health">0%</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label" data-i18n="summary.saved">Animals Saved</div>
+          <div class="summary-value" id="go-saved">0</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label" data-i18n="summary.chains">Chains Completed</div>
+          <div class="summary-value" id="go-chains">0</div>
+        </div>
+      </div>
+      <div class="stars-display" id="go-stars"></div>
+      <p class="edu-summary" id="go-summary"></p>
+      <div class="overlay-buttons">
+        <button class="btn btn-primary" id="btn-go-retry" data-i18n="gameover.retry">🔁 Try Again</button>
+        <button class="btn btn-secondary" id="btn-go-menu" data-i18n="gameover.menu">🏠 Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ VICTORY ============ -->
+  <div id="overlay-victory" class="overlay">
+    <div class="overlay-card big">
+      <div class="victory-emoji">🏆</div>
+      <h2 data-i18n="victory.title">Ecosystem Master!</h2>
+      <p data-i18n="victory.message">You completed the entire food chain!</p>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <div class="summary-label" data-i18n="summary.score">Score</div>
+          <div class="summary-value" id="vc-score">0</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label" data-i18n="summary.health">Ecosystem Health</div>
+          <div class="summary-value" id="vc-health">100%</div>
+        </div>
+      </div>
+      <div class="stars-display" id="vc-stars"></div>
+      <p class="edu-summary" id="vc-summary"></p>
+      <div class="overlay-buttons">
+        <button class="btn btn-primary" id="btn-vc-next" data-i18n="victory.next">▶ Next Mode</button>
+        <button class="btn btn-secondary" id="btn-vc-menu" data-i18n="victory.menu">🏠 Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ACHIEVEMENTS ============ -->
+  <div id="overlay-achievements" class="overlay">
+    <div class="overlay-card big">
+      <header class="overlay-header">
+        <h2 data-i18n="achievements.title">🏆 Achievements</h2>
+        <button class="btn-icon" id="btn-ach-close">×</button>
+      </header>
+      <div class="achievements-list" id="achievements-list"></div>
+    </div>
+  </div>
+
+  <!-- ============ FACTS LIBRARY ============ -->
+  <div id="overlay-facts" class="overlay">
+    <div class="overlay-card big">
+      <header class="overlay-header">
+        <h2 data-i18n="facts.title">📚 Nature Facts</h2>
+        <button class="btn-icon" id="btn-facts-close">×</button>
+      </header>
+      <div class="facts-list" id="facts-list"></div>
+    </div>
+  </div>
+
+  <!-- ============ HOW TO PLAY ============ -->
+  <div id="overlay-howto" class="overlay">
+    <div class="overlay-card big">
+      <header class="overlay-header">
+        <h2 data-i18n="howto.title">How to Play</h2>
+        <button class="btn-icon" id="btn-howto-close">×</button>
+      </header>
+      <div class="howto-content">
+        <div class="howto-step">
+          <div class="howto-icon">👆</div>
+          <p data-i18n="howto.step1">Drag food from the left side to an animal on the right side.</p>
+        </div>
+        <div class="howto-step">
+          <div class="howto-icon">✅</div>
+          <p data-i18n="howto.step2">Match the correct food to make the animal happy and gain points.</p>
+        </div>
+        <div class="howto-step">
+          <div class="howto-icon">❌</div>
+          <p data-i18n="howto.step3">Wrong foods make animals sick. If 3 animals die, the game ends.</p>
+        </div>
+        <div class="howto-step">
+          <div class="howto-icon">🔗</div>
+          <p data-i18n="howto.step4">After each phase, the food chain grows: prey become food for predators!</p>
+        </div>
+        <div class="howto-step">
+          <div class="howto-icon">⚡</div>
+          <p data-i18n="howto.step5">Use power-ups: revive, rain, shield, slow-motion.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SETTINGS ============ -->
+  <div id="overlay-settings" class="overlay">
+    <div class="overlay-card">
+      <header class="overlay-header">
+        <h2 data-i18n="settings.title">⚙ Settings</h2>
+        <button class="btn-icon" id="btn-settings-close">×</button>
+      </header>
+      <div class="setting-row">
+        <label data-i18n="settings.music">Music</label>
+        <label class="switch"><input type="checkbox" class="toggle-music" checked><span></span></label>
+      </div>
+      <div class="setting-row">
+        <label data-i18n="settings.sfx">Sound Effects</label>
+        <label class="switch"><input type="checkbox" class="toggle-sfx" checked><span></span></label>
+      </div>
+      <div class="setting-row">
+        <label data-i18n="settings.voice">Voice Narration</label>
+        <label class="switch"><input type="checkbox" class="toggle-voice" checked><span></span></label>
+      </div>
+      <div class="setting-row">
+        <label data-i18n="settings.language">Language</label>
+        <select id="settings-lang">
+          <option value="en">English</option>
+          <option value="sq">Shqip</option>
+          <option value="de">Deutsch</option>
+        </select>
+      </div>
+      <button class="btn btn-secondary" id="btn-reset-progress" data-i18n="settings.reset">Reset Progress</button>
+    </div>
+  </div>
+
+  <!-- ============ DAILY CHALLENGE ============ -->
+  <div id="overlay-daily" class="overlay">
+    <div class="overlay-card">
+      <h2 data-i18n="daily.title">🎁 Daily Challenge</h2>
+      <p id="daily-text"></p>
+      <button class="btn btn-primary" id="btn-daily-accept" data-i18n="daily.accept">Accept</button>
+      <button class="btn btn-secondary" id="btn-daily-skip" data-i18n="daily.skip">Maybe later</button>
+    </div>
+  </div>
+
+  <!-- ============ TOAST NOTIFICATION ============ -->
+  <div id="toast" class="toast"></div>
+
+</div>
+
+<!-- ====================== SCRIPTS ====================== -->
+<script src="js/i18n.js"></script>
+<script src="js/data.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/achievements.js"></script>
+<script src="js/background.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>

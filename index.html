@@ -1993,6 +1993,7 @@ function renderPanelBody(t){
   const getTaskTags=wireTagEditor('pTagBox','pTagAdd',t.tags||[]);
   document.getElementById('addStBtn').onclick=()=>{const v=document.getElementById('newSt').value.trim();if(!v)return;t.subAufgaben.push({id:Date.now(),n:v,done:false});document.getElementById('newSt').value='';renderSubAufgaben(t);};
   document.getElementById('saveTaskBtn').onclick=()=>{
+    const oldMemberId=t.memberId;
     const newName=document.getElementById('pName').value.trim()||t.name;
     const newMemberId=parseInt(document.getElementById('pMember').value);
     const newStatus=document.getElementById('pStatus').value;
@@ -2021,6 +2022,19 @@ function renderPanelBody(t){
       'Mitarbeiter':(MEMBERS.find(x=>x.id===t.memberId)||{}).name||'—',
     }});
     t.tags=newTags;
+    // Notify the new assignee if the task was reassigned to someone else
+    if(newMemberId!==oldMemberId){
+      const nm=MEMBERS.find(x=>x.id===newMemberId);
+      if(nm&&nm.email){
+        sendTagEmail(nm,{type:'Aufgabe',name:t.name,note:t.desc,action:'assigned',details:{
+          'Datum':t.date||'—',
+          'Uhrzeit':t.startTime?(t.startTime+(_endT?' – '+_endT:'')):'—',
+          'Dauer':fmtHours(t.hours),
+          'Status':t.status||'—',
+        }});
+        showToast(`Benachrichtigung an ${nm.name} gesendet.`,'#4A90E2');
+      }
+    }
     document.getElementById('panelTitle').textContent=t.name;
     const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
     const m2=MEMBERS.find(x=>x.id===t.memberId);
@@ -2820,6 +2834,20 @@ function removeMember(memberId){
 /* ════ TRANSFER MODAL ════ */
 let _transferTask=null,_transferNewMemberId=null,_transferNewDate=null;
 
+// Email a member when a task is reassigned to them (drag-to-transfer path).
+function notifyReassign(memberId,task){
+  const nm=MEMBERS.find(x=>x.id===memberId);
+  if(!nm||!nm.email||!task)return;
+  const _e=task.startTime&&task.hours?endTimeWithBreak(task.startTime,task.hours,task.breakMin||0):'';
+  sendTagEmail(nm,{type:'Aufgabe',name:task.name,note:task.desc,action:'assigned',details:{
+    'Datum':task.date||'—',
+    'Uhrzeit':task.startTime?(task.startTime+(_e?' – '+_e:'')):'—',
+    'Dauer':fmtHours(task.hours),
+    'Status':task.status||'—',
+  }});
+  showToast(`Benachrichtigung an ${nm.name} gesendet.`,'#4A90E2');
+}
+
 function openTransferModal(t,newMemberId,newDate){
   _transferTask=t;
   _transferNewMemberId=newMemberId;
@@ -2835,16 +2863,20 @@ function openTransferModal(t,newMemberId,newDate){
 
 document.getElementById('transferAllBtn').onclick=()=>{
   if(_transferTask&&_transferNewMemberId){
+    const _prev=_transferTask.memberId;
     Aufgaben.filter(x=>x.groupId===_transferTask.groupId).forEach(x=>x.memberId=_transferNewMemberId);
     render();showToast('Gesamter Plan übertragen.','#1D9E75');
+    if(_transferNewMemberId!==_prev)notifyReassign(_transferNewMemberId,_transferTask);
   }
   document.getElementById('transferModal').classList.add('hidden');
 };
 document.getElementById('transferOneBtn').onclick=()=>{
   if(_transferTask&&_transferNewMemberId){
+    const _prev=_transferTask.memberId;
     _transferTask.memberId=_transferNewMemberId;
     _transferTask.date=_transferNewDate;
     render();showToast('Dieser Tag übertragen.','#4A90E2');
+    if(_transferNewMemberId!==_prev)notifyReassign(_transferNewMemberId,_transferTask);
   }
   document.getElementById('transferModal').classList.add('hidden');
 };
@@ -2863,11 +2895,14 @@ document.getElementById('emSave').onclick=()=>{
   const initials=document.getElementById('emInitialen').value.trim().toUpperCase().slice(0,2);
   const monthlyHours=parseInt(document.getElementById('emHours').value)||160;
   if(!name)return;
+  const emEmail=document.getElementById('emEmail').value.trim();
+  if(emEmail&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(emEmail)){showToast('Bitte eine gültige E-Mail-Adresse eingeben.','#e74c3c');document.getElementById('emEmail').style.borderColor='#e74c3c';return;}
+  document.getElementById('emEmail').style.borderColor='';
   const selectedSwatch=[...document.querySelectorAll('#emColorPicker div')].find(s=>s.style.border.includes('3px'));
   if(selectedSwatch){m.color=selectedSwatch.dataset.color;m.bg=selectedSwatch.dataset.bg;}
   m.name=name;
   m.initials=initials||name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-  m.email=document.getElementById('emEmail').value.trim();
+  m.email=emEmail;
   m.monthlyHours=monthlyHours;
   const emRoleSel=document.getElementById('emRole');
   if(emRoleSel&&emRoleSel.value!==ADD_ROLE_VALUE)m.position=emRoleSel.value;
@@ -3102,6 +3137,8 @@ document.getElementById('amSave').onclick=()=>{
   const color=sel?sel.dataset.color:MEMBER_PALETTES[MEMBERS.length%MEMBER_PALETTES.length].color;
   const bg=sel?sel.dataset.bg:MEMBER_PALETTES[MEMBERS.length%MEMBER_PALETTES.length].bg;
   const email=document.getElementById('amEmail').value.trim();
+  if(email&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){showToast('Bitte eine gültige E-Mail-Adresse eingeben.','#e74c3c');document.getElementById('amEmail').style.borderColor='#e74c3c';return;}
+  document.getElementById('amEmail').style.borderColor='';
   MEMBERS.push({id:Date.now(),name,initials,color,bg,cap:8,monthlyHours,email});
   document.getElementById('addMemberModal').classList.add('hidden');
   render();
@@ -3420,6 +3457,15 @@ function wireTagEditor(boxId,addId,initialIds){
   return ()=>sel.slice();
 }
 
+// Throttled warning so a sync/network problem surfaces once, not on every call.
+let _lastSyncWarn=0;
+function notifySyncProblem(msg){
+  const now=Date.now();
+  if(now-_lastSyncWarn<8000)return;
+  _lastSyncWarn=now;
+  if(typeof showToast==='function')showToast(msg||'⚠ Verbindungsproblem — Änderungen wurden evtl. nicht gespeichert.','#EF9F27');
+}
+
 async function sbFetch(table,method='GET',body=null){
   const url=`${SB_URL}/rest/v1/${table}`;
   const headers={
@@ -3443,11 +3489,13 @@ async function sbFetch(table,method='GET',body=null){
     if(!res.ok){
       const err=await res.text();
       console.warn(`Supabase ${method} ${table} failed:`,err);
+      notifySyncProblem('⚠ Speichern fehlgeschlagen — bitte Verbindung prüfen.');
       return false;
     }
     return true;
   }catch(e){
     console.warn(`Supabase fetch error on ${table}:`,e.message);
+    notifySyncProblem('⚠ Keine Verbindung zum Server — Änderungen evtl. nicht gespeichert.');
     return method==='GET'?[]:false;
   }
 }

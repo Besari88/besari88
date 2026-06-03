@@ -1262,7 +1262,7 @@ document.getElementById('testEmailBtn').onclick=async()=>{
   if(!to||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(to)){status.style.color='#e74c3c';status.textContent='Bitte eine gültige E-Mail-Adresse eingeben.';return;}
   btn.disabled=true;const _old=btn.textContent;btn.textContent='Senden…';
   status.style.color='#888';status.textContent='Wird gesendet…';
-  const ok=await sendTagEmail({name:'Test-Empfänger',email:to},{type:'Aufgabe',name:'Test-Benachrichtigung',note:'Dies ist eine Test-E-Mail aus dem Arbeitsplan.'});
+  const ok=await sendTagEmail({name:'Test-Empfänger',email:to},{type:'Aufgabe',name:'Test-Benachrichtigung',note:'Dies ist eine Test-E-Mail aus dem Arbeitsplan.',details:{'Datum':new Date().toISOString().slice(0,10),'Uhrzeit':'09:00 – 11:00','Dauer':'2 Std','Status':'In Bearbeitung','Mitarbeiter':'Test-Empfänger'}});
   btn.disabled=false;btn.textContent=_old;
   if(ok){status.style.color='#1D9E75';status.textContent='✓ Test-E-Mail gesendet. Bitte Posteingang (und Spam) prüfen.';}
   else{status.style.color='#e74c3c';status.textContent='✗ Versand fehlgeschlagen. Prüfe in Supabase, ob die Funktion deployed ist und RESEND_API_KEY + FROM_EMAIL gesetzt sind (Details in der Browser-Konsole).';}
@@ -1969,7 +1969,14 @@ function renderPanelBody(t){
     t.startTime=newStartTime;t.hours=newHours;t.breakMin=newBreak;t.taskColor=newTaskColor;
     t.actual=parseFloat(document.getElementById('pActual').value)||0;
     const newTags=getTaskTags();
-    processTagChanges(t.tags||[],newTags,{type:'Aufgabe',name:newName,note:t.desc});
+    const _endT=t.startTime&&t.hours?endTimeWithBreak(t.startTime,t.hours,t.breakMin||0):'';
+    processTagChanges(t.tags||[],newTags,{type:'Aufgabe',name:newName,note:t.desc,details:{
+      'Datum':t.date||'—',
+      'Uhrzeit':t.startTime?(t.startTime+(_endT?' – '+_endT:'')):'—',
+      'Dauer':fmtHours(t.hours),
+      'Status':t.status||'—',
+      'Mitarbeiter':(MEMBERS.find(x=>x.id===t.memberId)||{}).name||'—',
+    }});
     t.tags=newTags;
     document.getElementById('panelTitle').textContent=t.name;
     const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
@@ -3301,6 +3308,7 @@ async function sendTagEmail(member,ctx){
         itemType:ctx.type||'Aufgabe',
         itemName:ctx.name||'',
         note:ctx.note||'',
+        details:ctx.details||null,
       }),
     });
     if(!res.ok){console.warn('Tag email failed:',await res.text());return false;}
@@ -4255,7 +4263,10 @@ function renderKbDetail(card,col){
     card.desc=document.getElementById('kdDesc').value;
     card.due=document.getElementById('kdDue').value;
     const newTags=getCardTags();
-    processTagChanges(card.tags||[],newTags,{type:'Karte',name:card.title,note:card.desc});
+    processTagChanges(card.tags||[],newTags,{type:'Karte',name:card.title,note:card.desc,details:{
+      'Liste':col.title||'—',
+      'Fälligkeitsdatum':card.due||'—',
+    }});
     card.tags=newTags;
     document.getElementById('kbDetailModal').classList.add('hidden');
     syncKbCols();renderKanban();

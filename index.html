@@ -2960,9 +2960,10 @@ memberScroll.addEventListener('wheel',e=>{
   e.stopPropagation();
 },{passive:true});
 
-/* Ctrl/Cmd + scroll to zoom */
-/* ── Desktop: plain vertical scroll zooms the calendar ── */
+/* ── Desktop: plain scroll moves up/down; hold Ctrl/Cmd (or pinch) to zoom ── */
 rightCol.addEventListener('wheel',e=>{
+  // Plain wheel scroll = normal up/down scrolling. Only zoom with a modifier key.
+  if(!(e.ctrlKey||e.metaKey))return;
   if(Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
   // Don't zoom if cursor is over the left sidebar
   const leftCol=document.getElementById('leftCol');

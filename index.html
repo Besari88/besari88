@@ -1144,12 +1144,54 @@ function hashSimple(s){
   let h=0;for(let i=0;i<s.length;i++){h=(Math.imul(31,h)+s.charCodeAt(i))|0;}return String(h);
 }
 
-function doLogin(){
+/* ── Password hashing (salted SHA-256, runs in the browser) ── */
+function _toHex(buf){return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');}
+function _randSalt(){const a=new Uint8Array(16);crypto.getRandomValues(a);return _toHex(a);}
+async function hashPassword(pw,salt){
+  const data=new TextEncoder().encode(salt+':'+pw);
+  const buf=await crypto.subtle.digest('SHA-256',data);
+  return _toHex(buf);
+}
+// Verify a password against a user record (supports legacy plaintext + upgrades it).
+async function verifyUserPassword(user,pw){
+  if(user.pwHash&&user.pwSalt){
+    const h=await hashPassword(pw,user.pwSalt);
+    return h===user.pwHash;
+  }
+  // Legacy plaintext fallback — upgrade to a hash on successful match
+  if(user.password!==undefined){
+    if(user.password===pw){
+      user.pwSalt=_randSalt();
+      user.pwHash=await hashPassword(pw,user.pwSalt);
+      delete user.password;
+      try{await sbFetch('users_config','POST',{id:'__all__',data:{users:USERS}});}catch(e){}
+      return true;
+    }
+  }
+  return false;
+}
+// One-time migration: hash any plaintext passwords still stored (called after load).
+async function migratePlaintextPasswords(){
+  let changed=false;
+  for(const u of USERS){
+    if(u.password!==undefined&&!u.pwHash){
+      u.pwSalt=_randSalt();
+      u.pwHash=await hashPassword(u.password,u.pwSalt);
+      delete u.password;
+      changed=true;
+    }
+  }
+  if(changed){try{await sbFetch('users_config','POST',{id:'__all__',data:{users:USERS}});}catch(e){}}
+}
+
+async function doLogin(){
   const u=document.getElementById('loginUser').value.trim().toLowerCase();
   const p=document.getElementById('loginPass').value;
   const err=document.getElementById('loginError');
-  const user=USERS.find(x=>x.username.toLowerCase()===u&&x.password===p);
-  if(!user){err.textContent='Benutzername oder Passwort falsch.';document.getElementById('loginPass').value='';return;}
+  const candidate=USERS.find(x=>x.username.toLowerCase()===u);
+  const ok=candidate?await verifyUserPassword(candidate,p):false;
+  if(!ok){err.textContent='Benutzername oder Passwort falsch.';document.getElementById('loginPass').value='';return;}
+  const user=candidate;
   currentUser=user;
   err.textContent='';
   // Update user badge
@@ -1270,7 +1312,7 @@ document.getElementById('testEmailBtn').onclick=async()=>{
 document.getElementById('umCancel').onclick=()=>document.getElementById('userModal').classList.add('hidden');
 document.getElementById('userModal').addEventListener('click',e=>{if(e.target===document.getElementById('userModal'))document.getElementById('userModal').classList.add('hidden');});
 
-document.getElementById('umSave').onclick=()=>{
+document.getElementById('umSave').onclick=async()=>{
   const display=document.getElementById('umDisplay').value.trim();
   const username=document.getElementById('umUsername').value.trim().toLowerCase();
   const password=document.getElementById('umPassword').value;
@@ -1286,11 +1328,12 @@ document.getElementById('umSave').onclick=()=>{
     if(u){
       u.display=display;u.username=username;u.initials=initials;u.role=role;
       u.visibleMembers=role==='admin'?[]:visibleMembers;
-      if(password)u.password=password;
+      if(password){u.pwSalt=_randSalt();u.pwHash=await hashPassword(password,u.pwSalt);delete u.password;}
     }
   } else {
     if(!password){showToast('Passwort ist für neue Benutzer erforderlich.','#e74c3c');return;}
-    USERS.push({username,password,display,initials,role,visibleMembers:role==='admin'?[]:visibleMembers});
+    const pwSalt=_randSalt();const pwHash=await hashPassword(password,pwSalt);
+    USERS.push({username,pwSalt,pwHash,display,initials,role,visibleMembers:role==='admin'?[]:visibleMembers});
   }
   document.getElementById('userModal').classList.add('hidden');
   renderUsersList();
@@ -3570,6 +3613,8 @@ async function loadFromSupabase(){
         if(!USERS.find(u=>u.username==='admin')){
           USERS.unshift({username:'admin',password:'1596',display:'Administrator',initials:'AD',role:'admin',visibleMembers:[]});
         }
+        // Security: hash any plaintext passwords still stored
+        await migratePlaintextPasswords();
       }
       // Load saved custom holidays
       const hRow=uRows.find(r=>r.id==='__holidays__');

@@ -42,7 +42,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { to, memberName, taggedBy, itemType, itemName, note, details } = await req.json();
+    const { to, memberName, taggedBy, itemType, itemName, note, details, action } = await req.json();
 
     if (!to || typeof to !== "string") {
       return new Response(JSON.stringify({ error: "Missing recipient 'to'" }), {
@@ -81,12 +81,19 @@ Deno.serve(async (req: Request): Promise<Response> => {
       ? `<p style="margin:18px 0 0"><a href="${esc(APP_URL)}" style="display:inline-block;background:#4A90E2;color:#fff;text-decoration:none;font-size:13px;font-weight:500;padding:9px 18px;border-radius:8px">Im Arbeitsplan öffnen</a></p>`
       : "";
 
-    const subject = `Du wurdest bei "${itemName || kind}" getaggt`;
+    const isAssign = action === "assigned";
+    const subject = isAssign
+      ? `Neue ${kind} für dich: "${itemName || kind}"`
+      : `Du wurdest bei "${itemName || kind}" getaggt`;
+    const heading = isAssign ? "📋 Neue Aufgabe für dich" : "🔔 Du wurdest getaggt";
+    const intro = isAssign
+      ? `<strong>${by}</strong> hat eine neue ${kind} <strong>${name}</strong> für dich erstellt.`
+      : `<strong>${by}</strong> hat dich bei der ${kind} <strong>${name}</strong> getaggt.`;
     const html = `
       <div style="font-family:system-ui,Segoe UI,Arial,sans-serif;max-width:520px;margin:0 auto;padding:24px;color:#1a1a1a">
-        <h2 style="font-size:18px;font-weight:600;margin:0 0 12px">🔔 Du wurdest getaggt</h2>
+        <h2 style="font-size:18px;font-weight:600;margin:0 0 12px">${heading}</h2>
         <p style="margin:0 0 8px;font-size:14px">Hallo ${who || "zusammen"},</p>
-        <p style="margin:0 0 12px;font-size:14px"><strong>${by}</strong> hat dich bei der ${kind} <strong>${name}</strong> getaggt.</p>
+        <p style="margin:0 0 12px;font-size:14px">${intro}</p>
         ${detailsHtml}
         ${noteHtml}
         ${buttonHtml}

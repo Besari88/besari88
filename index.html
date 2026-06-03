@@ -2217,6 +2217,18 @@ document.getElementById('mtSave').onclick=()=>{
   const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
   addActivities([{icon:'✚',color:'#1D9E75',text:`Task <b>${name}</b> added for <b>${m?m.name:'?'}</b> (${dates.length} day${dates.length>1?'s':''})`,time:now}]);
   showToast(`Added ${dates.length} lesson days.`,'#1D9E75');
+  // Notify the assigned member by email
+  if(m&&m.email){
+    const _endT=startTime&&hours?endTimeWithBreak(startTime,hours,breakMin):'';
+    sendTagEmail(m,{type:'Aufgabe',name,note:desc,action:'assigned',details:{
+      'Startdatum':dates[0],
+      'Tage':String(dates.length),
+      'Uhrzeit':startTime?(startTime+(_endT?' – '+_endT:'')):'—',
+      'Dauer':fmtHours(hours),
+      'Status':status,
+    }});
+    showToast(`Benachrichtigung an ${m.name} gesendet.`,'#4A90E2');
+  }
 };
 /* ════ REPORTS ════ */
 let rptFromDate='';
@@ -3308,6 +3320,7 @@ async function sendTagEmail(member,ctx){
         itemType:ctx.type||'Aufgabe',
         itemName:ctx.name||'',
         note:ctx.note||'',
+        action:ctx.action||'tagged',
         details:ctx.details||null,
       }),
     });

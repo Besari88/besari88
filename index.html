@@ -423,6 +423,10 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
   </div>
   <div style="display:flex;gap:6px;margin-left:auto;align-items:center">
 
+    <div style="position:relative" id="searchWrap">
+      <input id="globalSearch" type="text" placeholder="🔍 Suchen…" autocomplete="off" style="width:140px;padding:5px 9px;border:0.5px solid #ccc;border-radius:6px;font-size:12px;background:#fff;color:#1a1a1a">
+      <div id="searchResults" style="display:none;position:absolute;top:34px;right:0;width:300px;max-height:360px;overflow-y:auto;background:#fff;border:0.5px solid #ddd;border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,0.16);z-index:600;padding:5px"></div>
+    </div>
     <button class="btn-ghost" id="notifBtn" title="Aktivitätsprotokoll" style="position:relative;display:none">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       <span id="notifDot" style="display:none;position:absolute;top:4px;right:4px;width:8px;height:8px;background:#e74c3c;border-radius:50%;border:1.5px solid #fff"></span>
@@ -2043,15 +2047,18 @@ function renderPanelBody(t){
   };
   document.getElementById('delTaskBtn').onclick=()=>{
     const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    const removed=t;
     addActivities([{icon:'✕',color:'#e74c3c',text:`Task <b>${t.name}</b> (${t.date}) deleted`,time:_now}]);
     Aufgaben=Aufgaben.filter(x=>x.id!==t.id);document.getElementById('detailPanel').classList.add('hidden');render();
+    showUndoToast(`Aufgabe „${removed.name}" gelöscht.`,()=>{Aufgaben.push(removed);render();showToast('Wiederhergestellt.','#1D9E75');});
   };
   const delGroup=document.getElementById('delGroupBtn');
   if(delGroup) delGroup.onclick=()=>{
     const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-    const cnt=Aufgaben.filter(x=>x.groupId===t.groupId).length;
-    addActivities([{icon:'✕',color:'#e74c3c',text:`Plan <b>${t.name}</b> deleted (${cnt} days)`,time:_now}]);
+    const removedGroup=Aufgaben.filter(x=>x.groupId===t.groupId);
+    addActivities([{icon:'✕',color:'#e74c3c',text:`Plan <b>${t.name}</b> deleted (${removedGroup.length} days)`,time:_now}]);
     Aufgaben=Aufgaben.filter(x=>x.groupId!==t.groupId);document.getElementById('detailPanel').classList.add('hidden');render();
+    showUndoToast(`Plan „${t.name}" (${removedGroup.length} Tage) gelöscht.`,()=>{removedGroup.forEach(x=>Aufgaben.push(x));render();showToast('Wiederhergestellt.','#1D9E75');});
   };
 }
 function renderSubAufgaben(t){
@@ -2826,9 +2833,15 @@ function openEditMember(memberId){
 function removeMember(memberId){
   const m=MEMBERS.find(x=>x.id===memberId);if(!m)return;
   const idx=MEMBERS.findIndex(x=>x.id===memberId);
+  const removedTasks=Aufgaben.filter(t=>t.memberId===memberId);
   if(idx>-1)MEMBERS.splice(idx,1);
   Aufgaben=Aufgaben.filter(t=>t.memberId!==memberId);
   render();
+  showUndoToast(`Mitarbeiter „${m.name}" entfernt.`,()=>{
+    MEMBERS.splice(Math.min(idx,MEMBERS.length),0,m);
+    removedTasks.forEach(t=>Aufgaben.push(t));
+    render();showToast('Wiederhergestellt.','#1D9E75');
+  });
 }
 
 /* ════ TRANSFER MODAL ════ */
@@ -3748,6 +3761,26 @@ function showToast(msg,color){
   toast._hide=setTimeout(()=>toast.style.opacity='0',2800);
 }
 
+// Toast with a "Rückgängig" (undo) button — sits above the normal toast.
+function showUndoToast(msg,undoFn){
+  let t=document.getElementById('undoToast');
+  if(!t){
+    t=document.createElement('div');t.id='undoToast';
+    t.style.cssText='position:fixed;bottom:74px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;border-radius:8px;padding:9px 12px 9px 18px;font-size:13px;font-weight:500;z-index:10000;display:flex;align-items:center;gap:14px;box-shadow:0 4px 16px rgba(0,0,0,0.22);transition:opacity .3s';
+    document.body.appendChild(t);
+  }
+  t.innerHTML='';
+  const span=document.createElement('span');span.textContent=msg;
+  const btn=document.createElement('button');btn.textContent='Rückgängig';
+  btn.style.cssText='background:#4A90E2;border:none;color:#fff;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0';
+  t.appendChild(span);t.appendChild(btn);
+  t.style.opacity='1';t.style.pointerEvents='auto';
+  clearTimeout(t._hide);
+  const close=()=>{t.style.opacity='0';t.style.pointerEvents='none';};
+  t._hide=setTimeout(close,8000);
+  btn.onclick=()=>{clearTimeout(t._hide);close();try{undoFn();}catch(e){console.warn('Undo failed:',e);}};
+}
+
 document.getElementById('savePlanBtn').onclick=savePlan;
 
 /* ════ KANBAN BOARD ENGINE ════ */
@@ -4381,11 +4414,13 @@ function renderKbDetail(card,col){
   };
   document.getElementById('kdDelete').onclick=()=>{
     const cardTitle=card.title;
+    const cardIdx=col.cards.findIndex(c=>c.id===card.id);
     col.cards=col.cards.filter(c=>c.id!==card.id);
     document.getElementById('kbDetailModal').classList.add('hidden');
     syncKbCols();renderKanban();
     const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
     addActivities([{icon:'✕',color:'#e74c3c',text:`Karte <b>${cardTitle}</b> gelöscht`,time:_now}]);
+    showUndoToast(`Karte „${cardTitle}" gelöscht.`,()=>{col.cards.splice(Math.min(cardIdx<0?col.cards.length:cardIdx,col.cards.length),0,card);syncKbCols();renderKanban();showToast('Wiederhergestellt.','#1D9E75');});
   };
 }
 
@@ -4499,6 +4534,51 @@ document.querySelectorAll('.tab[data-view]').forEach(btn=>{
     updatePlanFilterBarVisibility();
   });
 });
+
+/* ════ GLOBAL SEARCH ════ */
+function ensureWorkloadView(){
+  if(currentView!=='workload'){const tb=document.querySelector('.tab[data-view="workload"]');if(tb)tb.click();}
+}
+function runGlobalSearch(q){
+  const box=document.getElementById('searchResults');if(!box)return;
+  q=(q||'').trim().toLowerCase();
+  if(!q){box.style.display='none';box.innerHTML='';return;}
+  const results=[];
+  // Members
+  MEMBERS.filter(m=>m.name.toLowerCase().includes(q)||(m.email||'').toLowerCase().includes(q)).slice(0,6).forEach(m=>{
+    results.push({type:'Mitarbeiter',label:m.name,sub:m.email||'',color:m.color||'#888',act:()=>{if(!window._readOnly)openEditMember(m.id);}});
+  });
+  // Tasks (dedupe by plan/group so repeated lesson days don't flood the list)
+  const seen=new Set();
+  Aufgaben.filter(t=>t.name.toLowerCase().includes(q)).forEach(t=>{
+    const key=t.groupId||t.id;if(seen.has(key))return;seen.add(key);
+    const mm=MEMBERS.find(x=>x.id===t.memberId);
+    results.push({type:'Aufgabe',label:t.name,sub:`${mm?mm.name:''} · ${t.date}`,color:t.taskColor||'#4A90E2',act:()=>{ensureWorkloadView();openTaskPanel(t.id);}});
+  });
+  const top=results.slice(0,12);
+  box.innerHTML='';
+  if(!top.length){box.innerHTML='<div style="padding:10px 12px;font-size:12px;color:#999">Keine Treffer</div>';box.style.display='block';return;}
+  top.forEach(r=>{
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:6px;cursor:pointer';
+    row.onmouseenter=()=>row.style.background='#f2f4f7';row.onmouseleave=()=>row.style.background='';
+    const dot=document.createElement('span');dot.style.cssText=`width:7px;height:7px;border-radius:50%;background:${r.color};flex-shrink:0`;
+    const txt=document.createElement('div');txt.style.cssText='min-width:0;flex:1';
+    const l=document.createElement('div');l.style.cssText='font-size:13px;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';l.textContent=r.label;
+    const s=document.createElement('div');s.style.cssText='font-size:10px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';s.textContent=r.type+(r.sub?' · '+r.sub:'');
+    txt.appendChild(l);txt.appendChild(s);row.appendChild(dot);row.appendChild(txt);
+    row.onclick=()=>{box.style.display='none';const gs=document.getElementById('globalSearch');if(gs)gs.value='';r.act();};
+    box.appendChild(row);
+  });
+  box.style.display='block';
+}
+(function wireGlobalSearch(){
+  const gs=document.getElementById('globalSearch');if(!gs)return;
+  gs.addEventListener('input',()=>runGlobalSearch(gs.value));
+  gs.addEventListener('focus',()=>{if(gs.value)runGlobalSearch(gs.value);});
+  gs.addEventListener('keydown',e=>{if(e.key==='Escape'){gs.value='';document.getElementById('searchResults').style.display='none';gs.blur();}});
+  document.addEventListener('click',e=>{const w=document.getElementById('searchWrap');if(w&&!w.contains(e.target))document.getElementById('searchResults').style.display='none';});
+})();
 
 /* ════ MOBILE NAV ════ */
 function isMobile(){return window.innerWidth<=768;}

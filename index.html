@@ -1789,12 +1789,13 @@ function createChip(t,stroke,bg,text,h,top,cw){
   const endT=t.startTime&&t.hours?endTimeWithBreak(t.startTime,t.hours,t.breakMin||0):'';
   const breakBadge=t.breakMin>0?`<div style="font-size:9px;opacity:.65;margin-top:1px;white-space:nowrap;overflow:hidden">${t.breakMin}min Pause</div>`:'';
   const timeStr=showTime?`<div style="font-size:9px;opacity:.75;margin-top:1px;white-space:nowrap;overflow:hidden">${t.startTime}${endT?' – '+endT:''}</div>`:'';
+  const tagStr=(t.tags&&t.tags.length)?`<div style="display:flex;align-items:center;gap:2px;margin-top:2px;overflow:hidden"><span style="font-size:8px;opacity:.6">🔔</span>${t.tags.slice(0,4).map(id=>{const m=MEMBERS.find(x=>x.id===id);if(!m)return'';return `<span title="${m.name}" style="display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border-radius:50%;background:${m.color||'#888'};color:#fff;font-size:7px;font-weight:700;flex-shrink:0">${m.initials||'?'}</span>`;}).join('')}${t.tags.length>4?`<span style="font-size:8px;opacity:.7">+${t.tags.length-4}</span>`:''}</div>`:'';
   chip.innerHTML=`
     <div style="display:flex;align-items:center;gap:3px;overflow:hidden">
       <span style="width:5px;height:5px;border-radius:50%;background:${sc[0]};flex-shrink:0"></span>
       <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;font-size:11px;font-weight:500">${t.name}</span>${conflictIcon}
     </div>
-    ${timeStr}${breakBadge}`;
+    ${timeStr}${breakBadge}${tagStr}`;
   if(planSelectMode){
     chip.classList.add('selectable');
     const selected=selectedTaskIds.has(t.id);
@@ -4051,6 +4052,15 @@ function createKbCardEl(card,col){
     meta.appendChild(ai);
   }
   if(meta.children.length)el.appendChild(meta);
+  // Tagged members
+  if(card.tags&&card.tags.length){
+    const tagRow=document.createElement('div');
+    tagRow.style.cssText='display:flex;align-items:center;gap:3px;margin-top:7px;flex-wrap:wrap';
+    tagRow.innerHTML=`<span style="font-size:10px;opacity:.55">🔔</span>`+
+      card.tags.slice(0,5).map(id=>{const m=MEMBERS.find(x=>x.id===id);if(!m)return'';return `<span title="${m.name}" style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:${m.color||'#888'};color:#fff;font-size:8px;font-weight:700">${m.initials||'?'}</span>`;}).join('')+
+      (card.tags.length>5?`<span style="font-size:9px;color:#888">+${card.tags.length-5}</span>`:'');
+    el.appendChild(tagRow);
+  }
   // Drag
   el.addEventListener('dragstart',e=>{if(window._readOnly){e.preventDefault();return;}kbDragCard=card;kbDragCol=col;el.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
   el.addEventListener('dragend',()=>el.classList.remove('dragging'));

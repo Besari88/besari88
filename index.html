@@ -2054,7 +2054,10 @@ function renderPanelBody(t){
     const pColorSel=[...document.querySelectorAll('#pColorPicker div')].find(s=>s.style.border.includes('3px'));
     const newTaskColor=(pColorSel&&pColorSel.dataset.color!=='default')?pColorSel.dataset.color:null;
     if(isGroup){
-      groupAufgaben.forEach(x=>{x.name=newName;x.memberId=newMemberId;x.status=newStatus;x.project=newProject;x.startTime=newStartTime;x.hours=newHours;x.breakMin=newBreak;x.taskColor=newTaskColor;});
+      // Only move every day to the selected member when the assignee was actually changed,
+      // so a plan that's split across members keeps its split when you edit colour/etc.
+      const moveAll=newMemberId!==oldMemberId;
+      groupAufgaben.forEach(x=>{x.name=newName;if(moveAll)x.memberId=newMemberId;x.status=newStatus;x.project=newProject;x.startTime=newStartTime;x.hours=newHours;x.breakMin=newBreak;x.taskColor=newTaskColor;});
     }
     t.name=newName;t.desc=document.getElementById('pDesc').value;t.memberId=newMemberId;
     t.date=document.getElementById('pDate').value;t.status=newStatus;t.project=newProject;

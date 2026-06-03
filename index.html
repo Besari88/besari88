@@ -2975,10 +2975,12 @@ memberScroll.addEventListener('scroll',()=>{
   rightCol.scrollTop=memberScroll.scrollTop;
   syncing=false;
 });
-// When hovering the member sidebar, wheel scrolls the list (not the calendar zoom)
+// Wheel over the member sidebar scrolls the whole view (grid + members) together
 memberScroll.addEventListener('wheel',e=>{
-  e.stopPropagation();
-},{passive:true});
+  if(e.ctrlKey||e.metaKey)return; // leave zoom modifier alone
+  e.preventDefault();
+  rightCol.scrollTop+=e.deltaY;
+},{passive:false});
 
 /* ── Desktop: plain scroll moves up/down; hold Ctrl/Cmd (or pinch) to zoom ── */
 rightCol.addEventListener('wheel',e=>{

@@ -37,6 +37,8 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
 .member-scroll{overflow-y:auto;flex:1;scrollbar-width:thin}
 .member-row{display:flex;align-items:center;gap:7px;padding:0 10px;border-bottom:0.5px solid #e0e0e0;cursor:pointer;overflow:hidden}
 .member-row:hover{background:#f5f5f5}
+.member-row.dragging{opacity:.4}
+.member-row.drag-over-row{box-shadow:inset 0 3px 0 #4A90E2}
 .avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0}
 .mname{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cap-bar-wrap{height:3px;background:#f0f0f0;border-radius:2px;margin-top:3px;overflow:hidden}
@@ -1739,9 +1741,27 @@ function renderSidebar(){
     if(!isReadOnly){
       div.querySelector('.edit-btn').addEventListener('click',e=>{e.stopPropagation();openEditMember(m.id);});
       div.querySelector('.remove-btn').addEventListener('click',e=>{e.stopPropagation();removeMember(m.id);});
+      // Drag to reorder members
+      div.draggable=true;div.dataset.memberId=m.id;
+      div.addEventListener('dragstart',e=>{memberDragId=m.id;div.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
+      div.addEventListener('dragend',()=>{div.classList.remove('dragging');document.querySelectorAll('#memberList .member-row').forEach(r=>r.classList.remove('drag-over-row'));});
+      div.addEventListener('dragover',e=>{if(memberDragId==null||memberDragId===m.id)return;e.preventDefault();e.dataTransfer.dropEffect='move';div.classList.add('drag-over-row');});
+      div.addEventListener('dragleave',()=>div.classList.remove('drag-over-row'));
+      div.addEventListener('drop',e=>{e.preventDefault();div.classList.remove('drag-over-row');if(memberDragId==null||memberDragId===m.id)return;reorderMembers(memberDragId,m.id);memberDragId=null;});
     }
     ml.appendChild(div);
   });
+}
+
+let memberDragId=null;
+function reorderMembers(dragId,targetId){
+  const from=MEMBERS.findIndex(x=>x.id===dragId);
+  if(from<0)return;
+  const [moved]=MEMBERS.splice(from,1);
+  const to=MEMBERS.findIndex(x=>x.id===targetId);
+  MEMBERS.splice(to<0?MEMBERS.length:to,0,moved);
+  render();
+  showToast('Reihenfolge aktualisiert.','#1D9E75');
 }
 
 function renderHeader(){

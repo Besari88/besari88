@@ -1760,7 +1760,10 @@ function reorderMembers(dragId,targetId){
   const [moved]=MEMBERS.splice(from,1);
   const to=MEMBERS.findIndex(x=>x.id===targetId);
   MEMBERS.splice(to<0?MEMBERS.length:to,0,moved);
+  const st=rightCol?rightCol.scrollTop:0;
   render();
+  // Keep the current scroll position (render() rebuilds the list and would jump to top)
+  requestAnimationFrame(()=>{if(rightCol)rightCol.scrollTop=st;if(memberScroll)memberScroll.scrollTop=st;});
   showToast('Reihenfolge aktualisiert.','#1D9E75');
 }
 

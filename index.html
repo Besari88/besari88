@@ -439,6 +439,7 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
       <div class="user-dot" id="userDot">A</div>
       <span id="userBezeichnung" style="font-size:12px;font-weight:500;color:#333">Admin</span>
     </div>
+    <span id="autosaveStatus" style="font-size:11px;color:#999;align-self:center;white-space:nowrap"></span>
     <button class="btn-ghost" id="savePlanBtn" title="Plan speichern">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
       Plan speichern
@@ -2937,6 +2938,7 @@ function render(){
   syncSidebarHeights(); // always sync after render
   if(currentView==='reports')renderReports();
   if(currentView==='holidays')renderHolidays();
+  scheduleAutosave();
 }
 
 /* Sync vertical scroll: grid scrolls → sidebar scrolls */
@@ -3615,6 +3617,7 @@ async function savePlan(){
       prevSnapshot.Aufgaben=prevT;
       prevSnapshot.members=prevM;
       prevSnapshot.kbCols=snapshotKb(kbCols);
+      if(typeof _autosaveSig==='function'){_lastSavedSig=_autosaveSig();setAutosaveStatus('saved');}
     } else {
       const failed=[];
       if(!ok1)failed.push('Aufgaben');
@@ -3629,6 +3632,50 @@ async function savePlan(){
     setTimeout(()=>{isSaving=false;},3000);
   }
 }
+
+/* ════ AUTOSAVE ════
+   Debounced background save on every change. Loop-safe: a content signature
+   ensures identical data is never re-saved (prevents realtime ping-pong). */
+let _autosaveReady=false,_autosaveTimer=null,_lastSavedSig='';
+function _autosaveSig(){
+  try{return JSON.stringify([Aufgaben,nextId,ROLES,MEMBERS,kbBoards,kbSharedBoards,kbNextId,USERS,holidays.filter(h=>!h.official)]);}
+  catch(e){return String(Math.random());}
+}
+function setAutosaveStatus(state){
+  const el=document.getElementById('autosaveStatus');if(!el)return;
+  if(state==='pending'){el.textContent='Speichert…';el.style.color='#999';}
+  else if(state==='saved'){el.textContent='✓ Gespeichert';el.style.color='#1D9E75';}
+  else if(state==='error'){el.textContent='⚠ Nicht gespeichert';el.style.color='#EF9F27';}
+  else el.textContent='';
+}
+async function doAutosave(){
+  if(!_autosaveReady||window._readOnly||!currentUser)return;
+  const sig=_autosaveSig();
+  if(sig===_lastSavedSig){setAutosaveStatus('saved');return;}
+  setAutosaveStatus('pending');
+  try{
+    const now=new Date().toISOString();
+    const oks=await Promise.all([
+      sbFetch('task','POST',{id:'__all__',data:{Aufgaben,nextId,roles:ROLES,savedAt:now}}),
+      sbFetch('Members','POST',{id:'__all__',data:{members:MEMBERS}}),
+      sbFetch('kanban_cards','POST',{id:'__all__',data:{kbBoards,kbSharedBoards,kbNextId,kbGlobalBg:window.kbGlobalBg||'#f0f1f3'}}),
+      sbFetch('users_config','POST',{id:'__all__',data:{users:USERS}}),
+      sbFetch('users_config','POST',{id:'__holidays__',data:{holidays:holidays.filter(h=>!h.official)}}),
+    ]);
+    if(oks.every(Boolean)){_lastSavedSig=sig;setAutosaveStatus('saved');}
+    else setAutosaveStatus('error');
+  }catch(e){setAutosaveStatus('error');}
+}
+function scheduleAutosave(){
+  if(!_autosaveReady||window._readOnly||!currentUser)return;
+  setAutosaveStatus('pending');
+  clearTimeout(_autosaveTimer);
+  _autosaveTimer=setTimeout(doAutosave,1500);
+}
+// Flush a pending save when the tab is hidden/closed.
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='hidden'&&_autosaveReady){clearTimeout(_autosaveTimer);doAutosave();}
+});
 
 async function loadFromSupabase(){
   try{
@@ -3728,6 +3775,7 @@ function startRealtimeSync(){
           const prevM=snapshotMembers(MEMBERS);
           const prevKb=snapshotKb(kbCols);
           await loadFromSupabase();
+          _lastSavedSig=_autosaveSig(); // remote state is now our baseline — don't echo it back
           render();
           if(currentView==='kanban')renderKanban();
           const changes=detectChanges(prevT,snapshotAufgaben(Aufgaben),prevM,snapshotMembers(MEMBERS),prevKb,snapshotKb(kbCols));
@@ -4096,6 +4144,7 @@ function syncKbCols(){
     const b=kbSharedBoards.find(x=>x.id===sid);
     if(b)b.cols=kbCols;
   }
+  scheduleAutosave();
 }
 
 function renderKanban(){
@@ -4676,6 +4725,9 @@ loadFromSupabase().then(loaded=>{
   prevSnapshot.members=snapshotMembers(MEMBERS);
   prevSnapshot.kbCols=snapshotKb(kbCols);
   loadPrefs();
+  // Enable autosave with the freshly-loaded state as baseline (so no redundant first save)
+  _lastSavedSig=_autosaveSig();
+  _autosaveReady=true;
   render();
   // Apply kanban background immediately after load
   if(window.kbGlobalBg)applyKbBg(window.kbGlobalBg);

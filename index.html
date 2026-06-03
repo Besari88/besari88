@@ -138,6 +138,15 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
 .day-toggle{padding:4px 10px;border-radius:4px;border:0.5px solid #ccc;background:#fff;font-size:11px;cursor:pointer;color:#666;font-weight:500}
 .day-toggle.on{background:#4A90E2;color:#fff;border-color:#4A90E2}
 
+/* ── Member tags / mentions ── */
+.tag-box{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px;min-height:4px}
+.tag-chip{display:inline-flex;align-items:center;gap:4px;border-radius:12px;padding:2px 5px 2px 8px;font-size:11px;font-weight:500;line-height:1.6}
+.tag-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.tag-chip .tag-x{background:none;border:none;cursor:pointer;font-size:11px;color:inherit;opacity:.6;padding:0 1px;line-height:1}
+.tag-chip .tag-x:hover{opacity:1}
+.tag-warn{font-size:10px;color:#c0392b;opacity:.8}
+.tag-add{width:100%;padding:5px 9px;border:0.5px solid #ccc;border-radius:6px;font-size:12px;background:#fff;color:#1a1a1a;cursor:pointer}
+
 /* ── Yearly Calendar ── */
 .yearly-view{flex:1;overflow-y:auto;padding:16px;display:none;background:#f8f8f8}
 .yearly-view.active{display:block}
@@ -713,6 +722,7 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
     <h3>Mitarbeiter hinzufügen</h3>
     <div class="field"><label>Vollständiger Name</label><input id="amName" placeholder="z.B. Sara Kim"></div>
     <div class="field"><label>Initialen (max. 2 Zeichen)</label><input id="amInitialen" maxlength="2" placeholder="z.B. SK"></div>
+    <div class="field"><label>E-Mail (für Benachrichtigungen)</label><input id="amEmail" type="email" placeholder="z.B. sara@example.com" autocomplete="off"></div>
     <div class="field"><label>Stunden pro Monat</label>
       <input type="number" id="amHours" value="160" min="1" max="744" step="1" placeholder="z.B. 160" style="width:100%;padding:6px 8px;border:0.5px solid #ccc;border-radius:6px;font-size:13px">
       <div style="font-size:10px;color:#888;margin-top:3px">Standard: 160 Std/Monat (40 Std/Woche × 4 Wochen)</div>
@@ -733,6 +743,7 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
     <h3 id="editMemberTitle">Mitarbeiter bearbeiten</h3>
     <div class="field"><label>Name</label><input id="emName" placeholder="Vollständiger Name"></div>
     <div class="field"><label>Initialen (max. 2 Zeichen)</label><input id="emInitialen" maxlength="2" placeholder="z.B. AM"></div>
+    <div class="field"><label>E-Mail (für Benachrichtigungen)</label><input id="emEmail" type="email" placeholder="z.B. alex@example.com" autocomplete="off"></div>
     <div class="field"><label>Stunden pro Monat</label>
       <input type="number" id="emHours" value="160" min="1" max="744" step="1" placeholder="z.B. 160" style="width:100%;padding:6px 8px;border:0.5px solid #ccc;border-radius:6px;font-size:13px">
       <div style="font-size:10px;color:#888;margin-top:3px">Standard: 160 Std/Monat (40 Std/Woche × 4 Wochen)</div>
@@ -1830,6 +1841,10 @@ function renderPanelBody(t){
     </div>
     <div class="field"><label>Aufgabenname</label><input id="pName" value="${t.name}"></div>
     <div class="field"><label>Beschreibung</label><textarea id="pDesc">${t.desc}</textarea></div>
+    <div class="field"><label>🔔 Mitarbeiter taggen (E-Mail-Benachrichtigung)</label>
+      <div id="pTagBox" class="tag-box"></div>
+      <select id="pTagAdd" class="tag-add"></select>
+    </div>
     <div class="field"><label>Mitarbeiter</label>
       <select id="pMember">${MEMBERS.map(x=>`<option value="${x.id}"${x.id===t.memberId?' selected':''}>${x.name}</option>`).join('')}</select>
       ${isGroup?`<div style="font-size:10px;color:#888;margin-top:3px">Changing assignee moves all ${groupAufgaben.length} days to the selected member.</div>`:''}
@@ -1907,6 +1922,7 @@ function renderPanelBody(t){
   document.getElementById('pHoursM').onchange=updateEndBezeichnung;
   document.getElementById('pBreak').onchange=updateEndBezeichnung;
   renderSubAufgaben(t);
+  const getTaskTags=wireTagEditor('pTagBox','pTagAdd',t.tags||[]);
   document.getElementById('addStBtn').onclick=()=>{const v=document.getElementById('newSt').value.trim();if(!v)return;t.subAufgaben.push({id:Date.now(),n:v,done:false});document.getElementById('newSt').value='';renderSubAufgaben(t);};
   document.getElementById('saveTaskBtn').onclick=()=>{
     const newName=document.getElementById('pName').value.trim()||t.name;
@@ -1927,6 +1943,9 @@ function renderPanelBody(t){
     t.date=document.getElementById('pDate').value;t.status=newStatus;t.project=newProject;
     t.startTime=newStartTime;t.hours=newHours;t.breakMin=newBreak;t.taskColor=newTaskColor;
     t.actual=parseFloat(document.getElementById('pActual').value)||0;
+    const newTags=getTaskTags();
+    processTagChanges(t.tags||[],newTags,{type:'Aufgabe',name:newName,note:t.desc});
+    t.tags=newTags;
     document.getElementById('panelTitle').textContent=t.name;
     const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
     const m2=MEMBERS.find(x=>x.id===t.memberId);
@@ -2680,6 +2699,7 @@ function openEditMember(memberId){
   document.getElementById('editMemberTitle').textContent='Mitarbeiter bearbeiten';
   document.getElementById('emName').value=m.name;
   document.getElementById('emInitialen').value=m.initials;
+  document.getElementById('emEmail').value=m.email||'';
   document.getElementById('emHours').value=m.monthlyHours||160;
   emLastRole=m.position||'';
   populateEmRoleSelect(m.position||'');
@@ -2760,6 +2780,7 @@ document.getElementById('emSave').onclick=()=>{
   if(selectedSwatch){m.color=selectedSwatch.dataset.color;m.bg=selectedSwatch.dataset.bg;}
   m.name=name;
   m.initials=initials||name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  m.email=document.getElementById('emEmail').value.trim();
   m.monthlyHours=monthlyHours;
   const emRoleSel=document.getElementById('emRole');
   if(emRoleSel&&emRoleSel.value!==ADD_ROLE_VALUE)m.position=emRoleSel.value;
@@ -2969,6 +2990,7 @@ document.getElementById('addTaskBtn').onclick=()=>openAddModal(MEMBERS[0].id, fm
 document.getElementById('addMemberBtn').onclick=()=>{
   document.getElementById('amName').value='';
   document.getElementById('amInitialen').value='';
+  document.getElementById('amEmail').value='';
   const picker=document.getElementById('amColorPicker');
   picker.innerHTML='';
   MEMBER_PALETTES.forEach((p,i)=>{
@@ -2992,7 +3014,8 @@ document.getElementById('amSave').onclick=()=>{
   const sel=[...document.querySelectorAll('#amColorPicker div')].find(s=>s.style.border.includes('3px'));
   const color=sel?sel.dataset.color:MEMBER_PALETTES[MEMBERS.length%MEMBER_PALETTES.length].color;
   const bg=sel?sel.dataset.bg:MEMBER_PALETTES[MEMBERS.length%MEMBER_PALETTES.length].bg;
-  MEMBERS.push({id:Date.now(),name,initials,color,bg,cap:8,monthlyHours});
+  const email=document.getElementById('amEmail').value.trim();
+  MEMBERS.push({id:Date.now(),name,initials,color,bg,cap:8,monthlyHours,email});
   document.getElementById('addMemberModal').classList.add('hidden');
   render();
 };
@@ -3236,6 +3259,77 @@ document.addEventListener('click',e=>{
 });
 const SB_URL='https://xffncclkylksidlepwyo.supabase.co';
 const SB_KEY='sb_publishable_CFZ9OWq-ryHAdJehNfnjvQ_czpPdYNS';
+
+/* ════ MEMBER TAG NOTIFICATIONS (email via Supabase Edge Function + Resend) ════ */
+const NOTIFY_FN_URL=SB_URL+'/functions/v1/send-tag-notification';
+// Sends an email to a tagged member. Resolves to true on success, false otherwise.
+async function sendTagEmail(member,ctx){
+  if(!member||!member.email)return false;
+  try{
+    const res=await fetch(NOTIFY_FN_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},
+      body:JSON.stringify({
+        to:member.email,
+        memberName:member.name,
+        taggedBy:(currentUser&&currentUser.display)?currentUser.display:'Ein Teammitglied',
+        itemType:ctx.type||'Aufgabe',
+        itemName:ctx.name||'',
+        note:ctx.note||'',
+      }),
+    });
+    if(!res.ok){console.warn('Tag email failed:',await res.text());return false;}
+    return true;
+  }catch(e){console.warn('Tag email error:',e.message);return false;}
+}
+// Compares previous vs new tag lists, persists the new list, and emails newly-added members.
+function processTagChanges(prevIds,newIds,ctx){
+  const added=newIds.filter(id=>!(prevIds||[]).includes(id));
+  if(!added.length)return;
+  const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const names=[],noMail=[];
+  added.forEach(id=>{
+    const m=MEMBERS.find(x=>x.id===id);if(!m)return;
+    names.push(m.name);
+    if(m.email)sendTagEmail(m,ctx);else noMail.push(m.name);
+  });
+  if(!names.length)return;
+  addActivities([{icon:'🔔',color:'#4A90E2',text:`<b>${names.join(', ')}</b> bei ${ctx.type} <b>${ctx.name}</b> getaggt`,time:_now}]);
+  if(noMail.length)showToast(`Keine E-Mail hinterlegt für: ${noMail.join(', ')}`,'#EF9F27');
+}
+// Renders an editable list of member-tag chips into `boxId` with an add-dropdown in `addId`.
+// Returns a getter that yields the currently selected member-id array.
+function wireTagEditor(boxId,addId,initialIds){
+  let sel=[...(initialIds||[])];
+  const box=document.getElementById(boxId);
+  const add=document.getElementById(addId);
+  if(!box||!add)return ()=>sel.slice();
+  function drawChips(){
+    box.innerHTML='';
+    sel.forEach(id=>{
+      const m=MEMBERS.find(x=>x.id===id);if(!m)return;
+      const chip=document.createElement('span');
+      chip.className='tag-chip';
+      chip.style.background=m.bg||'#eee';chip.style.color=m.color||'#333';
+      chip.innerHTML=`<span class="tag-dot" style="background:${m.color||'#888'}"></span>${m.name}`+
+        (m.email?'':' <span class="tag-warn" title="Keine E-Mail hinterlegt">⚠</span>')+
+        (window._readOnly?'':' <button class="tag-x" title="Entfernen">✕</button>');
+      const x=chip.querySelector('.tag-x');
+      if(x)x.onclick=()=>{sel=sel.filter(v=>v!==id);drawChips();drawAdd();};
+      box.appendChild(chip);
+    });
+    if(!sel.length)box.innerHTML='<span style="font-size:11px;color:#bbb">Niemand getaggt</span>';
+  }
+  function drawAdd(){
+    const avail=MEMBERS.filter(m=>!sel.includes(m.id));
+    add.innerHTML='<option value="">+ Mitarbeiter taggen…</option>'+
+      avail.map(m=>`<option value="${m.id}">${m.name}${m.email?'':' (keine E-Mail)'}</option>`).join('');
+    add.style.display=(window._readOnly||!avail.length)?'none':'';
+  }
+  add.onchange=()=>{const id=parseInt(add.value);if(id){sel.push(id);drawChips();drawAdd();}add.value='';};
+  drawChips();drawAdd();
+  return ()=>sel.slice();
+}
 
 async function sbFetch(table,method='GET',body=null){
   const url=`${SB_URL}/rest/v1/${table}`;
@@ -3912,7 +4006,7 @@ function renderKanban(){
       cancelBtn.onclick=close;
       saveBtn.onclick=()=>{
         const t=ta.value.trim();if(!t)return;
-        col.cards.push({id:'c'+(++kbNextId),title:t,desc:'',label:selBezeichnung||'',due:'',checklist:[],members:[]});
+        col.cards.push({id:'c'+(++kbNextId),title:t,desc:'',label:selBezeichnung||'',due:'',checklist:[],members:[],tags:[]});
         close();syncKbCols();renderKanban();
         const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
         addActivities([{icon:'◻',color:'#0079bf',text:`Karte <b>${t}</b> zur Liste <b>${col.title}</b> hinzugefügt`,time:_now}]);
@@ -4018,6 +4112,9 @@ function renderKbDetail(card,col){
         <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px" id="kdBezeichnungPicker"></div>
         <div style="font-size:11px;font-weight:500;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Fälligkeitsdatum</div>
         <input type="date" id="kdDue" value="${card.due}" style="width:100%;border:0.5px solid #ccc;border-radius:6px;padding:5px 8px;font-size:12px;margin-bottom:14px">
+        <div style="font-size:11px;font-weight:500;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">🔔 Taggen</div>
+        <div id="kdTagBox" class="tag-box"></div>
+        <select id="kdTagAdd" class="tag-add" style="margin-bottom:14px"></select>
         <button class="btn-del" style="width:100%;margin-top:0;${window._readOnly?'display:none':''}" id="kdDelete">Karte löschen</button>
       </div>
     </div>
@@ -4085,6 +4182,8 @@ function renderKbDetail(card,col){
     s.onclick=()=>{lp.querySelectorAll('.kb-label-pick').forEach(x=>x.classList.remove('sel'));s.classList.add('sel');card.label=lb.color;};
     lp.appendChild(s);
   });
+  // Member tags
+  const getCardTags=wireTagEditor('kdTagBox','kdTagAdd',card.tags||[]);
   // Checkliste render
   const clWrap=document.getElementById('kdCheckliste');
   if(clWrap){
@@ -4121,6 +4220,9 @@ function renderKbDetail(card,col){
     card.title=document.getElementById('kdTitle').value.trim()||card.title;
     card.desc=document.getElementById('kdDesc').value;
     card.due=document.getElementById('kdDue').value;
+    const newTags=getCardTags();
+    processTagChanges(card.tags||[],newTags,{type:'Karte',name:card.title,note:card.desc});
+    card.tags=newTags;
     document.getElementById('kbDetailModal').classList.add('hidden');
     syncKbCols();renderKanban();
     const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});

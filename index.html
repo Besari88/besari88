@@ -1787,6 +1787,40 @@ function reorderMembers(dragId,targetId){
   showToast('Reihenfolge aktualisiert.','#1D9E75');
 }
 
+// Adds a "+" custom-colour button (native colour picker) to a task colour picker.
+// Also shows the current colour as a selected swatch if it isn't a preset.
+function setupCustomColor(pickerId,currentColor,selBorder){
+  const picker=document.getElementById(pickerId);if(!picker)return;
+  picker.querySelectorAll('.custom-color-add,.custom-color-swatch').forEach(e=>e.remove());
+  const sz=pickerId==='pColorPicker'?22:26;
+  const presetVals=[...picker.querySelectorAll('div[data-color]')].map(d=>d.dataset.color);
+  function makeSwatch(c,selected){
+    const cs=document.createElement('div');cs.className='custom-color-swatch';cs.dataset.color=c;
+    cs.style.cssText=`width:${sz}px;height:${sz}px;border-radius:50%;cursor:pointer;flex-shrink:0;background:${c};border:${selected?selBorder:'2px solid transparent'}`;
+    cs.onclick=()=>{picker.querySelectorAll('div[data-color]').forEach(s=>s.style.border='2px solid transparent');cs.style.border=selBorder;};
+    return cs;
+  }
+  // Show an existing custom colour (not in presets) as a selected swatch
+  if(currentColor&&currentColor!=='default'&&!presetVals.includes(currentColor)){
+    picker.appendChild(makeSwatch(currentColor,true));
+  }
+  if(window._readOnly)return; // viewers: no add button
+  const wrap=document.createElement('label');wrap.className='custom-color-add';wrap.title='Eigene Farbe';
+  wrap.style.cssText=`width:${sz}px;height:${sz}px;border-radius:50%;cursor:pointer;border:1.5px dashed #aaa;display:inline-flex;align-items:center;justify-content:center;font-size:15px;line-height:1;color:#888;flex-shrink:0;position:relative`;
+  wrap.textContent='+';
+  const input=document.createElement('input');input.type='color';
+  input.value=(currentColor&&currentColor!=='default')?currentColor:'#4A90E2';
+  input.style.cssText='position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer';
+  wrap.appendChild(input);
+  input.addEventListener('input',()=>{
+    const c=input.value;
+    picker.querySelectorAll('div[data-color]').forEach(s=>s.style.border='2px solid transparent');
+    let cs=picker.querySelector('.custom-color-swatch');
+    if(!cs){cs=makeSwatch(c,true);picker.insertBefore(cs,wrap);}else{cs.style.background=c;cs.dataset.color=c;cs.style.border=selBorder;}
+  });
+  picker.appendChild(wrap);
+}
+
 function renderHeader(){
   const days=getDays();const cw=colW();
   const hdr=document.getElementById('dayHeader');hdr.innerHTML='';
@@ -2033,6 +2067,7 @@ function renderPanelBody(t){
     });
     document.querySelectorAll('#pColorPicker div').forEach(s=>s.style.pointerEvents='none');
   }
+  setupCustomColor('pColorPicker',t.taskColor,'3px solid #1a1a1a');
   document.getElementById('pStartTime').oninput=updateEndBezeichnung;
   document.getElementById('pHoursH').onchange=updateEndBezeichnung;
   document.getElementById('pHoursM').onchange=updateEndBezeichnung;
@@ -2202,6 +2237,7 @@ function openAddModal(prefillMemberId,prefillDate){
       s.style.border='3px solid #1a1a1a';
     };
   });
+  setupCustomColor('mtColorPicker','default','3px solid #1a1a1a');
   const toggleWrap=document.getElementById('mtDayToggles');
   toggleWrap.innerHTML='';
   WEEK_DAYS_LABELS.forEach((lbl,i)=>{

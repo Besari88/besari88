@@ -1743,8 +1743,8 @@ function renderSidebar(){
       div.querySelector('.remove-btn').addEventListener('click',e=>{e.stopPropagation();removeMember(m.id);});
       // Drag to reorder members
       div.draggable=true;div.dataset.memberId=m.id;
-      div.addEventListener('dragstart',e=>{memberDragId=m.id;div.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
-      div.addEventListener('dragend',()=>{div.classList.remove('dragging');document.querySelectorAll('#memberList .member-row').forEach(r=>r.classList.remove('drag-over-row'));});
+      div.addEventListener('dragstart',e=>{memberDragId=m.id;_dragPointerY=e.clientY;div.classList.add('dragging');e.dataTransfer.effectAllowed='move';startMemberAutoScroll();});
+      div.addEventListener('dragend',()=>{div.classList.remove('dragging');document.querySelectorAll('#memberList .member-row').forEach(r=>r.classList.remove('drag-over-row'));stopMemberAutoScroll();memberDragId=null;});
       div.addEventListener('dragover',e=>{if(memberDragId==null||memberDragId===m.id)return;e.preventDefault();e.dataTransfer.dropEffect='move';div.classList.add('drag-over-row');});
       div.addEventListener('dragleave',()=>div.classList.remove('drag-over-row'));
       div.addEventListener('drop',e=>{e.preventDefault();div.classList.remove('drag-over-row');if(memberDragId==null||memberDragId===m.id)return;reorderMembers(memberDragId,m.id);memberDragId=null;});
@@ -1754,6 +1754,26 @@ function renderSidebar(){
 }
 
 let memberDragId=null;
+// Auto-scroll the list while dragging a member near the top/bottom edge.
+let _dragPointerY=0,_memberAutoScrollRaf=null;
+function startMemberAutoScroll(){
+  if(_memberAutoScrollRaf!=null)return;
+  const step=()=>{
+    if(memberDragId==null){_memberAutoScrollRaf=null;return;}
+    const sc=document.getElementById('memberScroll');
+    if(sc){
+      const rect=sc.getBoundingClientRect();
+      const edge=50,maxV=16;
+      let dv=0;
+      if(_dragPointerY<rect.top+edge)dv=-maxV*Math.min(1,(rect.top+edge-_dragPointerY)/edge);
+      else if(_dragPointerY>rect.bottom-edge)dv=maxV*Math.min(1,(_dragPointerY-(rect.bottom-edge))/edge);
+      if(dv&&rightCol)rightCol.scrollTop+=dv;
+    }
+    _memberAutoScrollRaf=requestAnimationFrame(step);
+  };
+  _memberAutoScrollRaf=requestAnimationFrame(step);
+}
+function stopMemberAutoScroll(){if(_memberAutoScrollRaf!=null){cancelAnimationFrame(_memberAutoScrollRaf);_memberAutoScrollRaf=null;}}
 function reorderMembers(dragId,targetId){
   const from=MEMBERS.findIndex(x=>x.id===dragId);
   if(from<0)return;
@@ -2984,6 +3004,8 @@ memberScroll.addEventListener('wheel',e=>{
   e.preventDefault();
   rightCol.scrollTop+=e.deltaY;
 },{passive:false});
+// Track pointer while dragging a member so edge auto-scroll keeps working in gaps
+memberScroll.addEventListener('dragover',e=>{if(memberDragId!=null){_dragPointerY=e.clientY;e.preventDefault();}});
 
 /* ── Desktop: plain scroll moves up/down; hold Ctrl/Cmd (or pinch) to zoom ── */
 rightCol.addEventListener('wheel',e=>{

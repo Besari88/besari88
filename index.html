@@ -1625,6 +1625,16 @@ function toggleUserMenu(force){
   document.getElementById('umBenutzerItem').style.display=isAdmin?'flex':'none';
   document.getElementById('umBackupItem').style.display=isAdmin?'flex':'none';
   if(open)updateLangFlags(); // highlight the active language flag
+  // Anchor as fixed to the badge so the menu escapes the toolbar's
+  // overflow clipping on mobile (otherwise it hides behind the grid).
+  if(open){
+    const badge=document.getElementById('userBadge');
+    const r=badge.getBoundingClientRect();
+    menu.style.position='fixed';
+    menu.style.top=(r.bottom+5)+'px';
+    menu.style.right=Math.max(8,window.innerWidth-r.right)+'px';
+    menu.style.left='auto';
+  }
   menu.style.display=open?'block':'none';
 }
 document.getElementById('userBadge').onclick=(e)=>{e.stopPropagation();toggleUserMenu();};

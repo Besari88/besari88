@@ -5657,13 +5657,10 @@ document.getElementById('mnMore').onclick=()=>{
 const _origSelectMember=selectKbMember;
 selectKbMember=function(id){_origSelectMember(id);if(isMobile())closeSidebar();};
 
-showToast('Verbinde mit freigegebenem Plan…','#4A90E2');
 loadFromSupabase().then(loaded=>{
   if(!loaded){
     seedAufgaben();
     showToast('Noch kein Plan — Plan speichern um ihn zu teilen.','#EF9F27');
-  } else {
-    showToast('Plan geladen!','#1D9E75');
   }
   // Backfill një herë: tasket e vjetra Erledigt pa Ist marrin orët e planifikuara si Ist
   let _backfilled=0;

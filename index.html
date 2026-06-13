@@ -5665,6 +5665,17 @@ document.getElementById('mnMore').onclick=()=>{
 const _origSelectMember=selectKbMember;
 selectKbMember=function(id){_origSelectMember(id);if(isMobile())closeSidebar();};
 
+// Apply the saved language immediately (before the async Supabase load),
+// so the UI doesn't flash German for ~2s before switching to English.
+try{
+  const _p=JSON.parse(localStorage.getItem('wl_prefs'));
+  if(_p&&_p.lang&&['de','en'].includes(_p.lang)){
+    currentLang=_p.lang;
+    applyLang();
+    updateLangFlags();
+  }
+}catch(e){}
+
 loadFromSupabase().then(loaded=>{
   if(!loaded){
     seedAufgaben();

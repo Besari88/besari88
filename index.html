@@ -4291,7 +4291,7 @@ function startRealtimeSync(){
           ref:'1'
         }));
       });
-      showToast('Live-Synchronisation aktiv — alle Mitarbeiter teilen diesen Plan.','#1D9E75');
+      // Live-sync connected (toast intentionally suppressed)
     };
     ws.onmessage=async(e)=>{
       try{

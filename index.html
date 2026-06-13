@@ -1107,6 +1107,7 @@ const T={
     pStarts:'Starts',pNoTime:'No time',pEnds:'Ends',pDays:'Days',planDaysCount:'{n} days in plan',hrsUnit:'h',mtTagLbl:'🔔 Tag members (email notification)',mtGroupNote:'Changing the member moves all {n} days to the selected member.',pDateOnly:'Date (this day only)',pStartTimeLbl:'Start time',pDuration:'Duration',pBreakLbl:'Break',conflictMsg:'⚠ Time conflict on this day with <strong>{name}</strong> from {time}.',deletePlanGroup:'Delete entire plan ({n} days)',moveDayBtn:'Move day',addNewRole:'＋ Add new',allStatus:'All statuses',navSavePlan:'Save plan',download:'Download',
     rptMember:'Member',rptTasks:'Tasks',rptPlannedHrs:'Planned hours',rptActualHrs:'Actual hours',rptFulfil:'Fulfilment',rptTask:'Task',rptDate:'Date',rptTime:'Time',rptPlanned:'Planned',rptActual:'Actual',rptTotal:'Total',rptDoneSuffix:'done',rptPlannedSuffix:'planned',rptCompletion:'Completion rate',rptByMemberSummary:'Summary by member',rptTasksByMember:'Tasks by member',rptReportTitle:'Workload report',rptPeriod:'Period',rptCreated:'Created',rptSavePdf:'Save as PDF',rptTasksWord:'tasks',yrLegendTasks:'= has tasks',nobodyTagged:'Nobody tagged',noEmailTitle:'No email on file',tagAddPlaceholder:'+ Tag members…',toastStatusSet:'{n} task(s) → {s}',memberTasksLine:'{n} tasks · {h} planned',memberDetailLine:'{n} tasks · {h} planned · {d} done',
     actPlanDeleted:'Plan <b>{n}</b> deleted ({d} days)',actDayMovedEnd:'Day <b>{n}</b> moved to the end → {d}',actTaskAdded:'Task <b>{n}</b> added for <b>{m}</b> ({d} day(s))',tLessonDaysAdded:'{n} lesson days added.',noCustomHolidays:'No custom days off added yet.',actTaskAddedDate:'Task <b>{n}</b> added for <b>{m}</b> on {d}',actTaskDeletedSimple:'Task <b>{n}</b> was deleted',unknownMember:'unknown',
+    navWorkload:'Workload',navTodo:'To Do',navReports:'Reports',navMore:'More',
   },
   de:{
     workload:'Arbeitsplan',todoDo:'Aufgaben',reports:'Berichte',yearly:'Jahresansicht',holidays:'Feiertage',users:'Benutzer',
@@ -1178,6 +1179,7 @@ const T={
     undoToastTaskDeleted:'Aufgabe „{n}" gelöscht.',undoToastPlanDeleted:'Plan „{n}" ({d} Tage) gelöscht.',undoToastMemberRemoved:'Mitarbeiter „{n}" entfernt.',undoToastCardArchived:'Karte „{n}" archiviert.',undoToastListArchived:'Liste „{n}" archiviert.',undoToastCardsArchived:'{n} Karten archiviert.',
     typeTask:'Aufgabe',emptyBoardHint:'Board oder Mitarbeiter links auswählen',
     actPlanDeleted:'Plan <b>{n}</b> gelöscht ({d} Tage)',actDayMovedEnd:'Tag <b>{n}</b> ans Ende verschoben → {d}',actTaskAdded:'Aufgabe <b>{n}</b> hinzugefügt für <b>{m}</b> ({d} Tage)',tLessonDaysAdded:'{n} Unterrichtstage hinzugefügt.',noCustomHolidays:'Noch keine benutzerdefinierten freien Tage hinzugefügt.',actTaskAddedDate:'Aufgabe <b>{n}</b> hinzugefügt für <b>{m}</b> am {d}',actTaskDeletedSimple:'Aufgabe <b>{n}</b> wurde gelöscht',unknownMember:'unbekannt',
+    navWorkload:'Plan',navTodo:'Aufgaben',navReports:'Berichte',navMore:'Mehr',
     pStarts:'Beginnt',pNoTime:'Keine Uhrzeit',pEnds:'Endet',pDays:'Tage',planDaysCount:'{n} Tage im Plan',hrsUnit:'Std',mtTagLbl:'🔔 Mitarbeiter taggen (E-Mail-Benachrichtigung)',mtGroupNote:'Mitarbeiterwechsel verschiebt alle {n} Tage zum gewählten Mitarbeiter.',pDateOnly:'Datum (nur dieser Tag)',pStartTimeLbl:'Startzeit',pDuration:'Dauer',pBreakLbl:'Pause',conflictMsg:'⚠ Zeitkonflikt an diesem Tag mit <strong>{name}</strong> ab {time}.',deletePlanGroup:'Gesamten Plan löschen ({n} Tage)',moveDayBtn:'Tag verschieben',addNewRole:'＋ Neue hinzufügen',allStatus:'Alle Status',navSavePlan:'Plan speichern',download:'Herunterladen',
     rptMember:'Mitarbeiter',rptTasks:'Aufgaben',rptPlannedHrs:'Geplante Stunden',rptActualHrs:'Ist-Stunden',rptFulfil:'Erfüllung',rptTask:'Aufgabe',rptDate:'Datum',rptTime:'Uhrzeit',rptPlanned:'Geplant',rptActual:'Ist',rptTotal:'Gesamt',rptDoneSuffix:'erledigt',rptPlannedSuffix:'geplant',rptCompletion:'Erfüllungsgrad',rptByMemberSummary:'Zusammenfassung nach Mitarbeiter',rptTasksByMember:'Aufgaben nach Mitarbeiter',rptReportTitle:'Arbeitsplan Bericht',rptPeriod:'Zeitraum',rptCreated:'Erstellt',rptSavePdf:'Als PDF speichern',rptTasksWord:'Aufgaben',yrLegendTasks:'= hat Aufgaben',nobodyTagged:'Niemand getaggt',noEmailTitle:'Keine E-Mail hinterlegt',tagAddPlaceholder:'+ Mitarbeiter taggen…',toastStatusSet:'{n} Aufgabe(n) → {s}',memberTasksLine:'{n} Aufgabe(n) · {h} geplant',memberDetailLine:'{n} Aufgaben · {h} geplant · {d} erledigt',
   }
@@ -1260,17 +1262,13 @@ function applyLang(){
   const ut=document.querySelector('#usersView div div:first-child div:first-child');
   // Kanban add col button
   const kac=document.getElementById('kbAddColBtn');if(kac){const svg=kac.querySelector('svg');kac.innerHTML='';if(svg)kac.appendChild(svg);kac.appendChild(document.createTextNode(' '+tr('addBoard')));}
-  // Mobile nav
-  const mn={mnWorkload:'workload',mnKanban:'todoDo',mnReports:'reports',mnMore:'More'};
+  // Mobile nav — replace the actual label text node (the last non-empty one),
+  // not the leading whitespace before the icon (which caused duplicate labels)
+  const mn={mnWorkload:'navWorkload',mnKanban:'navTodo',mnReports:'navReports',mnMore:'navMore'};
   Object.entries(mn).forEach(([id,k])=>{
     const el=document.getElementById(id);if(!el)return;
-    const svg=el.querySelector('svg')||el.querySelector('div');
-    const span=el.querySelector('span')||[...el.childNodes].find(n=>n.nodeType===3);
-    if(span&&span.nodeType===3)span.textContent=k==='More'?(currentLang==='de'?'Mehr':'More'):tr(k);
-    else{
-      const txt=[...el.childNodes].find(n=>n.nodeType===3);
-      if(txt)txt.textContent=k==='More'?(currentLang==='de'?'Mehr':'More'):tr(k);
-    }
+    const txt=[...el.childNodes].reverse().find(n=>n.nodeType===3&&n.textContent.trim());
+    if(txt)txt.textContent=tr(k);
   });
 
   // Apply data-i18n attributes (text content)

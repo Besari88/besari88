@@ -1214,7 +1214,7 @@ function updateLangLabel(){
   updateLangFlags();
 }
 
-function applyLang(){
+function applyLang(skipRender){
   if(typeof applyWeekdayLang==='function')applyWeekdayLang(); // weekday/month labels
   // Toolbar tabs
   const tv={kanban:'todoDo',workload:'workload',reports:'reports',yearly:'yearly',holidays:'holidays',users:'users'};
@@ -1296,12 +1296,16 @@ function applyLang(){
   // Modal title
   const mt=document.getElementById('mtModalTitle');if(mt)mt.textContent=tr('addTask');
   // Re-render to update dynamic content
-  if(typeof render==='function')render();
-  if(typeof renderReports==='function'&&currentView==='reports')renderReports();
-  if(typeof renderHolidays==='function'&&currentView==='holidays')renderHolidays();
-  if(typeof renderUsersList==='function'&&currentView==='users')renderUsersList();
-  if(typeof renderKanban==='function'&&currentView==='kanban')renderKanban();
-  if(typeof renderYearlyCalendar==='function'&&currentView==='yearly')renderYearlyCalendar();
+  // Re-render dynamic content (skipped on the early startup call so we don't
+  // flash the seed/demo data before the real data loads from Supabase)
+  if(!skipRender){
+    if(typeof render==='function')render();
+    if(typeof renderReports==='function'&&currentView==='reports')renderReports();
+    if(typeof renderHolidays==='function'&&currentView==='holidays')renderHolidays();
+    if(typeof renderUsersList==='function'&&currentView==='users')renderUsersList();
+    if(typeof renderKanban==='function'&&currentView==='kanban')renderKanban();
+    if(typeof renderYearlyCalendar==='function'&&currentView==='yearly')renderYearlyCalendar();
+  }
   if(typeof setAutosaveStatus==='function')setAutosaveStatus(); // re-apply current autosave label
 }
 
@@ -1588,7 +1592,9 @@ function restoreSession(){
     const amBtn2=document.getElementById('addMemberBtn');
     if(amBtn2&&window._noMemberEdit)amBtn2.style.display='none';
     document.getElementById('loginScreen').classList.add('hidden');
-    if(typeof render==='function')render();
+    // Only render once the real data has loaded — otherwise we'd flash the
+    // seed/demo team for ~2s before Supabase returns. The post-load path renders.
+    if(window._appDataLoaded&&typeof render==='function')render();
     return true;
   }catch(e){return false;}
 }
@@ -5691,12 +5697,13 @@ try{
   const _p=JSON.parse(localStorage.getItem('wl_prefs'));
   if(_p&&_p.lang&&['de','en'].includes(_p.lang)){
     currentLang=_p.lang;
-    applyLang();
+    applyLang(true);   // translate text only; don't render seed data before the real load
     updateLangFlags();
   }
 }catch(e){}
 
 loadFromSupabase().then(loaded=>{
+  window._appDataLoaded=true;   // real data (or seed fallback) is now in memory
   if(!loaded){
     seedAufgaben();
     showToast('Noch kein Plan — Plan speichern um ihn zu teilen.','#EF9F27');

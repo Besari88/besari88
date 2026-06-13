@@ -440,7 +440,7 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
       <input id="globalSearch" type="text" data-i18n-ph="searchPh" placeholder="🔍 Suchen…" autocomplete="off" style="width:140px;padding:5px 9px;border:0.5px solid #ccc;border-radius:6px;font-size:12px;background:#fff;color:#1a1a1a">
       <div id="searchResults" style="display:none;position:absolute;top:34px;right:0;width:300px;max-height:360px;overflow-y:auto;background:#fff;border:0.5px solid #ddd;border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,0.16);z-index:600;padding:5px"></div>
     </div>
-    <button class="btn-ghost" id="notifBtn" title="Aktivitätsprotokoll" style="position:relative;display:none">
+    <button class="btn-ghost" id="notifBtn" data-i18n-title="activityLog" title="Aktivitätsprotokoll" style="position:relative;display:none">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       <span id="notifDot" style="display:none;position:absolute;top:4px;right:4px;width:8px;height:8px;background:#e74c3c;border-radius:50%;border:1.5px solid #fff"></span>
     </button>
@@ -449,7 +449,7 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
       Benutzer
     </button>
     <div style="position:relative">
-      <div class="user-badge" id="userBadge" title="Menü öffnen">
+      <div class="user-badge" id="userBadge" data-i18n-title="tipOpenMenu" title="Menü öffnen">
         <div class="user-dot" id="userDot">A</div>
         <span id="userBezeichnung" style="font-size:12px;font-weight:500;color:#333">Admin</span>
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" style="margin-left:1px"><polyline points="6 9 12 15 18 9"/></svg>
@@ -484,7 +484,7 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
       Sicherungskopie
     </button>
-    <button class="btn-ghost" id="undoBtn" data-i18n-txt="undo" title="Keine Aktionen zum Rückgängigmachen" style="display:flex;align-items:center;gap:5px;opacity:0.4;cursor:not-allowed" disabled>
+    <button class="btn-ghost" id="undoBtn" data-i18n-txt="undo" data-i18n-title="tipUndoNone" title="Keine Aktionen zum Rückgängigmachen" style="display:flex;align-items:center;gap:5px;opacity:0.4;cursor:not-allowed" disabled>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
       Rückgängig
     </button>
@@ -516,7 +516,7 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
 
 <!-- Select-plan action bar -->
 <div id="planSelectBar">
-  <span id="planSelectCount" style="font-size:12px;color:#555;font-weight:600">0 ausgewählt</span>
+  <span id="planSelectCount" style="font-size:12px;color:#555;font-weight:600">0 <span data-i18n="selectedSuffix">ausgewählt</span></span>
   <div style="width:1px;height:22px;background:#e0e0e0"></div>
   <button class="btn-status" data-status="Erledigt" data-i18n="stDone" style="background:#E1F5EE;color:#085041;border-color:#5DCAA5">Erledigt</button>
   <button class="btn-status" data-status="Zu erledigen" data-i18n="stTodo" style="background:#F1EFE8;color:#444441;border-color:#D3D1C7">Zu erledigen</button>
@@ -544,7 +544,7 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
   <div class="left-col" id="leftCol">
     <div class="left-header-spacer" id="leftSpacer" style="justify-content:space-between">
       <span>Team</span>
-      <button id="addMemberBtn" title="Mitarbeiter hinzufügen" style="background:none;border:0.5px solid #ccc;border-radius:4px;padding:2px 7px;cursor:pointer;display:flex;align-items:center;gap:4px;font-size:11px;color:#666">
+      <button id="addMemberBtn" data-i18n-title="tipAddMember" title="Mitarbeiter hinzufügen" style="background:none;border:0.5px solid #ccc;border-radius:4px;padding:2px 7px;cursor:pointer;display:flex;align-items:center;gap:4px;font-size:11px;color:#666">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
         Hinzufügen
       </button>
@@ -592,10 +592,10 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
     <div id="kbBoardHeader" style="padding:10px 16px;border-bottom:0.5px solid rgba(255,255,255,0.2);background:rgba(0,0,0,0.12);display:flex;align-items:center;gap:10px;flex-shrink:0">
       <div id="kbBoardAvatar" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0"></div>
       <span id="kbBoardTitle" style="font-size:14px;font-weight:600;color:#fff;flex:1;text-shadow:0 1px 3px rgba(0,0,0,0.3)"></span>
-      <button id="kbBgColorBtn" title="Hintergrundfarbe ändern" style="background:rgba(255,255,255,0.2);border:none;border-radius:4px;padding:3px 8px;cursor:pointer;font-size:11px;color:#fff;display:none">🎨 Hintergrund</button>
-      <button id="kbArchiveBtn" title="Archiv anzeigen" style="display:none;background:rgba(255,255,255,0.2);border:none;border-radius:4px;padding:3px 8px;cursor:pointer;font-size:11px;color:#fff">🗄 Archiv</button>
+      <button id="kbBgColorBtn" data-i18n-title="tipBgColor" title="Hintergrundfarbe ändern" style="background:rgba(255,255,255,0.2);border:none;border-radius:4px;padding:3px 8px;cursor:pointer;font-size:11px;color:#fff;display:none">🎨 <span data-i18n="kbBgLbl">Hintergrund</span></button>
+      <button id="kbArchiveBtn" data-i18n-title="tipShowArchive" title="Archiv anzeigen" style="display:none;background:rgba(255,255,255,0.2);border:none;border-radius:4px;padding:3px 8px;cursor:pointer;font-size:11px;color:#fff">🗄 Archiv</button>
       <button id="kbEditBoardBtn" style="display:none;background:rgba(255,255,255,0.2);border:none;border-radius:4px;padding:3px 8px;cursor:pointer;font-size:11px;color:#fff">✎ <span data-i18n="editBtn">Bearbeiten</span></button>
-      <button id="kbDeleteBoardBtn" style="display:none;background:rgba(220,50,50,0.6);border:none;border-radius:4px;padding:3px 8px;cursor:pointer;font-size:11px;color:#fff">✕ Löschen</button>
+      <button id="kbDeleteBoardBtn" style="display:none;background:rgba(220,50,50,0.6);border:none;border-radius:4px;padding:3px 8px;cursor:pointer;font-size:11px;color:#fff">✕ <span data-i18n="deleteShort">Löschen</span></button>
     </div>
 
     <!-- Background picker panel -->
@@ -623,12 +623,12 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
       <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
         <div class="kb-bg-swatch" data-bg="#f0f1f3" style="width:36px;height:28px;border-radius:6px;background:#f0f1f3;cursor:pointer;border:2px solid #1a1a1a" title="Standard"></div>
         <div class="kb-bg-swatch" data-bg="#0052cc" style="width:36px;height:28px;border-radius:6px;background:#0052cc;cursor:pointer;border:2px solid transparent" title="Blau"></div>
-        <div class="kb-bg-swatch" data-bg="#00875a" style="width:36px;height:28px;border-radius:6px;background:#00875a;cursor:pointer;border:2px solid transparent" title="Grün"></div>
+        <div class="kb-bg-swatch" data-bg="#00875a" style="width:36px;height:28px;border-radius:6px;background:#00875a;cursor:pointer;border:2px solid transparent" data-i18n-title="colGreen" title="Grün"></div>
         <div class="kb-bg-swatch" data-bg="#ff5630" style="width:36px;height:28px;border-radius:6px;background:#ff5630;cursor:pointer;border:2px solid transparent" title="Rot"></div>
         <div class="kb-bg-swatch" data-bg="#ff8b00" style="width:36px;height:28px;border-radius:6px;background:#ff8b00;cursor:pointer;border:2px solid transparent" title="Orange"></div>
         <div class="kb-bg-swatch" data-bg="#6554c0" style="width:36px;height:28px;border-radius:6px;background:#6554c0;cursor:pointer;border:2px solid transparent" title="Lila"></div>
         <div class="kb-bg-swatch" data-bg="#1a1a2e" style="width:36px;height:28px;border-radius:6px;background:#1a1a2e;cursor:pointer;border:2px solid transparent" title="Dunkel"></div>
-        <div class="kb-bg-swatch" data-bg="#0d4f3c" style="width:36px;height:28px;border-radius:6px;background:#0d4f3c;cursor:pointer;border:2px solid transparent" title="Dunkelgrün"></div>
+        <div class="kb-bg-swatch" data-bg="#0d4f3c" style="width:36px;height:28px;border-radius:6px;background:#0d4f3c;cursor:pointer;border:2px solid transparent" data-i18n-title="colDarkGreen" title="Dunkelgrün"></div>
         <input type="color" id="kbBgCustomColor" value="#f0f1f3" style="width:36px;height:28px;border:2px solid transparent;border-radius:6px;cursor:pointer;padding:0" title="Eigene Farbe">
       </div>
     </div>
@@ -636,7 +636,7 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
       <div style="display:flex;gap:14px;align-items:flex-start;min-width:max-content">
         <div id="kbCols" style="display:flex;gap:14px;align-items:flex-start"></div>
         <div class="kb-add-col">
-          <button class="kb-add-col-btn" id="kbAddColBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Liste hinzufügen</button>
+          <button class="kb-add-col-btn" id="kbAddColBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> <span data-i18n="addBoard">Liste hinzufügen</span></button>
         </div>
       </div>
     </div>
@@ -648,7 +648,7 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
 <div class="modal-overlay hidden" id="kbBoardModal">
   <div class="modal-box" style="width:400px">
     <h3 id="kbBoardModalTitle">Neues Board</h3>
-    <div class="field"><label>Board-Name</label><input id="kbBoardName" placeholder="z.B. Team Sprint, Wöchentliche Aufgaben…"></div>
+    <div class="field"><label data-i18n="boardName">Board-Name</label><input id="kbBoardName" data-i18n-ph="boardNamePh" placeholder="z.B. Team Sprint, Wöchentliche Aufgaben…"></div>
     <div class="field">
       <label>Board-Farbe</label>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px" id="kbBoardColorPicker">
@@ -692,7 +692,7 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
   <div class="yr-legend">
     <div class="yr-legend-item"><div class="yr-legend-dot" style="background:#4A90E2"></div> Heute</div>
     <div class="yr-legend-item"><div class="yr-legend-dot" style="background:#fdecea;border:1px solid #e74c3c"></div> Feiertag</div>
-    <div class="yr-legend-item"><span style="font-weight:600;color:#444">15</span><span style="margin-left:3px">• = hat Aufgaben</span></div>
+    <div class="yr-legend-item"><span style="font-weight:600;color:#444">15</span><span style="margin-left:3px">• <span data-i18n="yrLegendTasks">= hat Aufgaben</span></span></div>
   </div>
   <div class="yearly-grid" id="yearlyGrid"></div>
 </div>
@@ -712,17 +712,17 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
     <div class="field" style="margin:0;display:flex;align-items:center;gap:6px">
       <label style="font-size:12px;color:#888;margin:0" data-i18n="member">Mitarbeiter</label>
       <select id="rptMember" style="padding:5px 8px;border:0.5px solid #ccc;border-radius:6px;font-size:12px;background:#fff;color:#1a1a1a;max-width:160px">
-        <option value="all">Alle Mitarbeiter</option>
+        <option value="all" data-i18n="allMembers">Alle Mitarbeiter</option>
       </select>
     </div>
     <div class="field" style="margin:0;display:flex;align-items:center;gap:6px">
       <label style="font-size:12px;color:#888;margin:0">Status</label>
       <select id="rptStatus" style="padding:5px 8px;border:0.5px solid #ccc;border-radius:6px;font-size:12px;background:#fff;color:#1a1a1a">
-        <option value="all">Alle Status</option>
-        <option value="Erledigt">Erledigt</option>
-        <option value="Zu erledigen">Zu erledigen</option>
-        <option value="In Bearbeitung">In Bearbeitung</option>
-        <option value="Blockiert">Blockiert</option>
+        <option value="all" data-i18n="allStatus">Alle Status</option>
+        <option value="Erledigt" data-i18n="stDone">Erledigt</option>
+        <option value="Zu erledigen" data-i18n="stTodo">Zu erledigen</option>
+        <option value="In Bearbeitung" data-i18n="stDoing">In Bearbeitung</option>
+        <option value="Blockiert" data-i18n="stBlocked">Blockiert</option>
       </select>
     </div>
     <button class="btn-ghost" id="rptThisWeek" style="font-size:11px;padding:4px 10px">Diese Woche</button>
@@ -732,12 +732,12 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
     <div class="flt" style="margin-left:auto">
       <button class="btn-ghost" id="exportBtn" style="display:flex;align-items:center;gap:5px">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Exportieren <span class="chev">▼</span>
+        <span data-i18n="exportLbl">Exportieren</span> <span class="chev">▼</span>
       </button>
       <div class="flt-panel hidden" id="exportPanel" style="right:0;left:auto;min-width:170px">
-        <div class="flt-opt" data-exp="pdf">📄 Als PDF</div>
-        <div class="flt-opt" data-exp="xls">📊 Als Excel (.xls)</div>
-        <div class="flt-opt" data-exp="csv">📋 Als CSV</div>
+        <div class="flt-opt" data-exp="pdf">📄 <span data-i18n="expPdf">Als PDF</span></div>
+        <div class="flt-opt" data-exp="xls">📊 <span data-i18n="expXls">Als Excel (.xls)</span></div>
+        <div class="flt-opt" data-exp="csv">📋 <span data-i18n="expCsv">Als CSV</span></div>
       </div>
     </div>
   </div>
@@ -771,19 +771,19 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
 <div class="modal-overlay hidden" id="addMemberModal">
   <div class="modal-box" style="width:340px">
     <h3>Mitarbeiter hinzufügen</h3>
-    <div class="field"><label>Vollständiger Name</label><input id="amName" placeholder="z.B. Sara Kim"></div>
+    <div class="field"><label data-i18n="amFullName">Vollständiger Name</label><input id="amName" data-i18n-ph="displayNamePh" placeholder="z.B. Sara Kim"></div>
     <div class="field"><label>Initialen (max. 2 Zeichen)</label><input id="amInitialen" maxlength="2" placeholder="z.B. SK"></div>
-    <div class="field"><label>E-Mail (für Benachrichtigungen)</label><input id="amEmail" type="email" placeholder="z.B. sara@example.com" autocomplete="off"></div>
+    <div class="field"><label data-i18n="amEmailLbl">E-Mail (für Benachrichtigungen)</label><input id="amEmail" type="email" data-i18n-ph="emailExamplePh" placeholder="z.B. sara@example.com" autocomplete="off"></div>
     <div class="field"><label>Stunden pro Monat</label>
       <input type="number" id="amHours" value="160" min="1" max="744" step="1" placeholder="z.B. 160" style="width:100%;padding:6px 8px;border:0.5px solid #ccc;border-radius:6px;font-size:13px">
-      <div style="font-size:10px;color:#888;margin-top:3px">Standard: 160 Std/Monat (40 Std/Woche × 4 Wochen)</div>
+      <div style="font-size:10px;color:#888;margin-top:3px" data-i18n="amDefaultHrs">Standard: 160 Std/Monat (40 Std/Woche × 4 Wochen)</div>
     </div>
     <div class="field"><label>Farbe</label>
       <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap" id="amColorPicker"></div>
     </div>
     <div class="modal-footer">
       <button class="btn-ghost" id="amCancel">Abbrechen</button>
-      <button class="btn-primary" id="amSave">Mitarbeiter hinzufügen</button>
+      <button class="btn-primary" id="amSave" data-i18n="amAddBtn">Mitarbeiter hinzufügen</button>
     </div>
   </div>
 </div>
@@ -792,17 +792,17 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
 <div class="modal-overlay hidden" id="editMemberModal">
   <div class="modal-box" style="width:340px">
     <h3 id="editMemberTitle">Mitarbeiter bearbeiten</h3>
-    <div class="field"><label>Name</label><input id="emName" placeholder="Vollständiger Name"></div>
+    <div class="field"><label data-i18n="nameLbl">Name</label><input id="emName" data-i18n-ph="emNamePh" placeholder="Vollständiger Name"></div>
     <div class="field"><label>Initialen (max. 2 Zeichen)</label><input id="emInitialen" maxlength="2" placeholder="z.B. AM"></div>
-    <div class="field"><label>E-Mail (für Benachrichtigungen)</label><input id="emEmail" type="email" placeholder="z.B. alex@example.com" autocomplete="off"></div>
+    <div class="field"><label data-i18n="amEmailLbl">E-Mail (für Benachrichtigungen)</label><input id="emEmail" type="email" data-i18n-ph="emailExamplePh" placeholder="z.B. alex@example.com" autocomplete="off"></div>
     <div class="field"><label>Stunden pro Monat</label>
       <input type="number" id="emHours" value="160" min="1" max="744" step="1" placeholder="z.B. 160" style="width:100%;padding:6px 8px;border:0.5px solid #ccc;border-radius:6px;font-size:13px">
-      <div style="font-size:10px;color:#888;margin-top:3px">Standard: 160 Std/Monat (40 Std/Woche × 4 Wochen)</div>
+      <div style="font-size:10px;color:#888;margin-top:3px" data-i18n="amDefaultHrs">Standard: 160 Std/Monat (40 Std/Woche × 4 Wochen)</div>
     </div>
     <div class="field"><label>Position</label><select id="emRole"></select>
       <div id="emRoleAddRow" style="display:none;gap:6px;margin-top:6px;align-items:center">
         <input id="emRoleNew" placeholder="Neue Position eingeben…" autocomplete="off" style="flex:1;padding:5px 8px;border:0.5px solid #4A90E2;border-radius:6px;font-size:12px">
-        <button type="button" class="btn-primary" id="emRoleAddBtn">Hinzufügen</button>
+        <button type="button" class="btn-primary" id="emRoleAddBtn" data-i18n="addShort">Hinzufügen</button>
         <button type="button" class="btn-ghost" id="emRoleAddCancel">Abbrechen</button>
       </div>
     </div>
@@ -815,7 +815,7 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
     </div>
     <div class="modal-footer">
       <button class="btn-ghost" id="emCancel">Abbrechen</button>
-      <button class="btn-primary" id="emSave">Änderungen speichern</button>
+      <button class="btn-primary" id="emSave" data-i18n="saveChanges">Änderungen speichern</button>
     </div>
   </div>
 </div>
@@ -857,7 +857,7 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
     <div class="field"><label data-i18n="memberRole">Position auswählen</label><select id="mtRole"></select>
       <div id="mtRoleAddRow" style="display:none;gap:6px;margin-top:6px;align-items:center">
         <input id="mtRoleNew" placeholder="Neue Position eingeben…" autocomplete="off" style="flex:1;padding:5px 8px;border:0.5px solid #4A90E2;border-radius:6px;font-size:12px">
-        <button type="button" class="btn-primary" id="mtRoleAddBtn">Hinzufügen</button>
+        <button type="button" class="btn-primary" id="mtRoleAddBtn" data-i18n="addShort">Hinzufügen</button>
         <button type="button" class="btn-ghost" id="mtRoleAddCancel">Abbrechen</button>
       </div>
     </div>
@@ -937,16 +937,16 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
         <div style="font-size:15px;font-weight:500" data-i18n="holidaysTitle">Baden-Württemberg Feiertage</div>
         <div style="font-size:11px;color:#888;margin-top:2px" data-i18n="holidaysDesc">Offizielle Feiertage sind vorgeladen. Eigene freie Tage können hinzugefügt oder entfernt werden.</div>
       </div>
-      <button id="resetHdaysBtn" class="btn-ghost" style="font-size:11px;padding:4px 10px">Auf offizielle Feiertage zurücksetzen</button>
+      <button id="resetHdaysBtn" class="btn-ghost" style="font-size:11px;padding:4px 10px" data-i18n="resetHolidays">Auf offizielle Feiertage zurücksetzen</button>
     </div>
 
-    <div style="font-size:11px;font-weight:500;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Offizielle Feiertage (Baden-Württemberg)</div>
+    <div style="font-size:11px;font-weight:500;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px" data-i18n="officialHolidays">Offizielle Feiertage (Baden-Württemberg)</div>
     <div id="hdayOfficialList" style="margin-bottom:20px"></div>
 
     <div style="font-size:11px;font-weight:500;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Benutzerdefinierte freie Tage</div>
     <div id="hdayCustomList" style="margin-bottom:12px"></div>
 
-    <div class="field" id="hdayAddForm"><label>Freien Tag hinzufügen</label>
+    <div class="field" id="hdayAddForm"><label data-i18n="addCustomHoliday">Freien Tag hinzufügen</label>
       <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">
         <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
           <span style="font-size:11px;color:#888;white-space:nowrap">Von</span>
@@ -957,9 +957,9 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
           <input type="date" id="hdayDateEnd" style="padding:5px 8px;border:0.5px solid #ccc;border-radius:6px;font-size:12px">
         </div>
         <input type="text" id="hdayName" placeholder="z.B. Schulferien" style="flex:2;min-width:140px;padding:5px 8px;border:0.5px solid #ccc;border-radius:6px;font-size:12px">
-        <button class="btn-primary" id="addHdayBtn">Hinzufügen</button>
+        <button class="btn-primary" id="addHdayBtn" data-i18n="addShort">Hinzufügen</button>
       </div>
-      <div style="font-size:10px;color:#888;margin-top:4px">Für einen einzelnen Tag Von und Bis gleich lassen.</div>
+      <div style="font-size:10px;color:#888;margin-top:4px" data-i18n="hdaySingleNote">Für einen einzelnen Tag Von und Bis gleich lassen.</div>
     </div>
   </div>
 </div>
@@ -1087,6 +1087,26 @@ const T={
     emailLabel:'Email',emailOptional:'(for notifications, optional)',displayNamePh:'e.g. Sara Kim',usernamePh:'e.g. sara',emailExamplePh:'e.g. sara@example.com',passwordPh:'Enter password',
     roleEditorOpt:'Editor — tasks + selectable rights',permEditLbl:'Edit permissions',permTasksAlways:'(tasks always allowed)',permTasksLbl:'Tasks',
     umVisibleLbl:'Visible members',umVisibleNote:'(leave all empty = sees everyone)',editUser:'Edit user',pwKeep:'Leave empty to keep current',
+    addShort:'Add',saveChanges:'Save changes',deleteShort:'Delete',removeShort:'Remove',
+    tipOpenMenu:'Open menu',tipUndoNone:'Nothing to undo',tipRedoNone:'Nothing to redo',tipAddMember:'Add member',tipEditMember:'Edit member',tipRemoveMember:'Remove member',tipBgColor:'Change background colour',tipShowArchive:'Show archive',
+    kbBgLbl:'Background',kbArchiveLbl:'Archive',boardNamePh:'e.g. Team Sprint, Weekly tasks…',
+    colDefault:'Default',colBlue:'Blue',colGreen:'Green',colRed:'Red',colOrange:'Orange',colPurple:'Purple',colDarkGreen:'Dark green',
+    exportLbl:'Export',expPdf:'As PDF',expXls:'As Excel (.xls)',expCsv:'As CSV',
+    amFullName:'Full name',amEmailLbl:'Email (for notifications)',amDefaultHrs:'Default: 160 h/month (40 h/week × 4 weeks)',amAddBtn:'Add member',emNamePh:'Full name',nameLbl:'Name',
+    hdaySingleNote:'For a single day, set From and To the same.',
+    kdClPh:'Add item…',kdAttachFile:'Attach file',kdAttachNote:'Max. 2 MB per file. Images are shown as a preview.',kdComments:'Comments',kdCommentPh:'Write a comment…',kdCommentAdd:'Add comment',kdInList:'in list',
+    selEnd:'End selection',
+    tSnapshotRestore:'Restore this snapshot? All current data will be overwritten.',tImageTooBig:'Image too large — max. 5 MB.',tSelectBoard:'Please select a board first.',tOwnerNoDelete:'The owner cannot be deleted.',tValidEmail:'Please enter a valid email address.',tPwRequired:'Password is required for new users.',tUserSyncFail:'User saved locally, but sync failed — please press “Save plan”.',tFillRepeat:'Please fill in start date, number of days and at least one weekday.',tNoValidDays:'No valid lesson days found.',tHolidaysReset:'Holidays reset to the official Baden-Württemberg list.',tPlanTransferred:'Entire plan transferred.',tDayTransferred:'This day transferred.',tConnProblem:'⚠ Connection problem — changes may not have been saved.',tSaveFailed:'⚠ Save failed — please check your connection.',tNoConn:'⚠ No connection to the server — changes may not have been saved.',tRestored:'Restored.',tNoEmailFor:'No email on file for: {n}',tDaysAdded:'{n} day(s) added.',
+    tTestSent:'✓ Test email sent. Please check your inbox (and spam).',tTestFail:'✗ Sending failed. Check in Supabase that the function is deployed and RESEND_API_KEY + FROM_EMAIL are set (details in the browser console).',testRecipient:'Test recipient',testNotif:'Test notification',testEmailBody:'This is a test email from the workload planner.',
+    ownerRoleTitle:'The owner’s role cannot be changed.',ownerRoleHint:'👑 Owner — role is locked and cannot be changed.',ownerNoDeleteTitle:'The owner cannot be deleted',
+    undoStatusChange:'Status changed',undoTaskMoved:'Task moved',undoTaskEdited:'Task edited',undoDayDeleted:'Day deleted',undoPlanDeleted:'Plan deleted',undoMoveDay:'Move day',
+    undoTipPrefix:'Undo',actUndone:'Action undone: <b>{desc}</b>',
+    actTaskStatusSet:'{n} task(s) set to <b>{s}</b>',actTaskUpdated:'Task <b>{n}</b> updated for <b>{m}</b>',actTaskDeleted:'Task <b>{n}</b> ({d}) deleted',actTaskRestored:'Task <b>{n}</b> ({d}) restored',actPlanRestored:'Plan <b>{n}</b> ({d} days) restored',actStatusChanged:'Status of task <b>{n}</b> changed to <b>{s}</b>',actTaskMoved:'Task <b>{n}</b> moved to <b>{d}</b>',actDurationChanged:'Duration of task <b>{n}</b> changed to <b>{h}</b>',actMemberAdded:'Member <b>{n}</b> added to the team',actMemberRemoved:'Member <b>{n}</b> removed from the team',actCardAdded:'Card <b>{c}</b> added to list <b>{l}</b>',actCardRemoved:'Card <b>{c}</b> removed from list <b>{l}</b>',actTagged:'<b>{names}</b> tagged on {type} <b>{name}</b>',actCardMoved:'Card <b>{c}</b> moved to <b>{t}</b>',actCardArchived:'Card <b>{c}</b> archived',actListArchived:'List <b>{l}</b> archived ({n} cards)',actCardsArchived:'{n} cards archived from <b>{l}</b>',actCommentAdded:'Comment added to card <b>{c}</b>',actCardUpdated:'Card <b>{c}</b> updated',actListAdded:'List <b>{l}</b> added',
+    undoToastTaskDeleted:'Task “{n}” deleted.',undoToastPlanDeleted:'Plan “{n}” ({d} days) deleted.',undoToastMemberRemoved:'Member “{n}” removed.',undoToastCardArchived:'Card “{n}” archived.',undoToastListArchived:'List “{n}” archived.',undoToastCardsArchived:'{n} cards archived.',
+    typeTask:'task',emptyBoardHint:'Select a board or member on the left',
+    pStarts:'Starts',pNoTime:'No time',pEnds:'Ends',pDays:'Days',planDaysCount:'{n} days in plan',hrsUnit:'h',mtTagLbl:'🔔 Tag members (email notification)',mtGroupNote:'Changing the member moves all {n} days to the selected member.',pDateOnly:'Date (this day only)',pStartTimeLbl:'Start time',pDuration:'Duration',pBreakLbl:'Break',conflictMsg:'⚠ Time conflict on this day with <strong>{name}</strong> from {time}.',deletePlanGroup:'Delete entire plan ({n} days)',moveDayBtn:'Move day',addNewRole:'＋ Add new',allStatus:'All statuses',navSavePlan:'Save plan',download:'Download',
+    rptMember:'Member',rptTasks:'Tasks',rptPlannedHrs:'Planned hours',rptActualHrs:'Actual hours',rptFulfil:'Fulfilment',rptTask:'Task',rptDate:'Date',rptTime:'Time',rptPlanned:'Planned',rptActual:'Actual',rptTotal:'Total',rptDoneSuffix:'done',rptPlannedSuffix:'planned',rptCompletion:'Completion rate',rptByMemberSummary:'Summary by member',rptTasksByMember:'Tasks by member',rptReportTitle:'Workload report',rptPeriod:'Period',rptCreated:'Created',rptSavePdf:'Save as PDF',rptTasksWord:'tasks',yrLegendTasks:'= has tasks',nobodyTagged:'Nobody tagged',noEmailTitle:'No email on file',tagAddPlaceholder:'+ Tag members…',toastStatusSet:'{n} task(s) → {s}',memberTasksLine:'{n} tasks · {h} planned',memberDetailLine:'{n} tasks · {h} planned · {d} done',
+    actPlanDeleted:'Plan <b>{n}</b> deleted ({d} days)',actDayMovedEnd:'Day <b>{n}</b> moved to the end → {d}',actTaskAdded:'Task <b>{n}</b> added for <b>{m}</b> ({d} day(s))',tLessonDaysAdded:'{n} lesson days added.',noCustomHolidays:'No custom days off added yet.',actTaskAddedDate:'Task <b>{n}</b> added for <b>{m}</b> on {d}',actTaskDeletedSimple:'Task <b>{n}</b> was deleted',unknownMember:'unknown',
   },
   de:{
     workload:'Arbeitsplan',todoDo:'Aufgaben',reports:'Berichte',yearly:'Jahresansicht',holidays:'Feiertage',users:'Benutzer',
@@ -1140,10 +1160,35 @@ const T={
     emailLabel:'E-Mail',emailOptional:'(für Benachrichtigungen, optional)',displayNamePh:'z.B. Sara Kim',usernamePh:'z.B. sara',emailExamplePh:'z.B. sara@example.com',passwordPh:'Passwort eingeben',
     roleEditorOpt:'Redakteur — Aufgaben + wählbare Rechte',permEditLbl:'Bearbeitungsrechte',permTasksAlways:'(Aufgaben immer erlaubt)',permTasksLbl:'Aufgaben',
     umVisibleLbl:'Sichtbare Mitarbeiter',umVisibleNote:'(alle leer lassen = sieht alle)',editUser:'Benutzer bearbeiten',pwKeep:'Leer lassen um aktuelles zu behalten',
+    addShort:'Hinzufügen',saveChanges:'Änderungen speichern',deleteShort:'Löschen',removeShort:'Entfernen',
+    tipOpenMenu:'Menü öffnen',tipUndoNone:'Keine Aktionen zum Rückgängigmachen',tipRedoNone:'Nichts zum Wiederholen',tipAddMember:'Mitarbeiter hinzufügen',tipEditMember:'Mitarbeiter bearbeiten',tipRemoveMember:'Mitarbeiter entfernen',tipBgColor:'Hintergrundfarbe ändern',tipShowArchive:'Archiv anzeigen',
+    kbBgLbl:'Hintergrund',kbArchiveLbl:'Archiv',boardNamePh:'z.B. Team Sprint, Wöchentliche Aufgaben…',
+    colDefault:'Standard',colBlue:'Blau',colGreen:'Grün',colRed:'Rot',colOrange:'Orange',colPurple:'Lila',colDarkGreen:'Dunkelgrün',
+    exportLbl:'Exportieren',expPdf:'Als PDF',expXls:'Als Excel (.xls)',expCsv:'Als CSV',
+    amFullName:'Vollständiger Name',amEmailLbl:'E-Mail (für Benachrichtigungen)',amDefaultHrs:'Standard: 160 Std/Monat (40 Std/Woche × 4 Wochen)',amAddBtn:'Mitarbeiter hinzufügen',emNamePh:'Vollständiger Name',nameLbl:'Name',
+    hdaySingleNote:'Für einen einzelnen Tag Von und Bis gleich lassen.',
+    kdClPh:'Element hinzufügen…',kdAttachFile:'Datei anhängen',kdAttachNote:'Max. 2 MB pro Datei. Bilder werden als Vorschau angezeigt.',kdComments:'Kommentare',kdCommentPh:'Kommentar schreiben…',kdCommentAdd:'Kommentar hinzufügen',kdInList:'in Liste',
+    selEnd:'Auswahl beenden',
+    tSnapshotRestore:'Diesen Snapshot wiederherstellen? Alle aktuellen Daten werden überschrieben.',tImageTooBig:'Bild zu groß — max. 5 MB.',tSelectBoard:'Bitte zuerst ein Board auswählen.',tOwnerNoDelete:'Der Inhaber kann nicht gelöscht werden.',tValidEmail:'Bitte eine gültige E-Mail-Adresse eingeben.',tPwRequired:'Passwort ist für neue Benutzer erforderlich.',tUserSyncFail:'Benutzer lokal gespeichert, aber Synchronisierung fehlgeschlagen — bitte „Plan speichern" drücken.',tFillRepeat:'Bitte Startdatum, Anzahl der Tage und mindestens einen Wochentag ausfüllen.',tNoValidDays:'Keine gültigen Unterrichtstage gefunden.',tHolidaysReset:'Feiertage auf offizielle Baden-Württemberg Liste zurückgesetzt.',tPlanTransferred:'Gesamter Plan übertragen.',tDayTransferred:'Dieser Tag übertragen.',tConnProblem:'⚠ Verbindungsproblem — Änderungen wurden evtl. nicht gespeichert.',tSaveFailed:'⚠ Speichern fehlgeschlagen — bitte Verbindung prüfen.',tNoConn:'⚠ Keine Verbindung zum Server — Änderungen evtl. nicht gespeichert.',tRestored:'Wiederhergestellt.',tNoEmailFor:'Keine E-Mail hinterlegt für: {n}',tDaysAdded:'{n} Tag(e) hinzugefügt.',
+    tTestSent:'✓ Test-E-Mail gesendet. Bitte Posteingang (und Spam) prüfen.',tTestFail:'✗ Versand fehlgeschlagen. Prüfe in Supabase, ob die Funktion deployed ist und RESEND_API_KEY + FROM_EMAIL gesetzt sind (Details in der Browser-Konsole).',testRecipient:'Test-Empfänger',testNotif:'Test-Benachrichtigung',testEmailBody:'Dies ist eine Test-E-Mail aus dem Arbeitsplan.',
+    ownerRoleTitle:'Die Rolle des Inhabers kann nicht geändert werden.',ownerRoleHint:'👑 Inhaber — Rolle ist gesperrt und kann nicht geändert werden.',ownerNoDeleteTitle:'Der Inhaber kann nicht gelöscht werden',
+    undoStatusChange:'Status geändert',undoTaskMoved:'Aufgabe verschoben',undoTaskEdited:'Aufgabe bearbeitet',undoDayDeleted:'Tag gelöscht',undoPlanDeleted:'Plan gelöscht',undoMoveDay:'Tag verschieben',
+    undoTipPrefix:'Rückgängig',actUndone:'Aktion rückgängig gemacht: <b>{desc}</b>',
+    actTaskStatusSet:'{n} Aufgabe(n) auf <b>{s}</b> gesetzt',actTaskUpdated:'Aufgabe <b>{n}</b> aktualisiert für <b>{m}</b>',actTaskDeleted:'Aufgabe <b>{n}</b> ({d}) gelöscht',actTaskRestored:'Aufgabe <b>{n}</b> ({d}) wiederhergestellt',actPlanRestored:'Plan <b>{n}</b> ({d} Tage) wiederhergestellt',actStatusChanged:'Status von Aufgabe <b>{n}</b> geändert zu <b>{s}</b>',actTaskMoved:'Aufgabe <b>{n}</b> verschoben auf <b>{d}</b>',actDurationChanged:'Dauer von Aufgabe <b>{n}</b> geändert zu <b>{h}</b>',actMemberAdded:'Mitarbeiter <b>{n}</b> zum Team hinzugefügt',actMemberRemoved:'Mitarbeiter <b>{n}</b> aus dem Team entfernt',actCardAdded:'Karte <b>{c}</b> zur Liste <b>{l}</b> hinzugefügt',actCardRemoved:'Karte <b>{c}</b> aus Liste <b>{l}</b> entfernt',actTagged:'<b>{names}</b> bei {type} <b>{name}</b> getaggt',actCardMoved:'Karte <b>{c}</b> nach <b>{t}</b> verschoben',actCardArchived:'Karte <b>{c}</b> archiviert',actListArchived:'Liste <b>{l}</b> archiviert ({n} Karten)',actCardsArchived:'{n} Karten aus <b>{l}</b> archiviert',actCommentAdded:'Kommentar zu Karte <b>{c}</b> hinzugefügt',actCardUpdated:'Karte <b>{c}</b> aktualisiert',actListAdded:'Liste <b>{l}</b> hinzugefügt',
+    undoToastTaskDeleted:'Aufgabe „{n}" gelöscht.',undoToastPlanDeleted:'Plan „{n}" ({d} Tage) gelöscht.',undoToastMemberRemoved:'Mitarbeiter „{n}" entfernt.',undoToastCardArchived:'Karte „{n}" archiviert.',undoToastListArchived:'Liste „{n}" archiviert.',undoToastCardsArchived:'{n} Karten archiviert.',
+    typeTask:'Aufgabe',emptyBoardHint:'Board oder Mitarbeiter links auswählen',
+    actPlanDeleted:'Plan <b>{n}</b> gelöscht ({d} Tage)',actDayMovedEnd:'Tag <b>{n}</b> ans Ende verschoben → {d}',actTaskAdded:'Aufgabe <b>{n}</b> hinzugefügt für <b>{m}</b> ({d} Tage)',tLessonDaysAdded:'{n} Unterrichtstage hinzugefügt.',noCustomHolidays:'Noch keine benutzerdefinierten freien Tage hinzugefügt.',actTaskAddedDate:'Aufgabe <b>{n}</b> hinzugefügt für <b>{m}</b> am {d}',actTaskDeletedSimple:'Aufgabe <b>{n}</b> wurde gelöscht',unknownMember:'unbekannt',
+    pStarts:'Beginnt',pNoTime:'Keine Uhrzeit',pEnds:'Endet',pDays:'Tage',planDaysCount:'{n} Tage im Plan',hrsUnit:'Std',mtTagLbl:'🔔 Mitarbeiter taggen (E-Mail-Benachrichtigung)',mtGroupNote:'Mitarbeiterwechsel verschiebt alle {n} Tage zum gewählten Mitarbeiter.',pDateOnly:'Datum (nur dieser Tag)',pStartTimeLbl:'Startzeit',pDuration:'Dauer',pBreakLbl:'Pause',conflictMsg:'⚠ Zeitkonflikt an diesem Tag mit <strong>{name}</strong> ab {time}.',deletePlanGroup:'Gesamten Plan löschen ({n} Tage)',moveDayBtn:'Tag verschieben',addNewRole:'＋ Neue hinzufügen',allStatus:'Alle Status',navSavePlan:'Plan speichern',download:'Herunterladen',
+    rptMember:'Mitarbeiter',rptTasks:'Aufgaben',rptPlannedHrs:'Geplante Stunden',rptActualHrs:'Ist-Stunden',rptFulfil:'Erfüllung',rptTask:'Aufgabe',rptDate:'Datum',rptTime:'Uhrzeit',rptPlanned:'Geplant',rptActual:'Ist',rptTotal:'Gesamt',rptDoneSuffix:'erledigt',rptPlannedSuffix:'geplant',rptCompletion:'Erfüllungsgrad',rptByMemberSummary:'Zusammenfassung nach Mitarbeiter',rptTasksByMember:'Aufgaben nach Mitarbeiter',rptReportTitle:'Arbeitsplan Bericht',rptPeriod:'Zeitraum',rptCreated:'Erstellt',rptSavePdf:'Als PDF speichern',rptTasksWord:'Aufgaben',yrLegendTasks:'= hat Aufgaben',nobodyTagged:'Niemand getaggt',noEmailTitle:'Keine E-Mail hinterlegt',tagAddPlaceholder:'+ Mitarbeiter taggen…',toastStatusSet:'{n} Aufgabe(n) → {s}',memberTasksLine:'{n} Aufgabe(n) · {h} geplant',memberDetailLine:'{n} Aufgaben · {h} geplant · {d} erledigt',
   }
 };
 
 function tr(key){return (T[currentLang]&&T[currentLang][key])||T.en[key]||key;}
+// tr with {token} interpolation, e.g. trf('actStatus',{n:'X',s:'Done'})
+function trf(key,vars){return tr(key).replace(/\{(\w+)\}/g,(m,k)=>vars&&vars[k]!=null?vars[k]:m);}
+// Translate a stored (German) status value for display
+function stLabel(s){return (typeof STATUS_KEYS!=='undefined'&&STATUS_KEYS[s])?tr(STATUS_KEYS[s]):s;}
+function LOCALE(){return currentLang==='en'?'en-GB':'de-DE';}
 
 function setLang(l){
   if(l!=='en'&&l!=='de')return;
@@ -1237,6 +1282,10 @@ function applyLang(){
   document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
     el.setAttribute('placeholder',tr(el.getAttribute('data-i18n-ph')));
   });
+  // Apply data-i18n-title attributes (tooltips)
+  document.querySelectorAll('[data-i18n-title]').forEach(el=>{
+    el.setAttribute('title',tr(el.getAttribute('data-i18n-title')));
+  });
   // Apply data-i18n-html (keeps a leading icon, replaces trailing text node)
   document.querySelectorAll('[data-i18n-txt]').forEach(el=>{
     const k=el.getAttribute('data-i18n-txt');
@@ -1251,6 +1300,7 @@ function applyLang(){
   if(typeof renderHolidays==='function'&&currentView==='holidays')renderHolidays();
   if(typeof renderUsersList==='function'&&currentView==='users')renderUsersList();
   if(typeof renderKanban==='function'&&currentView==='kanban')renderKanban();
+  if(typeof renderYearlyCalendar==='function'&&currentView==='yearly')renderYearlyCalendar();
   if(typeof setAutosaveStatus==='function')setAutosaveStatus(); // re-apply current autosave label
 }
 
@@ -1399,12 +1449,12 @@ function renderUsersList(){
       </div>
       <span style="background:${roleColor};color:#fff;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:500;flex-shrink:0">${owner?'👑 '+tr('ownerBadge'):roleBezeichnung}</span>
       <button class="nav-btn edit-user-btn" data-username="${u.username}" style="flex-shrink:0">✎ ${tr('editBtn')}</button>
-      ${owner?`<button class="nav-btn" disabled title="Der Inhaber kann nicht gelöscht werden" style="flex-shrink:0;opacity:.4;cursor:not-allowed;border-color:#e0e0e0;color:#bbb">🔒</button>`:`<button class="nav-btn danger-btn" data-username="${u.username}" style="flex-shrink:0;border-color:#e74c3c;color:#e74c3c">✕</button>`}`;
+      ${owner?`<button class="nav-btn" disabled title="${tr('ownerNoDeleteTitle')}" style="flex-shrink:0;opacity:.4;cursor:not-allowed;border-color:#e0e0e0;color:#bbb">🔒</button>`:`<button class="nav-btn danger-btn" data-username="${u.username}" style="flex-shrink:0;border-color:#e74c3c;color:#e74c3c">✕</button>`}`;
     row.querySelector('.edit-user-btn').onclick=()=>openUserModal(u.username);
     const delBtn=row.querySelector('.danger-btn');
     if(delBtn)delBtn.onclick=()=>{
       const target=USERS.find(x=>x.username===u.username);
-      if(isOwner(target)){showToast('Der Inhaber kann nicht gelöscht werden.','#e74c3c');return;}
+      if(isOwner(target)){showToast(tr('tOwnerNoDelete'),'#e74c3c');return;}
       const idx=USERS.findIndex(x=>x.username===u.username);
       if(idx>-1){USERS.splice(idx,1);renderUsersList();}
     };
@@ -1446,11 +1496,11 @@ function openUserModal(username){
   const roleSel=document.getElementById('umRole');
   const ownerLocked=!!(u&&isOwner(u));
   roleSel.disabled=ownerLocked;
-  roleSel.title=ownerLocked?'Die Rolle des Inhabers kann nicht geändert werden.':'';
+  roleSel.title=ownerLocked?tr('ownerRoleTitle'):'';
   let hint=document.getElementById('umOwnerHint');
   if(ownerLocked){
     if(!hint){hint=document.createElement('div');hint.id='umOwnerHint';hint.style.cssText='font-size:11px;color:#8E44AD;margin-top:4px';roleSel.parentElement.appendChild(hint);}
-    hint.textContent='👑 Inhaber — Rolle ist gesperrt und kann nicht geändert werden.';
+    hint.textContent=tr('ownerRoleHint');
     hint.style.display='block';
   } else if(hint){hint.style.display='none';}
   document.getElementById('userModal').classList.remove('hidden');
@@ -1463,13 +1513,13 @@ document.getElementById('testEmailBtn').onclick=async()=>{
   const status=document.getElementById('testEmailStatus');
   const btn=document.getElementById('testEmailBtn');
   const to=input.value.trim();
-  if(!to||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(to)){status.style.color='#e74c3c';status.textContent='Bitte eine gültige E-Mail-Adresse eingeben.';return;}
+  if(!to||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(to)){status.style.color='#e74c3c';status.textContent=tr('tValidEmail');return;}
   btn.disabled=true;const _old=btn.textContent;btn.textContent='Senden…';
   status.style.color='#888';status.textContent='Wird gesendet…';
-  const ok=await sendTagEmail({name:'Test-Empfänger',email:to},{type:'Aufgabe',name:'Test-Benachrichtigung',note:'Dies ist eine Test-E-Mail aus dem Arbeitsplan.',details:{'Datum':new Date().toISOString().slice(0,10),'Uhrzeit':'09:00 – 11:00','Dauer':'2 Std','Status':'In Bearbeitung','Mitarbeiter':'Test-Empfänger'}});
+  const ok=await sendTagEmail({name:tr('testRecipient'),email:to},{type:tr('typeTask'),name:tr('testNotif'),note:tr('testEmailBody'),details:{'Datum':new Date().toISOString().slice(0,10),'Uhrzeit':'09:00 – 11:00','Dauer':'2 Std','Status':'In Bearbeitung','Mitarbeiter':'Test-Empfänger'}});
   btn.disabled=false;btn.textContent=_old;
-  if(ok){status.style.color='#1D9E75';status.textContent='✓ Test-E-Mail gesendet. Bitte Posteingang (und Spam) prüfen.';}
-  else{status.style.color='#e74c3c';status.textContent='✗ Versand fehlgeschlagen. Prüfe in Supabase, ob die Funktion deployed ist und RESEND_API_KEY + FROM_EMAIL gesetzt sind (Details in der Browser-Konsole).';}
+  if(ok){status.style.color='#1D9E75';status.textContent=tr('tTestSent');}
+  else{status.style.color='#e74c3c';status.textContent=tr('tTestFail');}
 };
 document.getElementById('umCancel').onclick=()=>document.getElementById('userModal').classList.add('hidden');
 document.getElementById('userModal').addEventListener('click',e=>{if(e.target===document.getElementById('userModal'))document.getElementById('userModal').classList.add('hidden');});
@@ -1485,7 +1535,7 @@ document.getElementById('umSave').onclick=async()=>{
   const perms=role==='editor'?{members:document.getElementById('umPermMembers').checked,holidays:document.getElementById('umPermHolidays').checked}:null;
   const visibleMembers=[...document.querySelectorAll('#umMemberList input[type=checkbox]:checked')].map(cb=>parseInt(cb.value));
   if(!display||!username){showToast('Name und Benutzername sind erforderlich.','#e74c3c');return;}
-  if(email&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){showToast('Bitte eine gültige E-Mail-Adresse eingeben.','#e74c3c');return;}
+  if(email&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){showToast(tr('tValidEmail'),'#e74c3c');return;}
   // Check duplicate username (except self)
   const dup=USERS.find(x=>x.username===username&&x.username!==editingUserId);
   if(dup){showToast('Benutzername bereits vergeben.','#e74c3c');return;}
@@ -1500,7 +1550,7 @@ document.getElementById('umSave').onclick=async()=>{
       if(editingOwner)u.owner=true; // keep the owner flag locked on (tracks owner even if username changes)
     }
   } else {
-    if(!password){showToast('Passwort ist für neue Benutzer erforderlich.','#e74c3c');return;}
+    if(!password){showToast(tr('tPwRequired'),'#e74c3c');return;}
     const pwSalt=_randSalt();const pwHash=await hashPassword(password,pwSalt);
     USERS.push({username,pwSalt,pwHash,display,initials,role,email,perms:perms||undefined,visibleMembers:role==='admin'?[]:visibleMembers});
   }
@@ -1509,7 +1559,7 @@ document.getElementById('umSave').onclick=async()=>{
   showToast(editingUserId?'Benutzer aktualisiert.':'Benutzer erstellt.','#1D9E75');
   // Auto-save users to Supabase immediately
   sbFetch('users_config','POST',{id:'__all__',data:{users:USERS}}).then(ok=>{
-    if(!ok)showToast('Benutzer lokal gespeichert, aber Synchronisierung fehlgeschlagen — bitte „Plan speichern" drücken.','#EF9F27');
+    if(!ok)showToast(tr('tUserSyncFail'),'#EF9F27');
   });
 };
 
@@ -1681,7 +1731,7 @@ function populateRoleSelect(selectedRole){
   if(ROLES.includes(selectedRole))lastRoleSelection=selectedRole;
   sel.innerHTML=ROLES.map(r=>`<option value="${r.replace(/"/g,'&quot;')}"${r===selectedRole?' selected':''}>${r}</option>`).join('')
     +`<option disabled style="color:#ccc">──────────</option>`
-    +`<option value="${ADD_ROLE_VALUE}" style="color:#4A90E2;font-weight:700;background:#EAF3FC">＋ Neue hinzufügen</option>`;
+    +`<option value="${ADD_ROLE_VALUE}" style="color:#4A90E2;font-weight:700;background:#EAF3FC">${tr('addNewRole')}</option>`;
 }
 function showRoleAddRow(show){
   const row=document.getElementById('mtRoleAddRow');
@@ -1717,7 +1767,7 @@ function populateEmRoleSelect(selectedRole){
   sel.innerHTML=`<option value=""${!selectedRole?' selected':''}>— Keine —</option>`
     +ROLES.map(r=>`<option value="${r.replace(/"/g,'&quot;')}"${r===selectedRole?' selected':''}>${r}</option>`).join('')
     +`<option disabled style="color:#ccc">──────────</option>`
-    +`<option value="${ADD_ROLE_VALUE}" style="color:#4A90E2;font-weight:700;background:#EAF3FC">＋ Neue hinzufügen</option>`;
+    +`<option value="${ADD_ROLE_VALUE}" style="color:#4A90E2;font-weight:700;background:#EAF3FC">${tr('addNewRole')}</option>`;
 }
 function showEmRoleAddRow(show){
   const row=document.getElementById('emRoleAddRow');
@@ -1813,7 +1863,7 @@ function setPlanSelectMode(on){
   planSelectMode=on;
   if(!on)selectedTaskIds.clear();
   const btn=document.getElementById('planSelectBtn');
-  if(btn){btn.classList.toggle('active',on);btn.textContent=on?'Auswahl beenden':'Plan auswählen';}
+  if(btn){btn.classList.toggle('active',on);btn.textContent=on?tr('selEnd'):tr('selectPlan');}
   render();
   updateSelectionBar();
 }
@@ -1838,7 +1888,7 @@ function updateSelectionBar(){
 }
 function applyStatusToSelected(status){
   if(!selectedTaskIds.size)return;
-  pushUndoState('Status geändert');
+  pushUndoState(tr('undoStatusChange'));
   let n=0;
   Aufgaben.forEach(t=>{if(selectedTaskIds.has(t.id)){
     t.status=status;n++;
@@ -1846,11 +1896,11 @@ function applyStatusToSelected(status){
     if(status==='Erledigt'&&!t.actual)t.actual=t.hours;
   }});
   const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  addActivities([{icon:'✔',color:(STATUS[status]||['#888'])[0],text:`${n} Aufgabe(n) auf <b>${status}</b> gesetzt`,time:_now}]);
+  addActivities([{icon:'✔',color:(STATUS[status]||['#888'])[0],text:trf('actTaskStatusSet',{n,s:statusLabel(status)}),time:_now}]);
   selectedTaskIds.clear();
   render();
   updateSelectionBar();
-  if(typeof showToast==='function')showToast(`${n} Aufgabe(n) → ${status}`,(STATUS[status]||['#1D9E75'])[0]);
+  if(typeof showToast==='function')showToast(trf('toastStatusSet',{n,s:statusLabel(status)}),(STATUS[status]||['#1D9E75'])[0]);
 }
 /* ════ SUPPRESS SYNC — bllokon WebSocket pas ndryshimeve lokale ════ */
 let _suppressSync=false,_suppressSyncTimer=null;
@@ -1875,7 +1925,7 @@ function updateUndoBtn(){
   if(btn){
     const has=undoStack.length>0;
     btn.disabled=!has;btn.style.opacity=has?'1':'0.4';btn.style.cursor=has?'pointer':'not-allowed';
-    btn.title=has?`Rückgängig: ${undoStack[undoStack.length-1].desc} (${undoStack.length}/10)`:'Keine Aktionen zum Rückgängigmachen';
+    btn.title=has?`${tr('undoTipPrefix')}: ${undoStack[undoStack.length-1].desc} (${undoStack.length}/10)`:tr('tipUndoNone');
   }
   const rbtn=document.getElementById('redoBtn');
   if(rbtn){
@@ -1904,7 +1954,7 @@ function doUndo(){
   _applyHistoryState(data);
   // Regjistro rikthimin në log — që logu të mos tregojë aksione që u kthyen prapa
   const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  addActivities([{icon:'↩',color:'#4A90E2',text:`Aktion rückgängig gemacht: <b>${desc}</b>`,time:_now}]);
+  addActivities([{icon:'↩',color:'#4A90E2',text:trf('actUndone',{desc}),time:_now}]);
 }
 function doRedo(){
   if(!redoStack.length)return;
@@ -1928,12 +1978,14 @@ function applyWeekdayLang(){
     WEEK_DAYS_LABELS=['Mon','Tue','Wed','Thu','Fri','Sat'];
     YR_DAY_NAMES=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
     MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    if(typeof YR_MONTH_NAMES!=='undefined')YR_MONTH_NAMES=['January','February','March','April','May','June','July','August','September','October','November','December'];
   }else{
     DAY_NAMES=['Mo','Di','Mi','Do','Fr','Sa','So'];
     SUN_DAY_NAMES=['So','Mo','Di','Mi','Do','Fr','Sa'];
     WEEK_DAYS_LABELS=['Mo','Di','Mi','Do','Fr','Sa'];
     YR_DAY_NAMES=['Mo','Di','Mi','Do','Fr','Sa','So'];
     MONTHS=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+    if(typeof YR_MONTH_NAMES!=='undefined')YR_MONTH_NAMES=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
   }
 }
 
@@ -2026,8 +2078,8 @@ function renderSidebar(){
         <div class="cap-bar-wrap" style="width:100%"><div class="cap-bar" style="width:${Math.round(pct*100)}%;background:${col}"></div></div>
         <div class="cap-lbl">${fmtHours(wl)} / ${fmtHours(wc)}</div>      </div>
       ${!isReadOnly?`<div class="member-actions">
-        <button class="member-action-btn edit-btn" data-id="${m.id}" title="Mitarbeiter bearbeiten">✎</button>
-        <button class="member-action-btn danger remove-btn" data-id="${m.id}" title="Mitarbeiter entfernen">✕</button>
+        <button class="member-action-btn edit-btn" data-id="${m.id}" title="${tr('tipEditMember')}">✎</button>
+        <button class="member-action-btn danger remove-btn" data-id="${m.id}" title="${tr('tipRemoveMember')}">✕</button>
       </div>`:''}`;
     if(!isReadOnly){
       div.querySelector('.edit-btn').addEventListener('click',e=>{e.stopPropagation();openEditMember(m.id);});
@@ -2177,9 +2229,9 @@ function renderGrid(){
             const newMemberId=parseInt(slot.dataset.member);
             const newDate=slot.dataset.date;
             if(newMemberId!==task.memberId&&task.groupId&&Aufgaben.filter(x=>x.groupId===task.groupId).length>1){
-              pushUndoState('Aufgabe verschoben');suppressSyncBriefly();openTransferModal(task,newMemberId,newDate);
+              pushUndoState(tr('undoTaskMoved'));suppressSyncBriefly();openTransferModal(task,newMemberId,newDate);
             } else {
-              pushUndoState('Aufgabe verschoben');suppressSyncBriefly();task.memberId=newMemberId;task.date=newDate;render();
+              pushUndoState(tr('undoTaskMoved'));suppressSyncBriefly();task.memberId=newMemberId;task.date=newDate;render();
             }
           }
           dragTaskId=null;
@@ -2227,7 +2279,7 @@ function createChip(t,stroke,bg,text,h,top,cw){
   const showTime=t.startTime&&(cw||colW())>55;
   const conflictIcon=conflict?`<span style="color:#E24B4A;margin-left:3px">⚠</span>`:'';
   const endT=t.startTime&&t.hours?endTimeWithBreak(t.startTime,t.hours,t.breakMin||0):'';
-  const breakBadge=t.breakMin>0?`<div style="font-size:9px;opacity:.65;margin-top:1px;white-space:nowrap;overflow:hidden">${t.breakMin}min Pause</div>`:'';
+  const breakBadge=t.breakMin>0?`<div style="font-size:9px;opacity:.65;margin-top:1px;white-space:nowrap;overflow:hidden">${t.breakMin}min ${tr('pBreakLbl')}</div>`:'';
   const timeStr=showTime?`<div style="font-size:9px;opacity:.75;margin-top:1px;white-space:nowrap;overflow:hidden">${t.startTime}${endT?' – '+endT:''}</div>`:'';
   const tagStr=(t.tags&&t.tags.length)?`<div style="display:flex;align-items:center;gap:2px;margin-top:2px;overflow:hidden"><span style="font-size:8px;opacity:.6">🔔</span>${t.tags.slice(0,4).map(id=>{const m=MEMBERS.find(x=>x.id===id);if(!m)return'';return `<span title="${m.name}" style="display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border-radius:50%;background:${m.color||'#888'};color:#fff;font-size:7px;font-weight:700;flex-shrink:0">${m.initials||'?'}</span>`;}).join('')}${t.tags.length>4?`<span style="font-size:8px;opacity:.7">+${t.tags.length-4}</span>`:''}</div>`:'';
   chip.innerHTML=`
@@ -2273,10 +2325,10 @@ function renderPanelBody(t){
   const groupAufgaben=t.groupId?Aufgaben.filter(x=>x.groupId===t.groupId):[];
   const isGroup=groupAufgaben.length>1;
   const conflict=findConflict(t.memberId,t.date,t.startTime,t.hours,t.groupId);
-  const conflictBanner=conflict?`<div style="background:#fdecea;border:0.5px solid #e74c3c;border-radius:6px;padding:8px 10px;margin-bottom:10px;font-size:11px;color:#c0392b">⚠ Zeitkonflikt an diesem Tag mit <strong>${conflict.name}</strong> ab ${conflict.startTime}.</div>`:'';
+  const conflictBanner=conflict?`<div style="background:#fdecea;border:0.5px solid #e74c3c;border-radius:6px;padding:8px 10px;margin-bottom:10px;font-size:11px;color:#c0392b">${trf('conflictMsg',{name:conflict.name,time:conflict.startTime})}</div>`:'';
   // ── Start / End info block ──
   const _sortedDates=isGroup?[...groupAufgaben].map(x=>x.date).sort():[t.date];
-  const _fmtDate=ds=>{const d=new Date(ds+'T12:00:00');return d.toLocaleDateString('de-DE',{day:'2-digit',month:'short',year:'numeric'});};
+  const _fmtDate=ds=>{const d=new Date(ds+'T12:00:00');return d.toLocaleDateString(LOCALE(),{day:'2-digit',month:'short',year:'numeric'});};
   const _planStartFmt=_fmtDate(_sortedDates[0]);
   const _planEndFmt=_fmtDate(_sortedDates[_sortedDates.length-1]);
   const _endTime=t.startTime&&t.hours?endTimeWithBreak(t.startTime,t.hours,t.breakMin||0):'';
@@ -2288,39 +2340,39 @@ function renderPanelBody(t){
     ${conflictBanner}
     <div style="background:#f8f9fc;border:0.5px solid #dde3f0;border-radius:8px;padding:10px 13px;margin-bottom:12px;display:flex;align-items:center">
       <div style="flex:1;min-width:0">
-        <div style="font-size:9px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px">Beginnt</div>
+        <div style="font-size:9px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px">${tr('pStarts')}</div>
         <div style="font-size:12px;font-weight:600;color:#1a1a1a">${_planStartFmt}</div>
-        ${t.startTime?`<div style="font-size:11px;color:#4A90E2;margin-top:2px;font-weight:500">⏰ ${t.startTime}</div>`:'<div style="font-size:10px;color:#bbb;margin-top:2px">Keine Uhrzeit</div>'}
+        ${t.startTime?`<div style="font-size:11px;color:#4A90E2;margin-top:2px;font-weight:500">⏰ ${t.startTime}</div>`:`<div style="font-size:10px;color:#bbb;margin-top:2px">${tr('pNoTime')}</div>`}
       </div>
       <div style="padding:0 10px;color:#ccc;font-size:18px;flex-shrink:0">→</div>
       <div style="flex:1;min-width:0;text-align:right">
-        <div style="font-size:9px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px">Endet</div>
+        <div style="font-size:9px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px">${tr('pEnds')}</div>
         <div style="font-size:12px;font-weight:600;color:#1a1a1a">${_planEndFmt}</div>
-        ${_endTime?`<div style="font-size:11px;color:#E24B4A;margin-top:2px;font-weight:500">⏰ ${_endTime}</div>`:t.startTime?'<div style="font-size:10px;color:#bbb;margin-top:2px">—</div>':'<div style="font-size:10px;color:#bbb;margin-top:2px">Keine Uhrzeit</div>'}
+        ${_endTime?`<div style="font-size:11px;color:#E24B4A;margin-top:2px;font-weight:500">⏰ ${_endTime}</div>`:t.startTime?'<div style="font-size:10px;color:#bbb;margin-top:2px">—</div>':`<div style="font-size:10px;color:#bbb;margin-top:2px">${tr('pNoTime')}</div>`}
       </div>
     </div>
     ${_weekdayStr?`<div style="background:#f8f9fc;border:0.5px solid #dde3f0;border-radius:8px;padding:7px 13px;margin-bottom:12px;margin-top:-8px;display:flex;align-items:center;gap:8px">
-      <span style="font-size:9px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.05em;flex-shrink:0">Tage</span>
+      <span style="font-size:9px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.05em;flex-shrink:0">${tr('pDays')}</span>
       <span style="font-size:12px;color:#4A90E2;font-weight:600;letter-spacing:.03em">${_weekdayStr}</span>
     </div>`:''}
     <div style="margin-bottom:10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-      <span class="status-badge" style="background:${sc[1]};color:${sc[2]}">${t.status}</span>
-      ${isGroup?`<span style="font-size:10px;background:#f0f0f0;color:#666;border-radius:4px;padding:3px 8px">${groupAufgaben.length} Tage im Plan</span><span style="font-size:10px;background:#EBF3FC;color:#1558a8;border-radius:4px;padding:3px 8px;font-weight:600">⏱ ${fmtHours(groupAufgaben.reduce((s,x)=>s+(x.hours||0),0))} Std</span>`:''}
+      <span class="status-badge" style="background:${sc[1]};color:${sc[2]}">${statusLabel(t.status)}</span>
+      ${isGroup?`<span style="font-size:10px;background:#f0f0f0;color:#666;border-radius:4px;padding:3px 8px">${trf('planDaysCount',{n:groupAufgaben.length})}</span><span style="font-size:10px;background:#EBF3FC;color:#1558a8;border-radius:4px;padding:3px 8px;font-weight:600">⏱ ${fmtHours(groupAufgaben.reduce((s,x)=>s+(x.hours||0),0))} ${tr('hrsUnit')}</span>`:''}
     </div>
-    <div class="field"><label>Aufgabenname</label><input id="pName" value="${t.name}"></div>
-    <div class="field"><label>Beschreibung</label><textarea id="pDesc">${t.desc}</textarea></div>
-    <div class="field"><label>🔔 Mitarbeiter taggen (E-Mail-Benachrichtigung)</label>
+    <div class="field"><label>${tr('taskName')}</label><input id="pName" value="${t.name}"></div>
+    <div class="field"><label>${tr('description')}</label><textarea id="pDesc">${t.desc}</textarea></div>
+    <div class="field"><label>${tr('mtTagLbl')}</label>
       <div id="pTagBox" class="tag-box"></div>
       <select id="pTagAdd" class="tag-add"></select>
     </div>
-    <div class="field"><label>Mitarbeiter</label>
+    <div class="field"><label>${tr('assignee')}</label>
       <select id="pMember">${MEMBERS.map(x=>`<option value="${x.id}"${x.id===t.memberId?' selected':''}>${x.name}</option>`).join('')}</select>
-      ${isGroup?`<div style="font-size:10px;color:#888;margin-top:3px">Mitarbeiterwechsel verschiebt alle ${groupAufgaben.length} Tage zum gewählten Mitarbeiter.</div>`:''}
+      ${isGroup?`<div style="font-size:10px;color:#888;margin-top:3px">${trf('mtGroupNote',{n:groupAufgaben.length})}</div>`:''}
     </div>
-    <div class="field"><label>Datum (nur dieser Tag)</label><input type="date" id="pDate" value="${t.date}"></div>
+    <div class="field"><label>${tr('pDateOnly')}</label><input type="date" id="pDate" value="${t.date}"></div>
     <div style="display:flex;gap:8px">
-      <div class="field" style="flex:1"><label>Startzeit</label><input type="time" id="pStartTime" value="${t.startTime||''}"></div>
-      <div class="field" style="flex:2"><label>Dauer</label>
+      <div class="field" style="flex:1"><label>${tr('pStartTimeLbl')}</label><input type="time" id="pStartTime" value="${t.startTime||''}"></div>
+      <div class="field" style="flex:2"><label>${tr('pDuration')}</label>
         <div style="display:flex;gap:4px;align-items:center">
           <select id="pHoursH" style="flex:1;padding:5px 6px;border:0.5px solid #ccc;border-radius:6px;font-size:12px;background:#fff;color:#1a1a1a">
             ${[0,1,2,3,4,5,6,7,8,9,10,11,12].map(h=>`<option value="${h}"${Math.floor(t.hours)===h?' selected':''}>${h}h</option>`).join('')}
@@ -2330,7 +2382,7 @@ function renderPanelBody(t){
           </select>
         </div>
       </div>
-      <div class="field" style="flex:1"><label>Pause</label>
+      <div class="field" style="flex:1"><label>${tr('pBreakLbl')}</label>
         <select id="pBreak">
           <option value="0"${(t.breakMin||0)==0?' selected':''}>0 min</option>
           <option value="10"${(t.breakMin||0)==10?' selected':''}>10 min</option>
@@ -2342,7 +2394,7 @@ function renderPanelBody(t){
     </div>
     <div style="font-size:10px;color:#888;margin-top:-6px;margin-bottom:8px" id="pEndTimeBezeichnung">${t.startTime?`${tr('endTime')} ${endTimeWithBreak(t.startTime,t.hours,t.breakMin||0)}`:tr('setStartTime')}</div>
     <div class="field"><label>${tr('status')}</label><select id="pStatus">${Object.keys(STATUS).map(s=>`<option value="${s}"${s===t.status?' selected':''}>${statusLabel(s)}</option>`).join('')}</select></div>
-    <div class="field"><label>Aufgabenfarbe</label>
+    <div class="field"><label>${tr('taskFarbe')}</label>
       <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:5px" id="pColorPicker">
         ${[{c:'default',label:'Default',bg:'linear-gradient(135deg,#AFA9EC,#5DCAA5,#F0997B)'},
            {c:'#4A90E2',bg:'#4A90E2'},{c:'#1D9E75',bg:'#1D9E75'},{c:'#D4537E',bg:'#D4537E'},
@@ -2353,16 +2405,16 @@ function renderPanelBody(t){
       </div>
     </div>
 
-    <div class="field" style="flex:1"><label>Ist (Std)</label><input type="number" id="pActual" value="${t.actual||0}" min="0" max="16" step="0.5"></div>
-    <div style="font-size:11px;font-weight:500;color:#888;margin-bottom:5px">SubAufgaben (${t.subAufgaben.filter(s=>s.done).length}/${t.subAufgaben.length})</div>
+    <div class="field" style="flex:1"><label>${tr('actualH')}</label><input type="number" id="pActual" value="${t.actual||0}" min="0" max="16" step="0.5"></div>
+    <div style="font-size:11px;font-weight:500;color:#888;margin-bottom:5px">${tr('subAufgaben')} (${t.subAufgaben.filter(s=>s.done).length}/${t.subAufgaben.length})</div>
     <div id="subtaskList"></div>
-    <div class="add-st-row"><input id="newSt" placeholder="Unteraufgabe hinzufügen..."><button class="btn-ghost" id="addStBtn">Hinzufügen</button></div>
-    <button class="btn-save" id="saveTaskBtn" ${window._readOnly?'style="display:none"':''}>Änderungen speichern</button>
-    ${isGroup?`<button class="btn-del" style="margin-top:6px;border-color:#e74c3c;color:#e74c3c;background:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-size:12px;width:100%;${window._readOnly?'display:none':''}" id="delGroupBtn">Gesamten Plan löschen (${groupAufgaben.length} Tage)</button>`:''}
-    <button class="btn-del" id="delTaskBtn" ${window._readOnly?'style="display:none"':''}>Nur diesen Tag löschen</button>
+    <div class="add-st-row"><input id="newSt" placeholder="${tr('addSubtask')}"><button class="btn-ghost" id="addStBtn">${tr('addShort')}</button></div>
+    <button class="btn-save" id="saveTaskBtn" ${window._readOnly?'style="display:none"':''}>${tr('saveChanges')}</button>
+    ${isGroup?`<button class="btn-del" style="margin-top:6px;border-color:#e74c3c;color:#e74c3c;background:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-size:12px;width:100%;${window._readOnly?'display:none':''}" id="delGroupBtn">${trf('deletePlanGroup',{n:groupAufgaben.length})}</button>`:''}
+    <button class="btn-del" id="delTaskBtn" ${window._readOnly?'style="display:none"':''}>${tr('deleteDay')}</button>
     <button id="moveTagBtn" style="margin-top:6px;width:100%;background:none;border:0.5px solid #4A90E2;border-radius:6px;padding:6px 10px;cursor:pointer;font-size:12px;color:#4A90E2;font-weight:500;display:${window._readOnly?'none':'flex'};align-items:center;justify-content:center;gap:6px">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4A90E2" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="8 14 10 16 14 12"/></svg>
-      Tag verschieben
+      ${tr('moveDayBtn')}
     </button>`;
   // Live end-time preview (includes break)
   const updateEndBezeichnung=()=>{
@@ -2398,7 +2450,7 @@ function renderPanelBody(t){
   const getTaskTags=wireTagEditor('pTagBox','pTagAdd',t.tags||[]);
   document.getElementById('addStBtn').onclick=()=>{const v=document.getElementById('newSt').value.trim();if(!v)return;t.subAufgaben.push({id:Date.now(),n:v,done:false});document.getElementById('newSt').value='';renderSubAufgaben(t);};
   document.getElementById('saveTaskBtn').onclick=()=>{
-    pushUndoState('Aufgabe bearbeitet');suppressSyncBriefly();
+    pushUndoState(tr('undoTaskEdited'));suppressSyncBriefly();
     const oldMemberId=t.memberId;
     const newName=document.getElementById('pName').value.trim()||t.name;
     const newMemberId=parseInt(document.getElementById('pMember').value);
@@ -2450,31 +2502,31 @@ function renderPanelBody(t){
     document.getElementById('panelTitle').textContent=t.name;
     const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
     const m2=MEMBERS.find(x=>x.id===t.memberId);
-    addActivities([{icon:'✎',color:'#4A90E2',text:`Aufgabe <b>${t.name}</b> aktualisiert für <b>${m2?m2.name:'?'}</b>`,time:_now}]);
+    addActivities([{icon:'✎',color:'#4A90E2',text:trf('actTaskUpdated',{n:t.name,m:m2?m2.name:'?'}),time:_now}]);
     render();renderPanelBody(t);
   };
   document.getElementById('delTaskBtn').onclick=()=>{
-    pushUndoState('Tag gelöscht');suppressSyncBriefly();
+    pushUndoState(tr('undoDayDeleted'));suppressSyncBriefly();
     const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
     const removed=t;
-    addActivities([{icon:'✕',color:'#e74c3c',text:`Aufgabe <b>${t.name}</b> (${t.date}) gelöscht`,time:_now}]);
+    addActivities([{icon:'✕',color:'#e74c3c',text:trf('actTaskDeleted',{n:t.name,d:t.date}),time:_now}]);
     Aufgaben=Aufgaben.filter(x=>x.id!==t.id);document.getElementById('detailPanel').classList.add('hidden');render();
-    showUndoToast(`Aufgabe „${removed.name}" gelöscht.`,()=>{Aufgaben.push(removed);render();addActivities([{icon:'↩',color:'#1D9E75',text:`Aufgabe <b>${removed.name}</b> (${removed.date}) wiederhergestellt`}]);showToast('Wiederhergestellt.','#1D9E75');});
+    showUndoToast(trf('undoToastTaskDeleted',{n:removed.name}),()=>{Aufgaben.push(removed);render();addActivities([{icon:'↩',color:'#1D9E75',text:trf('actTaskRestored',{n:removed.name,d:removed.date})}]);showToast(tr('tRestored'),'#1D9E75');});
   };
   const delGroup=document.getElementById('delGroupBtn');
   if(delGroup) delGroup.onclick=()=>{
-    pushUndoState('Plan gelöscht');suppressSyncBriefly();
+    pushUndoState(tr('undoPlanDeleted'));suppressSyncBriefly();
     const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
     const removedGroup=Aufgaben.filter(x=>x.groupId===t.groupId);
-    addActivities([{icon:'✕',color:'#e74c3c',text:`Plan <b>${t.name}</b> gelöscht (${removedGroup.length} Tage)`,time:_now}]);
+    addActivities([{icon:'✕',color:'#e74c3c',text:trf('actPlanDeleted',{n:t.name,d:removedGroup.length}),time:_now}]);
     Aufgaben=Aufgaben.filter(x=>x.groupId!==t.groupId);document.getElementById('detailPanel').classList.add('hidden');render();
-    showUndoToast(`Plan „${t.name}" (${removedGroup.length} Tage) gelöscht.`,()=>{removedGroup.forEach(x=>Aufgaben.push(x));render();addActivities([{icon:'↩',color:'#1D9E75',text:`Plan <b>${t.name}</b> (${removedGroup.length} Tage) wiederhergestellt`}]);showToast('Wiederhergestellt.','#1D9E75');});
+    showUndoToast(trf('undoToastPlanDeleted',{n:t.name,d:removedGroup.length}),()=>{removedGroup.forEach(x=>Aufgaben.push(x));render();addActivities([{icon:'↩',color:'#1D9E75',text:trf('actPlanRestored',{n:t.name,d:removedGroup.length})}]);showToast(tr('tRestored'),'#1D9E75');});
   };
   // ── Tag verschieben: tasi aktual shkon në fund të planit, sipas modelit të ditëve ──
   const moveTagBtn=document.getElementById('moveTagBtn');
   if(moveTagBtn){
     moveTagBtn.onclick=()=>{
-      pushUndoState('Tag verschieben');suppressSyncBriefly();
+      pushUndoState(tr('undoMoveDay'));suppressSyncBriefly();
       const liveTasks=t.groupId?Aufgaben.filter(x=>x.groupId===t.groupId):[t];
       const otherTasks=liveTasks.filter(x=>x.id!==t.id).sort((a,b)=>a.date.localeCompare(b.date));
       if(otherTasks.length===0){showToast('Der Plan hat nur einen Tag.','#888');return;}
@@ -2494,7 +2546,7 @@ function renderPanelBody(t){
       newDate.setDate(newDate.getDate()+daysToAdd);
       t.date=fmt(newDate);
       const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-      addActivities([{icon:'📅',color:'#4A90E2',text:`Tag <b>${t.name}</b> ans Ende verschoben → ${t.date}`,time:_now}]);
+      addActivities([{icon:'📅',color:'#4A90E2',text:trf('actDayMovedEnd',{n:t.name,d:t.date}),time:_now}]);
       render();
       openTaskPanel(t.id);
       showToast(`Tag verschoben → ${t.date}`,'#4A90E2');
@@ -2703,10 +2755,10 @@ document.getElementById('mtSave').onclick=()=>{
   const skipHol=document.getElementById('mtSkipHolidays').checked;
   const selectedDays=[...document.querySelectorAll('#mtDayToggles .day-toggle.on')].map(b=>parseInt(b.dataset.dayjs));
   if(!startStr||!numDays||!selectedDays.length){
-    showToast('Bitte Startdatum, Anzahl der Tage und mindestens einen Wochentag ausfüllen.','#e74c3c');return;
+    showToast(tr('tFillRepeat'),'#e74c3c');return;
   }
   const dates=generateLessonDates(startStr,numDays,selectedDays,skipHol);
-  if(!dates.length){showToast('Keine gültigen Unterrichtstage gefunden.','#e74c3c');return;}
+  if(!dates.length){showToast(tr('tNoValidDays'),'#e74c3c');return;}
   // Conflict check
   const conflicts=dates.filter(ds=>findConflict(memberId,ds,startTime,hours,null));
   if(conflicts.length>0){
@@ -2720,8 +2772,8 @@ document.getElementById('mtSave').onclick=()=>{
   render();
   const m=MEMBERS.find(x=>x.id===memberId);
   const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  addActivities([{icon:'✚',color:'#1D9E75',text:`Aufgabe <b>${name}</b> hinzugefügt für <b>${m?m.name:'?'}</b> (${dates.length} Tag${dates.length>1?'e':''})`,time:now}]);
-  showToast(`${dates.length} Unterrichtstage hinzugefügt.`,'#1D9E75');
+  addActivities([{icon:'✚',color:'#1D9E75',text:trf('actTaskAdded',{n:name,m:(m?m.name:'?'),d:dates.length}),time:now}]);
+  showToast(trf('tLessonDaysAdded',{n:dates.length}),'#1D9E75');
   // Notify the assigned member by email
   if(m&&m.email){
     const _endT=startTime&&hours?endTimeWithBreak(startTime,hours,breakMin):'';
@@ -2769,7 +2821,7 @@ function renderReports(){
   // Populate member dropdown, preserve current selection
   const selEl=document.getElementById('rptMember');
   const prevSel=selEl.value;
-  selEl.innerHTML='<option value="all">Alle Mitarbeiter</option>'+
+  selEl.innerHTML='<option value="all">'+tr('allMembers')+'</option>'+
     MEMBERS.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
   if(prevSel&&prevSel!=='all')selEl.value=prevSel;
 
@@ -2777,9 +2829,9 @@ function renderReports(){
   const selMemberId=selEl.value;
   const selMemberName=selMemberId!=='all'?(MEMBERS.find(m=>String(m.id)===String(selMemberId))?.name||''):'';
   const parts=[
-    rptFromDate&&rptToDate?`<b>${rptFromDate}</b> → <b>${rptToDate}</b>`:'Gesamter Zeitraum',
-    selMemberName?`· Mitarbeiter: <b>${selMemberName}</b>`:'',
-    `· <b>${ft.length}</b> Aufgabe${ft.length!==1?'n':''}`
+    rptFromDate&&rptToDate?`<b>${rptFromDate}</b> → <b>${rptToDate}</b>`:tr('allTime'),
+    selMemberName?`· ${tr('rptMember')}: <b>${selMemberName}</b>`:'',
+    `· <b>${ft.length}</b> ${tr('rptTasksWord')}`
   ];
   document.getElementById('rptPeriodBezeichnung').innerHTML=parts.filter(Boolean).join(' ');
 
@@ -2797,12 +2849,12 @@ function renderReports(){
   const summaryEl=document.getElementById('pvaMember');
   let summaryHTML=`<table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:8px">
     <thead><tr style="background:#f5f5f5;border-bottom:1.5px solid #e0e0e0">
-      <th style="padding:9px 12px;text-align:left;font-weight:500;color:#555">Mitarbeiter</th>
-      <th style="padding:9px 12px;text-align:center;font-weight:500;color:#555">Aufgaben</th>
-      <th style="padding:9px 12px;text-align:center;font-weight:500;color:#555">Erledigt</th>
-      <th style="padding:9px 12px;text-align:center;font-weight:500;color:#1D9E75">Geplante Stunden</th>
-      <th style="padding:9px 12px;text-align:center;font-weight:500;color:#4A90E2">Ist-Stunden</th>
-      <th style="padding:9px 12px;text-align:center;font-weight:500;color:#888">Erfüllung</th>
+      <th style="padding:9px 12px;text-align:left;font-weight:500;color:#555">${tr('rptMember')}</th>
+      <th style="padding:9px 12px;text-align:center;font-weight:500;color:#555">${tr('rptTasks')}</th>
+      <th style="padding:9px 12px;text-align:center;font-weight:500;color:#555">${tr('stDone')}</th>
+      <th style="padding:9px 12px;text-align:center;font-weight:500;color:#1D9E75">${tr('rptPlannedHrs')}</th>
+      <th style="padding:9px 12px;text-align:center;font-weight:500;color:#4A90E2">${tr('rptActualHrs')}</th>
+      <th style="padding:9px 12px;text-align:center;font-weight:500;color:#888">${tr('rptFulfil')}</th>
     </tr></thead><tbody>`;
 
   let grandPlan=0,grandAct=0,grandTasks=0,grandDone=0;
@@ -2841,7 +2893,7 @@ function renderReports(){
   // Grand total row
   const grandPct=grandPlan>0?Math.round(grandAct/grandPlan*100):0;
   summaryHTML+=`<tr style="background:#f0f8ff;border-top:2px solid #4A90E2;font-weight:600">
-    <td style="padding:10px 12px;font-weight:600">Gesamt</td>
+    <td style="padding:10px 12px;font-weight:600">${tr('rptTotal')}</td>
     <td style="padding:10px 12px;text-align:center">${grandTasks}</td>
     <td style="padding:10px 12px;text-align:center"><span style="background:#E1F5EE;color:#085041;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:600">${grandDone}</span></td>
     <td style="padding:10px 12px;text-align:center;color:#1D9E75;font-size:15px">${fmtHours(grandPlan)}</td>
@@ -2856,7 +2908,7 @@ function renderReports(){
   detailEl.innerHTML='';
   // Fixed col widths shared across all member tables — keeps columns aligned visually
   const COL_WIDTHS=['auto','110px','80px','80px','80px','70px','110px'];
-  const COL_HEADERS=[tr('taskCol'),tr('dateCol'),tr('timeCol'),tr('plannedCol'),tr('actualCol'),'Pause',tr('statusCol')];
+  const COL_HEADERS=[tr('taskCol'),tr('dateCol'),tr('timeCol'),tr('plannedCol'),tr('actualCol'),tr('pBreakLbl'),tr('statusCol')];
   const COL_ALIGN=['left','left','center','center','center','center','center'];
 
   MEMBERS.forEach(m=>{
@@ -2868,7 +2920,7 @@ function renderReports(){
     header.style.cssText=`display:flex;align-items:center;gap:8px;padding:10px 12px;background:${m.bg}`;
     header.innerHTML=`<div style="width:22px;height:22px;border-radius:50%;background:${m.color};color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700">${m.initials}</div>
       <span style="font-size:13px;font-weight:600;color:${m.color}">${m.name}</span>
-      <span style="font-size:11px;color:#888;margin-left:4px">${mAufgaben.length} Aufgabe${mAufgaben.length>1?'n':''} · ${fmtHours(mAufgaben.reduce((s,t)=>s+t.hours,0))} geplant</span>`;
+      <span style="font-size:11px;color:#888;margin-left:4px">${trf('memberTasksLine',{n:mAufgaben.length,h:fmtHours(mAufgaben.reduce((s,t)=>s+t.hours,0))})}</span>`;
     sec.appendChild(header);
     // Table with fixed layout
     const table=document.createElement('table');
@@ -2899,7 +2951,7 @@ function renderReports(){
         `${fmtHours(t.hours)}`,
         `${fmtHours(t.actual||0)}`,
         t.breakMin>0?`<span style="background:#FFF3CD;color:#856404;border-radius:3px;padding:2px 6px;font-size:10px;font-weight:500">${t.breakMin}min</span>`:'—',
-        `<span style="background:${sc[1]};color:${sc[2]};border-radius:3px;padding:2px 7px;font-size:10px;font-weight:500;white-space:nowrap">${t.status}</span>`
+        `<span style="background:${sc[1]};color:${sc[2]};border-radius:3px;padding:2px 7px;font-size:10px;font-weight:500;white-space:nowrap">${statusLabel(t.status)}</span>`
       ];
       cells.forEach((html,ci)=>{
         const td=document.createElement('td');
@@ -2917,7 +2969,7 @@ function renderReports(){
     const totalRow=document.createElement('tr');
     totalRow.style.cssText='background:#f0f8ff;border-top:2px solid #4A90E2;font-weight:600';
     const totalCells=[
-      `<span style="font-weight:600;color:#1a1a1a">Gesamt</span>`,
+      `<span style="font-weight:600;color:#1a1a1a">${tr('rptTotal')}</span>`,
       '','',
       `<span style="color:#1D9E75;font-weight:700;font-size:13px">${fmtHours(totalPl)}</span>`,
       `<span style="color:#4A90E2;font-weight:700;font-size:13px">${fmtHours(totalAc)}</span>`,
@@ -2941,7 +2993,7 @@ function exportExcel(){
   const ft=getFilteredAufgaben();
   if(!ft.length){showToast(tr('noAufgabenPeriod'),'#e74c3c');return;}
   const period=rptFromDate&&rptToDate?`${rptFromDate} to ${rptToDate}`:'Gesamter Zeitraum';
-  const genDate=new Date().toLocaleDateString('de-DE');
+  const genDate=new Date().toLocaleDateString(LOCALE());
 
   // Build summary rows
   const summaryRows=MEMBERS.map(m=>{
@@ -2978,7 +3030,7 @@ function exportExcel(){
         <td style="padding:6px 10px;border-bottom:1px solid #eee;text-align:center">${fmtHours(t.actual||0)}</td>
         <td style="padding:6px 10px;border-bottom:1px solid #eee;text-align:center">${t.breakMin>0?`<span style="background:#FFF3CD;color:#856404;border-radius:3px;padding:2px 6px;font-size:10px;font-weight:500">${t.breakMin}min</span>`:'—'}</td>
         <td style="padding:6px 10px;border-bottom:1px solid #eee;text-align:center">
-          <span style="background:${sc[1]};color:${sc[2]};border-radius:3px;padding:2px 8px;font-size:10px;font-weight:500">${t.status}</span>
+          <span style="background:${sc[1]};color:${sc[2]};border-radius:3px;padding:2px 8px;font-size:10px;font-weight:500">${statusLabel(t.status)}</span>
         </td>
       </tr>`;
     }).join('');
@@ -2986,28 +3038,28 @@ function exportExcel(){
       <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:${m.bg};border-radius:6px 6px 0 0">
         <div style="width:22px;height:22px;border-radius:50%;background:${m.color};color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700">${m.initials}</div>
         <span style="font-size:13px;font-weight:600;color:${m.color}">${m.name}</span>
-        <span style="font-size:11px;color:#666;margin-left:4px">${mt.length} Aufgaben · ${fmtHours(totalPl)} geplant · ${done} erledigt</span>
+        <span style="font-size:11px;color:#666;margin-left:4px">${trf('memberDetailLine',{n:mt.length,h:fmtHours(totalPl),d:done})}</span>
       </div>
       <table style="width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;border:1px solid #e0e0e0;border-top:none">
         <colgroup><col/><col style="width:100px"/><col style="width:65px"/><col style="width:70px"/><col style="width:70px"/><col style="width:65px"/><col style="width:100px"/></colgroup>
         <thead><tr style="background:#f5f5f5">
-          <th style="padding:7px 10px;text-align:left;border-bottom:1px solid #e0e0e0;font-size:11px;color:#666;font-weight:500">Aufgabe</th>
-          <th style="padding:7px 10px;text-align:left;border-bottom:1px solid #e0e0e0;font-size:11px;color:#666;font-weight:500">Datum</th>
-          <th style="padding:7px 10px;text-align:center;border-bottom:1px solid #e0e0e0;font-size:11px;color:#666;font-weight:500">Uhrzeit</th>
-          <th style="padding:7px 10px;text-align:center;border-bottom:1px solid #e0e0e0;font-size:11px;color:#666;font-weight:500">Geplant</th>
-          <th style="padding:7px 10px;text-align:center;border-bottom:1px solid #e0e0e0;font-size:11px;color:#666;font-weight:500">Ist</th>
-          <th style="padding:7px 10px;text-align:center;border-bottom:1px solid #e0e0e0;font-size:11px;color:#666;font-weight:500">Pause</th>
-          <th style="padding:7px 10px;text-align:center;border-bottom:1px solid #e0e0e0;font-size:11px;color:#666;font-weight:500">Status</th>
+          <th style="padding:7px 10px;text-align:left;border-bottom:1px solid #e0e0e0;font-size:11px;color:#666;font-weight:500">${tr('rptTask')}</th>
+          <th style="padding:7px 10px;text-align:left;border-bottom:1px solid #e0e0e0;font-size:11px;color:#666;font-weight:500">${tr('rptDate')}</th>
+          <th style="padding:7px 10px;text-align:center;border-bottom:1px solid #e0e0e0;font-size:11px;color:#666;font-weight:500">${tr('rptTime')}</th>
+          <th style="padding:7px 10px;text-align:center;border-bottom:1px solid #e0e0e0;font-size:11px;color:#666;font-weight:500">${tr('rptPlanned')}</th>
+          <th style="padding:7px 10px;text-align:center;border-bottom:1px solid #e0e0e0;font-size:11px;color:#666;font-weight:500">${tr('rptActual')}</th>
+          <th style="padding:7px 10px;text-align:center;border-bottom:1px solid #e0e0e0;font-size:11px;color:#666;font-weight:500">${tr('pBreakLbl')}</th>
+          <th style="padding:7px 10px;text-align:center;border-bottom:1px solid #e0e0e0;font-size:11px;color:#666;font-weight:500">${tr('status')}</th>
         </tr></thead>
         <tbody>${rows}</tbody>
         <tfoot>
           <tr style="background:#f0f8ff;border-top:2px solid #4A90E2;font-weight:600">
-            <td style="padding:8px 10px;font-weight:700">Gesamt</td>
+            <td style="padding:8px 10px;font-weight:700">${tr('rptTotal')}</td>
             <td></td><td></td>
             <td style="padding:8px 10px;text-align:center;color:#1D9E75;font-weight:700;font-size:13px">${fmtHours(totalPl)}</td>
             <td style="padding:8px 10px;text-align:center;color:#4A90E2;font-weight:700;font-size:13px">${fmtHours(totalAc)}</td>
             <td style="padding:8px 10px;text-align:center">${totalBreak>0?`<span style="background:#FFF3CD;color:#856404;border-radius:3px;padding:2px 6px;font-size:11px;font-weight:600">${totalBreak}min</span>`:'—'}</td>
-            <td style="padding:8px 10px;text-align:center"><span style="background:#E1F5EE;color:#085041;border-radius:3px;padding:2px 7px;font-size:11px;font-weight:600">${done} erledigt</span></td>
+            <td style="padding:8px 10px;text-align:center"><span style="background:#E1F5EE;color:#085041;border-radius:3px;padding:2px 7px;font-size:11px;font-weight:600">${done} ${tr('rptDoneSuffix')}</span></td>
           </tr>
         </tfoot>
       </table>
@@ -3018,8 +3070,8 @@ function exportExcel(){
   const totalAct=fmtHours(ft.reduce((s,t)=>s+(t.actual||0),0));
   const done=ft.filter(t=>t.status==='Erledigt').length;
 
-  const html=`<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8">
-  <title>Arbeitsplan Bericht — ${period}</title>
+  const html=`<!DOCTYPE html><html lang="${currentLang}"><head><meta charset="UTF-8">
+  <title>${tr('rptReportTitle')} — ${period}</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;padding:32px 40px}
@@ -3040,27 +3092,27 @@ function exportExcel(){
     }
   </style>
   </head><body>
-  <h1>Arbeitsplan Bericht</h1>
-  <div class="sub">Zeitraum: <b>${period}</b> &nbsp;·&nbsp; Erstellt: ${genDate} &nbsp;·&nbsp; ${ft.length} Aufgaben</div>
+  <h1>${tr('rptReportTitle')}</h1>
+  <div class="sub">${tr('rptPeriod')}: <b>${period}</b> &nbsp;·&nbsp; ${tr('rptCreated')}: ${genDate} &nbsp;·&nbsp; ${ft.length} ${tr('rptTasksWord')}</div>
   <div class="stats">
     <div class="stat"><div class="stat-label">${tr('totalGeplant')}</div><div class="stat-val">${totalPlan}</div></div>
     <div class="stat"><div class="stat-label">${tr('totalActual')}</div><div class="stat-val">${totalAct}</div></div>
     <div class="stat"><div class="stat-label">${tr('AufgabenErledigt')}</div><div class="stat-val">${done}</div></div>
     <div class="stat"><div class="stat-label">${tr('totalAufgaben')}</div><div class="stat-val">${ft.length}</div></div>
   </div>
-  <h2>Zusammenfassung nach Mitarbeiter</h2>
+  <h2>${tr('rptByMemberSummary')}</h2>
   <table style="margin-bottom:28px">
     <colgroup><col/><col style="width:80px"/><col style="width:80px"/><col style="width:90px"/><col style="width:90px"/><col style="width:90px"/></colgroup>
     <thead><tr>
-      <th>Mitarbeiter</th><th style="text-align:center">Aufgaben</th><th style="text-align:center">Erledigt</th>
-      <th style="text-align:center">Geplant</th><th style="text-align:center">Actual</th><th style="text-align:center">Erfüllungsgrad</th>
+      <th>${tr('rptMember')}</th><th style="text-align:center">${tr('rptTasks')}</th><th style="text-align:center">${tr('stDone')}</th>
+      <th style="text-align:center">${tr('rptPlanned')}</th><th style="text-align:center">${tr('rptActual')}</th><th style="text-align:center">${tr('rptCompletion')}</th>
     </tr></thead>
     <tbody>${summaryRows}</tbody>
   </table>
-  <h2>Aufgaben nach Mitarbeiter</h2>
+  <h2>${tr('rptTasksByMember')}</h2>
   ${detailTables}
   <div class="no-print" style="text-align:center;margin-top:24px">
-    <button onclick="window.print()" style="background:#4A90E2;color:#fff;border:none;border-radius:8px;padding:10px 28px;font-size:14px;cursor:pointer;font-weight:500">Als PDF speichern</button>
+    <button onclick="window.print()" style="background:#4A90E2;color:#fff;border:none;border-radius:8px;padding:10px 28px;font-size:14px;cursor:pointer;font-weight:500">${tr('rptSavePdf')}</button>
     <p style="color:#888;font-size:11px;margin-top:8px">Verwenden Sie Ihren Browser's print dialog → Als PDF speichern</p>
   </div>
   <script>window.onload=()=>setTimeout(()=>window.print(),400);<\/script>
@@ -3178,7 +3230,7 @@ function renderHolidays(){
           <div style="width:90px;flex-shrink:0;color:#888;font-size:11px">${h.date}</div>
           <div style="flex:1;font-weight:500">${h.name}</div>
           <span style="background:#E1F5EE;color:#085041;font-size:10px;border-radius:3px;padding:2px 6px;flex-shrink:0">Offiziell</span>
-          ${(window._readOnly||window._noHolidayEdit)?'':`<button title="Entfernen" style="background:none;border:none;cursor:pointer;color:#ccc;font-size:14px;padding:0 2px;line-height:1" data-date="${h.date}">✕</button>`}`;
+          ${(window._readOnly||window._noHolidayEdit)?'':`<button title="${tr('removeShort')}" style="background:none;border:none;cursor:pointer;color:#ccc;font-size:14px;padding:0 2px;line-height:1" data-date="${h.date}">✕</button>`}`;
         const offDelBtn=row.querySelector('button');
         if(offDelBtn)offDelBtn.onclick=()=>{holidays=holidays.filter(x=>x.date!==h.date);render();renderHolidays();};
         offList.appendChild(row);
@@ -3191,7 +3243,7 @@ function renderHolidays(){
   if(custList){
     custList.innerHTML='';
     if(!custom.length){
-      custList.innerHTML='<div style="color:#999;font-size:12px;padding:8px 0">Noch keine benutzerdefinierten freien Tage hinzugefügt.</div>';
+      custList.innerHTML=`<div style="color:#999;font-size:12px;padding:8px 0">${tr('noCustomHolidays')}</div>`;
     } else {
       // Group consecutive days with same name into ranges for display
       const groups=[];
@@ -3212,7 +3264,7 @@ function renderHolidays(){
           <div style="width:180px;flex-shrink:0;color:#888;font-size:11px">${dateLabel}</div>
           <div style="flex:1;font-weight:500">${g.name}</div>
           <span style="background:#FAEEDA;color:#633806;font-size:10px;border-radius:3px;padding:2px 6px;flex-shrink:0">Benutzerdefiniert</span>
-          ${(window._readOnly||window._noHolidayEdit)?'':`<button title="Entfernen" style="background:none;border:0.5px solid #e74c3c;border-radius:4px;padding:3px 7px;font-size:11px;color:#e74c3c;cursor:pointer">✕</button>`}`;
+          ${(window._readOnly||window._noHolidayEdit)?'':`<button title="${tr('removeShort')}" style="background:none;border:0.5px solid #e74c3c;border-radius:4px;padding:3px 7px;font-size:11px;color:#e74c3c;cursor:pointer">✕</button>`}`;
         const custDelBtn=row.querySelector('button');
         if(custDelBtn)custDelBtn.onclick=()=>{
           holidays=holidays.filter(x=>!g.dates.includes(x.date));
@@ -3233,7 +3285,7 @@ document.getElementById('resetHdaysBtn').onclick=()=>{
   if(window._readOnly||window._noHolidayEdit){showToast('Keine Berechtigung — Feiertage nicht bearbeitbar.','#EF9F27');return;}
   holidays=buildDefaultHolidays();
   render();renderHolidays();
-  showToast('Feiertage auf offizielle Baden-Württemberg Liste zurückgesetzt.','#1D9E75');
+  showToast(tr('tHolidaysReset'),'#1D9E75');
 };
 
 /* ── Edit / Entfernen Member ── */
@@ -3255,7 +3307,7 @@ function openEditMember(memberId){
   if(window._readOnly||window._noMemberEdit)return; // pa të drejtën "Mitarbeiter"
   editingMemberId=memberId;
   const m=MEMBERS.find(x=>x.id===memberId);if(!m)return;
-  document.getElementById('editMemberTitle').textContent='Mitarbeiter bearbeiten';
+  document.getElementById('editMemberTitle').textContent=tr('tipEditMember');
   document.getElementById('emName').value=m.name;
   document.getElementById('emInitialen').value=m.initials;
   document.getElementById('emEmail').value=m.email||'';
@@ -3289,12 +3341,12 @@ function removeMember(memberId){
   if(idx>-1)MEMBERS.splice(idx,1);
   Aufgaben=Aufgaben.filter(t=>t.memberId!==memberId);
   render();
-  showUndoToast(`Mitarbeiter „${m.name}" entfernt.`,()=>{
+  showUndoToast(trf('undoToastMemberRemoved',{n:m.name}),()=>{
     MEMBERS.splice(Math.min(idx,MEMBERS.length),0,m);
     removedTasks.forEach(t=>Aufgaben.push(t));
     render();
     addActivities([{icon:'↩',color:'#1D9E75',text:`Mitarbeiter <b>${m.name}</b> wiederhergestellt`}]);
-    showToast('Wiederhergestellt.','#1D9E75');
+    showToast(tr('tRestored'),'#1D9E75');
   });
 }
 
@@ -3332,7 +3384,7 @@ document.getElementById('transferAllBtn').onclick=()=>{
   if(_transferTask&&_transferNewMemberId){
     const _prev=_transferTask.memberId;
     Aufgaben.filter(x=>x.groupId===_transferTask.groupId).forEach(x=>x.memberId=_transferNewMemberId);
-    render();showToast('Gesamter Plan übertragen.','#1D9E75');
+    render();showToast(tr('tPlanTransferred'),'#1D9E75');
     if(_transferNewMemberId!==_prev)notifyReassign(_transferNewMemberId,_transferTask);
   }
   document.getElementById('transferModal').classList.add('hidden');
@@ -3342,7 +3394,7 @@ document.getElementById('transferOneBtn').onclick=()=>{
     const _prev=_transferTask.memberId;
     _transferTask.memberId=_transferNewMemberId;
     _transferTask.date=_transferNewDate;
-    render();showToast('Dieser Tag übertragen.','#4A90E2');
+    render();showToast(tr('tDayTransferred'),'#4A90E2');
     if(_transferNewMemberId!==_prev)notifyReassign(_transferNewMemberId,_transferTask);
   }
   document.getElementById('transferModal').classList.add('hidden');
@@ -3363,7 +3415,7 @@ document.getElementById('emSave').onclick=()=>{
   const monthlyHours=parseInt(document.getElementById('emHours').value)||160;
   if(!name)return;
   const emEmail=document.getElementById('emEmail').value.trim();
-  if(emEmail&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(emEmail)){showToast('Bitte eine gültige E-Mail-Adresse eingeben.','#e74c3c');document.getElementById('emEmail').style.borderColor='#e74c3c';return;}
+  if(emEmail&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(emEmail)){showToast(tr('tValidEmail'),'#e74c3c');document.getElementById('emEmail').style.borderColor='#e74c3c';return;}
   document.getElementById('emEmail').style.borderColor='';
   const selectedSwatch=[...document.querySelectorAll('#emColorPicker div')].find(s=>s.style.border.includes('3px'));
   if(selectedSwatch){m.color=selectedSwatch.dataset.color;m.bg=selectedSwatch.dataset.bg;}
@@ -3624,7 +3676,7 @@ document.getElementById('amSave').onclick=()=>{
   const color=sel?sel.dataset.color:MEMBER_PALETTES[MEMBERS.length%MEMBER_PALETTES.length].color;
   const bg=sel?sel.dataset.bg:MEMBER_PALETTES[MEMBERS.length%MEMBER_PALETTES.length].bg;
   const email=document.getElementById('amEmail').value.trim();
-  if(email&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){showToast('Bitte eine gültige E-Mail-Adresse eingeben.','#e74c3c');document.getElementById('amEmail').style.borderColor='#e74c3c';return;}
+  if(email&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){showToast(tr('tValidEmail'),'#e74c3c');document.getElementById('amEmail').style.borderColor='#e74c3c';return;}
   document.getElementById('amEmail').style.borderColor='';
   MEMBERS.push({id:Date.now(),name,initials,color,bg,cap:8,monthlyHours,email});
   document.getElementById('addMemberModal').classList.add('hidden');
@@ -3658,7 +3710,7 @@ document.getElementById('addHdayBtn').onclick=()=>{
   document.getElementById('hdayName').value='';
   renderHolidays();render();
   saveHolidaysToSupabase();
-  showToast(`${added} Tag${added!==1?'e':''} hinzugefügt.`,'#1D9E75');
+  showToast(trf('tDaysAdded',{n:added}),'#1D9E75');
 };
 
 /* ResizeObserver: re-sync whenever the grid resizes (e.g. panel open/close, window resize) */
@@ -3717,13 +3769,13 @@ function detectChanges(prev,curr,prevM,currM,prevKb,currKb){
   curr.forEach(t=>{
     if(!prev.find(p=>p.id===t.id)){
       const m=currM.find(x=>x.id===t.memberId);
-      changes.push({icon:'✚',color:'#1D9E75',text:`Aufgabe <b>${t.name}</b> hinzugefügt für <b>${m?m.name:'unbekannt'}</b> am ${t.date}`,time:now});
+      changes.push({icon:'✚',color:'#1D9E75',text:trf('actTaskAddedDate',{n:t.name,m:(m?m.name:tr('unknownMember')),d:t.date}),time:now});
     }
   });
   // Aufgaben removed
   prev.forEach(t=>{
     if(!curr.find(c=>c.id===t.id)){
-      changes.push({icon:'✕',color:'#e74c3c',text:`Aufgabe <b>${t.name}</b> wurde gelöscht`,time:now});
+      changes.push({icon:'✕',color:'#e74c3c',text:trf('actTaskDeletedSimple',{n:t.name}),time:now});
     }
   });
   // Aufgaben changed
@@ -3735,25 +3787,25 @@ function detectChanges(prev,curr,prevM,currM,prevKb,currKb){
     if(old.memberId!==t.memberId)
       changes.push({icon:'↔',color:'#4A90E2',text:`Aufgabe <b>${t.name}</b> verschoben von <b>${oldM?oldM.name:'?'}</b> zu <b>${m?m.name:'?'}</b>`,time:now});
     if(old.status!==t.status)
-      changes.push({icon:'◎',color:'#BA7517',text:`Status von Aufgabe <b>${t.name}</b> geändert zu <b>${t.status}</b>`,time:now});
+      changes.push({icon:'◎',color:'#BA7517',text:trf('actStatusChanged',{n:t.name,s:statusLabel(t.status)}),time:now});
     if(old.date!==t.date)
-      changes.push({icon:'📅',color:'#534AB7',text:`Aufgabe <b>${t.name}</b> verschoben auf <b>${t.date}</b>`,time:now});
+      changes.push({icon:'📅',color:'#534AB7',text:trf('actTaskMoved',{n:t.name,d:t.date}),time:now});
     if(old.hours!==t.hours)
-      changes.push({icon:'⏱',color:'#888',text:`Dauer von Aufgabe <b>${t.name}</b> geändert zu <b>${fmtHours(t.hours)}</b>`,time:now});
+      changes.push({icon:'⏱',color:'#888',text:trf('actDurationChanged',{n:t.name,h:fmtHours(t.hours)}),time:now});
   });
   // Members added/removed
-  currM.forEach(m=>{if(!prevM.find(p=>p.id===m.id))changes.push({icon:'👤',color:'#1D9E75',text:`Mitarbeiter <b>${m.name}</b> zum Team hinzugefügt`,time:now});});
-  prevM.forEach(m=>{if(!currM.find(c=>c.id===m.id))changes.push({icon:'✕',color:'#e74c3c',text:`Mitarbeiter <b>${m.name}</b> aus dem Team entfernt`,time:now});});
+  currM.forEach(m=>{if(!prevM.find(p=>p.id===m.id))changes.push({icon:'👤',color:'#1D9E75',text:trf('actMemberAdded',{n:m.name}),time:now});});
+  prevM.forEach(m=>{if(!currM.find(c=>c.id===m.id))changes.push({icon:'✕',color:'#e74c3c',text:trf('actMemberRemoved',{n:m.name}),time:now});});
   // Kanban: cards added/removed
   currKb.forEach(col=>{
     const oldCol=prevKb.find(c=>c.id===col.id);
     col.cards.forEach(card=>{
       if(!oldCol||!oldCol.cards.find(c=>c.id===card.id))
-        changes.push({icon:'◻',color:'#0079bf',text:`Karte <b>${card.title}</b> zur Liste <b>${col.title}</b> hinzugefügt`,time:now});
+        changes.push({icon:'◻',color:'#0079bf',text:trf('actCardAdded',{c:card.title,l:col.title}),time:now});
     });
     if(oldCol) oldCol.cards.forEach(card=>{
       if(!col.cards.find(c=>c.id===card.id))
-        changes.push({icon:'✕',color:'#eb5a46',text:`Karte <b>${card.title}</b> aus Liste <b>${col.title}</b> entfernt`,time:now});
+        changes.push({icon:'✕',color:'#eb5a46',text:trf('actCardRemoved',{c:card.title,l:col.title}),time:now});
     });
   });
   return changes;
@@ -3789,7 +3841,7 @@ async function loadActivityLog(){
       text:r.text||'',
       user:r.username||'',
       time:r.time||'',
-      date:r.created_at?new Date(r.created_at).toLocaleDateString('de-DE'):'',
+      date:r.created_at?new Date(r.created_at).toLocaleDateString(LOCALE()):'',
     }));
     renderNotifPanel();
     if(activityLog.length>0)document.getElementById('notifDot').style.display='block';
@@ -3909,8 +3961,8 @@ function processTagChanges(prevIds,newIds,ctx){
     if(m.email)sendTagEmail(m,ctx);else noMail.push(m.name);
   });
   if(!names.length)return;
-  addActivities([{icon:'🔔',color:'#4A90E2',text:`<b>${names.join(', ')}</b> bei ${ctx.type} <b>${ctx.name}</b> getaggt`,time:_now}]);
-  if(noMail.length)showToast(`Keine E-Mail hinterlegt für: ${noMail.join(', ')}`,'#EF9F27');
+  addActivities([{icon:'🔔',color:'#4A90E2',text:trf('actTagged',{names:names.join(', '),type:(ctx.type==='Aufgabe'?tr('typeTask'):ctx.type),name:ctx.name}),time:_now}]);
+  if(noMail.length)showToast(trf('tNoEmailFor',{n:noMail.join(', ')}),'#EF9F27');
 }
 // Renders an editable list of member-tag chips into `boxId` with an add-dropdown in `addId`.
 // Returns a getter that yields the currently selected member-id array.
@@ -3927,17 +3979,17 @@ function wireTagEditor(boxId,addId,initialIds){
       chip.className='tag-chip';
       chip.style.background=m.bg||'#eee';chip.style.color=m.color||'#333';
       chip.innerHTML=`<span class="tag-dot" style="background:${m.color||'#888'}"></span>${m.name}`+
-        (m.email?'':' <span class="tag-warn" title="Keine E-Mail hinterlegt">⚠</span>')+
-        (window._readOnly?'':' <button class="tag-x" title="Entfernen">✕</button>');
+        (m.email?'':` <span class="tag-warn" title="${tr('noEmailTitle')}">⚠</span>`)+
+        (window._readOnly?'':` <button class="tag-x" title="${tr('removeShort')}">✕</button>`);
       const x=chip.querySelector('.tag-x');
       if(x)x.onclick=()=>{sel=sel.filter(v=>v!==id);drawChips();drawAdd();};
       box.appendChild(chip);
     });
-    if(!sel.length)box.innerHTML='<span style="font-size:11px;color:#bbb">Niemand getaggt</span>';
+    if(!sel.length)box.innerHTML=`<span style="font-size:11px;color:#bbb">${tr('nobodyTagged')}</span>`;
   }
   function drawAdd(){
     const avail=MEMBERS.filter(m=>!sel.includes(m.id));
-    add.innerHTML='<option value="">+ Mitarbeiter taggen…</option>'+
+    add.innerHTML='<option value="">'+tr('tagAddPlaceholder')+'</option>'+
       avail.map(m=>`<option value="${m.id}">${m.name}${m.email?'':' (keine E-Mail)'}</option>`).join('');
     add.style.display=(window._readOnly||!avail.length)?'none':'';
   }
@@ -3952,7 +4004,7 @@ function notifySyncProblem(msg){
   const now=Date.now();
   if(now-_lastSyncWarn<8000)return;
   _lastSyncWarn=now;
-  if(typeof showToast==='function')showToast(msg||'⚠ Verbindungsproblem — Änderungen wurden evtl. nicht gespeichert.','#EF9F27');
+  if(typeof showToast==='function')showToast(msg||tr('tConnProblem'),'#EF9F27');
 }
 
 async function sbFetch(table,method='GET',body=null){
@@ -3978,13 +4030,13 @@ async function sbFetch(table,method='GET',body=null){
     if(!res.ok){
       const err=await res.text();
       console.warn(`Supabase ${method} ${table} failed:`,err);
-      notifySyncProblem('⚠ Speichern fehlgeschlagen — bitte Verbindung prüfen.');
+      notifySyncProblem(tr('tSaveFailed'));
       return false;
     }
     return true;
   }catch(e){
     console.warn(`Supabase fetch error on ${table}:`,e.message);
-    notifySyncProblem('⚠ Keine Verbindung zum Server — Änderungen evtl. nicht gespeichert.');
+    notifySyncProblem(tr('tNoConn'));
     return method==='GET'?[]:false;
   }
 }
@@ -3999,7 +4051,7 @@ async function saveSnapshot(label){
       kbGlobalBg:window.kbGlobalBg||'#f0f1f3',
       holidays:holidays.filter(h=>!h.official),
     };
-    await sbFetch('snapshots','POST',{label:label||new Date().toLocaleString('de-DE'),data});
+    await sbFetch('snapshots','POST',{label:label||new Date().toLocaleString(LOCALE()),data});
     // Keep only last 30 snapshots — delete older ones
     const all=await sbFetch('snapshots','GET');
     if(all&&all.length>30){
@@ -4032,7 +4084,7 @@ async function showSnapshots(){
       ${sorted.map(s=>`<div style="padding:10px 16px;border-bottom:0.5px solid #f0f0f0;display:flex;align-items:center;gap:10px">
         <div style="flex:1;min-width:0">
           <div style="font-size:12px;font-weight:500;color:#1a1a1a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.label}</div>
-          <div style="font-size:10px;color:#aaa;margin-top:2px">${new Date(s.created_at).toLocaleString('de-DE')}</div>
+          <div style="font-size:10px;color:#aaa;margin-top:2px">${new Date(s.created_at).toLocaleString(LOCALE())}</div>
         </div>
         <button onclick="restoreSnapshot(${s.id})" style="background:#4A90E2;color:#fff;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:11px;font-weight:500;flex-shrink:0">Wiederherstellen</button>
       </div>`).join('')}
@@ -4045,7 +4097,7 @@ async function showSnapshots(){
 }
 
 async function restoreSnapshot(id){
-  if(!confirm('Diesen Snapshot wiederherstellen? Alle aktuellen Daten werden überschrieben.'))return;
+  if(!confirm(tr('tSnapshotRestore')))return;
   try{
     const rows=await sbFetch('snapshots','GET');
     const snap=rows&&rows.find(r=>r.id===id);
@@ -4086,7 +4138,7 @@ async function savePlan(){
     if(allOk){
       showToast('Plan gespeichert und synchronisiert!','#1D9E75');
       // Auto-save a snapshot on every save
-      const label=new Date().toLocaleString('de-DE');
+      const label=new Date().toLocaleString(LOCALE());
       saveSnapshot(label);
       // Update baseline snapshot
       prevSnapshot.Aufgaben=prevT;
@@ -4303,7 +4355,7 @@ function showUndoToast(msg,undoFn){
   }
   t.innerHTML='';
   const span=document.createElement('span');span.textContent=msg;
-  const btn=document.createElement('button');btn.textContent='Rückgängig';
+  const btn=document.createElement('button');btn.textContent=tr('undoTipPrefix');
   btn.style.cssText='background:#4A90E2;border:none;color:#fff;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0';
   t.appendChild(span);t.appendChild(btn);
   t.style.opacity='1';t.style.pointerEvents='auto';
@@ -4461,7 +4513,7 @@ document.getElementById('kbBgCustomColor').oninput=function(){applyKbBg(this.val
 document.getElementById('kbBgUpload').onchange=function(){
   const file=this.files[0];
   if(!file)return;
-  if(file.size>5*1024*1024){showToast('Bild zu groß — max. 5 MB.','#e74c3c');return;}
+  if(file.size>5*1024*1024){showToast(tr('tImageTooBig'),'#e74c3c');return;}
   const reader=new FileReader();
   reader.onload=e=>{
     const dataUrl=e.target.result;
@@ -4556,7 +4608,7 @@ function kbMoveDraggedCardToBoard(targetCols,targetName){
   syncKbCols();
   renderKanban();renderKbMemberSidebar();renderKbSharedBoardList();
   const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  addActivities([{icon:'➜',color:'#0079bf',text:`Karte <b>${moved.title}</b> nach <b>${targetName}</b> verschoben`,time:_now}]);
+  addActivities([{icon:'➜',color:'#0079bf',text:trf('actCardMoved',{c:moved.title,t:targetName}),time:_now}]);
   if(typeof showToast==='function')showToast(`Karte zu ${targetName} verschoben`,'#1D9E75');
 }
 /* Attach card drop behaviour to a sidebar row */
@@ -4661,14 +4713,14 @@ function archiveCard(card,col){
   bucket.cards.push({card,listId:col.id,listTitle:col.title,ts:Date.now()});
   syncKbCols();renderKanban();
   const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  addActivities([{icon:'🗄',color:'#BA7517',text:`Karte <b>${card.title}</b> archiviert`,time:_now}]);
-  showUndoToast(`Karte „${card.title}" archiviert.`,()=>{
+  addActivities([{icon:'🗄',color:'#BA7517',text:trf('actCardArchived',{c:card.title}),time:_now}]);
+  showUndoToast(trf('undoToastCardArchived',{n:card.title}),()=>{
     const b=kbArchiveBucket(true);
     b.cards=b.cards.filter(e=>e.card!==card);
     col.cards.splice(Math.min(idx,col.cards.length),0,card);
     syncKbCols();renderKanban();
     addActivities([{icon:'↩',color:'#1D9E75',text:`Karte <b>${card.title}</b> wiederhergestellt`}]);
-    showToast('Wiederhergestellt.','#1D9E75');
+    showToast(tr('tRestored'),'#1D9E75');
   });
 }
 
@@ -4681,14 +4733,14 @@ function archiveList(col){
   bucket.lists.push({col,ts:Date.now()});
   syncKbCols();renderKanban();
   const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  addActivities([{icon:'🗄',color:'#BA7517',text:`Liste <b>${col.title}</b> archiviert (${col.cards.length} Karten)`,time:_now}]);
-  showUndoToast(`Liste „${col.title}" archiviert.`,()=>{
+  addActivities([{icon:'🗄',color:'#BA7517',text:trf('actListArchived',{l:col.title,n:col.cards.length}),time:_now}]);
+  showUndoToast(trf('undoToastListArchived',{n:col.title}),()=>{
     const b=kbArchiveBucket(true);
     b.lists=b.lists.filter(e=>e.col!==col);
     kbCols.splice(Math.min(idx,kbCols.length),0,col);
     syncKbCols();renderKanban();
     addActivities([{icon:'↩',color:'#1D9E75',text:`Liste <b>${col.title}</b> wiederhergestellt`}]);
-    showToast('Wiederhergestellt.','#1D9E75');
+    showToast(tr('tRestored'),'#1D9E75');
   });
 }
 
@@ -4701,13 +4753,13 @@ function archiveAllCards(col){
   col.cards=[];
   syncKbCols();renderKanban();
   const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  addActivities([{icon:'🗄',color:'#BA7517',text:`${moved.length} Karten aus <b>${col.title}</b> archiviert`,time:_now}]);
-  showUndoToast(`${moved.length} Karten archiviert.`,()=>{
+  addActivities([{icon:'🗄',color:'#BA7517',text:trf('actCardsArchived',{n:moved.length,l:col.title}),time:_now}]);
+  showUndoToast(trf('undoToastCardsArchived',{n:moved.length}),()=>{
     const b=kbArchiveBucket(true);
     moved.forEach(card=>{b.cards=b.cards.filter(e=>e.card!==card);col.cards.push(card);});
     syncKbCols();renderKanban();
     addActivities([{icon:'↩',color:'#1D9E75',text:`${moved.length} Karten in <b>${col.title}</b> wiederhergestellt`}]);
-    showToast('Wiederhergestellt.','#1D9E75');
+    showToast(tr('tRestored'),'#1D9E75');
   });
 }
 
@@ -4951,7 +5003,7 @@ function renderKanban(){
   if(!kbSelectedBoardId){
     container.innerHTML=`<div style="padding:40px 20px;text-align:center;color:#999;font-size:13px">
       <div style="font-size:32px;margin-bottom:12px">👈</div>
-      Board oder Mitarbeiter links auswählen
+      ${tr('emptyBoardHint')}
     </div>`;
     return;
   }
@@ -5017,7 +5069,7 @@ function renderKanban(){
         col.cards.push({id:'c'+(++kbNextId),title:t,desc:'',label:selBezeichnung||'',due:'',checklist:[],members:[],tags:[]});
         close();syncKbCols();renderKanban();
         const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-        addActivities([{icon:'◻',color:'#0079bf',text:`Karte <b>${t}</b> zur Liste <b>${col.title}</b> hinzugefügt`,time:_now}]);
+        addActivities([{icon:'◻',color:'#0079bf',text:trf('actCardAdded',{c:t,l:col.title}),time:_now}]);
       };
       ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();saveBtn.click();}if(e.key==='Escape')close();});
       btns.appendChild(saveBtn);btns.appendChild(cancelBtn);
@@ -5099,53 +5151,53 @@ function renderKbDetail(card,col){
   const doneCl=card.checklist.filter(c=>c.done).length;
   const pct=card.checklist.length?Math.round(doneCl/card.checklist.length*100):0;
   box.innerHTML=`
-    <div style="font-size:11px;color:#888;margin-bottom:4px">▦ in list <b>${col.title}</b></div>
+    <div style="font-size:11px;color:#888;margin-bottom:4px">▦ ${tr('kdInList')} <b>${col.title}</b></div>
     <input class="kb-detail-title" id="kdTitle" value="${card.title.replace(/"/g,'&quot;')}">
     ${card.label?`<div style="display:inline-block;background:${card.label};border-radius:4px;height:16px;width:48px;margin-bottom:12px"></div>`:''}
     <div style="display:flex;gap:12px;flex-wrap:wrap">
       <div style="flex:1;min-width:200px">
         <div class="kb-detail-section">
-          <h4>Beschreibung</h4>
+          <h4>${tr('description')}</h4>
           <textarea id="kdDesc" style="width:100%;border:0.5px solid #ccc;border-radius:6px;padding:7px;font-size:13px;resize:vertical;min-height:70px;font-family:system-ui,sans-serif">${card.desc}</textarea>
         </div>
         ${card.checklist.length?`<div class="kb-detail-section">
-          <h4>Checkliste <span style="float:right;font-size:11px;color:#888;font-weight:400">${pct}%</span></h4>
+          <h4>${tr('cardChecklist')} <span style="float:right;font-size:11px;color:#888;font-weight:400">${pct}%</span></h4>
           <div style="background:#e0e0e0;border-radius:2px;height:4px;margin-bottom:10px"><div style="background:#4A90E2;width:${pct}%;height:100%;border-radius:2px"></div></div>
           <div id="kdCheckliste"></div>
-          <div style="display:flex;gap:6px;margin-top:8px"><input id="kdClInput" placeholder="Element hinzufügen…" style="flex:1;border:0.5px solid #ccc;border-radius:6px;padding:5px 8px;font-size:12px"><button class="btn-primary" style="padding:5px 10px" id="kdClAdd">Hinzufügen</button></div>
-        </div>`:'<div class="kb-detail-section"><h4>Checkliste</h4><div style="display:flex;gap:6px"><input id="kdClInput" placeholder="Element hinzufügen…" style="flex:1;border:0.5px solid #ccc;border-radius:6px;padding:5px 8px;font-size:12px"><button class="btn-primary" style="padding:5px 10px" id="kdClAdd">Hinzufügen</button></div></div>'}
+          <div style="display:flex;gap:6px;margin-top:8px"><input id="kdClInput" placeholder="${tr('kdClPh')}" style="flex:1;border:0.5px solid #ccc;border-radius:6px;padding:5px 8px;font-size:12px"><button class="btn-primary" style="padding:5px 10px" id="kdClAdd">${tr('addShort')}</button></div>
+        </div>`:`<div class="kb-detail-section"><h4>${tr('cardChecklist')}</h4><div style="display:flex;gap:6px"><input id="kdClInput" placeholder="${tr('kdClPh')}" style="flex:1;border:0.5px solid #ccc;border-radius:6px;padding:5px 8px;font-size:12px"><button class="btn-primary" style="padding:5px 10px" id="kdClAdd">${tr('addShort')}</button></div></div>`}
         <div class="kb-detail-section">
-          <h4>Attachments (${card.attachments.length})</h4>
+          <h4>${tr('cardAttachments')} (${card.attachments.length})</h4>
           <div id="kdAttachList" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px"></div>
           <label style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#f5f5f5;border:0.5px solid #ccc;border-radius:6px;cursor:pointer;font-size:12px;color:#555">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.41 17.41a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
-            Datei anhängen
+            ${tr('kdAttachFile')}
             <input type="file" id="kdFileInput" style="display:none" multiple>
           </label>
-          <div style="font-size:10px;color:#bbb;margin-top:5px">Max. 2 MB pro Datei. Bilder werden als Vorschau angezeigt.</div>
+          <div style="font-size:10px;color:#bbb;margin-top:5px">${tr('kdAttachNote')}</div>
         </div>
         <div class="kb-detail-section">
-          <h4>Kommentare (${card.comments.length})</h4>
+          <h4>${tr('kdComments')} (${card.comments.length})</h4>
           <div id="kdCommentList" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px"></div>
           ${window._readOnly?'':`<div style="display:flex;flex-direction:column;gap:6px">
-            <textarea id="kdCommentInput" placeholder="Kommentar schreiben…" style="width:100%;border:0.5px solid #ccc;border-radius:6px;padding:7px;font-size:13px;resize:vertical;min-height:50px;font-family:system-ui,sans-serif"></textarea>
-            <div style="display:flex;justify-content:flex-end"><button class="btn-primary" style="padding:5px 12px" id="kdCommentAdd">Kommentar hinzufügen</button></div>
+            <textarea id="kdCommentInput" placeholder="${tr('kdCommentPh')}" style="width:100%;border:0.5px solid #ccc;border-radius:6px;padding:7px;font-size:13px;resize:vertical;min-height:50px;font-family:system-ui,sans-serif"></textarea>
+            <div style="display:flex;justify-content:flex-end"><button class="btn-primary" style="padding:5px 12px" id="kdCommentAdd">${tr('kdCommentAdd')}</button></div>
           </div>`}
         </div>
       </div>
       <div style="width:160px;flex-shrink:0">
-        <div style="font-size:11px;font-weight:500;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Bezeichnung</div>
+        <div style="font-size:11px;font-weight:500;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">${tr('cardLabelLbl')}</div>
         <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px" id="kdBezeichnungPicker"></div>
-        <div style="font-size:11px;font-weight:500;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Fälligkeitsdatum</div>
+        <div style="font-size:11px;font-weight:500;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">${tr('cardDueLbl')}</div>
         <input type="date" id="kdDue" value="${card.due}" style="width:100%;border:0.5px solid #ccc;border-radius:6px;padding:5px 8px;font-size:12px;margin-bottom:14px">
-        <div style="font-size:11px;font-weight:500;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">🔔 Mitarbeiter taggen</div>
+        <div style="font-size:11px;font-weight:500;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">🔔 ${tr('cardTagLbl')}</div>
         <div id="kdTagBox" class="tag-box"></div>
         <select id="kdTagAdd" class="tag-add" style="margin-bottom:14px"></select>
         <button class="nav-btn" style="width:100%;margin-top:0;border-color:#BA7517;color:#BA7517;${window._readOnly?'display:none':''}" id="kdArchive">🗄 ${tr('cardArchiveBtn')}</button>
       </div>
     </div>
     <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
-      <button class="btn-primary" id="kdSave" ${window._readOnly?'style="display:none"':''}>Speichern</button>
+      <button class="btn-primary" id="kdSave" ${window._readOnly?'style="display:none"':''}>${tr('saveBtn')}</button>
     </div>
   `;
 
@@ -5171,11 +5223,11 @@ function renderKbDetail(card,col){
       const dl=document.createElement('a');
       dl.href=att.data;dl.download=att.name;
       dl.style.cssText='background:#f0f0f0;border:0.5px solid #ccc;border-radius:4px;padding:3px 7px;font-size:11px;color:#555;text-decoration:none;cursor:pointer';
-      dl.textContent='↓';dl.title='Herunterladen';
+      dl.textContent='↓';dl.title=tr('download');
       // Delete button
       const del=document.createElement('button');
       del.style.cssText='background:none;border:0.5px solid #e74c3c;border-radius:4px;padding:3px 7px;font-size:11px;color:#e74c3c;cursor:pointer';
-      del.textContent='✕';del.title='Entfernen';
+      del.textContent='✕';del.title=tr('removeShort');
       del.onclick=()=>{card.attachments.splice(i,1);syncKbCols();renderAttachList();};
       btns.appendChild(dl);btns.appendChild(del);
       row.appendChild(info);row.appendChild(btns);
@@ -5228,7 +5280,7 @@ function renderKbDetail(card,col){
           <span style="width:20px;height:20px;border-radius:50%;background:#4A90E2;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;flex-shrink:0">${initials}</span>
           <span style="font-size:12px;font-weight:600;color:#1a1a1a">${escHtml(c.author||'Unbekannt')}</span>
           <span style="font-size:10px;color:#aaa;margin-left:auto">${c.date||''}${c.date&&c.time?' · ':''}${c.time||''}</span>
-          ${canDelete?`<button data-i="${i}" class="kdCommentDel" title="Löschen" style="background:none;border:none;cursor:pointer;color:#ccc;font-size:13px;padding:0 0 0 4px;line-height:1">✕</button>`:''}
+          ${canDelete?`<button data-i="${i}" class="kdCommentDel" title="${tr('deleteShort')}" style="background:none;border:none;cursor:pointer;color:#ccc;font-size:13px;padding:0 0 0 4px;line-height:1">✕</button>`:''}
         </div>
         <div style="font-size:13px;color:#333;line-height:1.45;white-space:pre-wrap;word-break:break-word">${escHtml(c.text)}</div>`;
       list.appendChild(row);
@@ -5250,7 +5302,7 @@ function renderKbDetail(card,col){
     card.comments.push({
       text:txt,
       author:currentUser?currentUser.display:'Unbekannt',
-      date:now.toLocaleDateString('de-DE'),
+      date:now.toLocaleDateString(LOCALE()),
       time:now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})
     });
     inp.value='';
@@ -5258,7 +5310,7 @@ function renderKbDetail(card,col){
     const h=document.querySelector('#kdCommentList').closest('.kb-detail-section').querySelector('h4');
     if(h)h.textContent=`Kommentare (${card.comments.length})`;
     const _now=now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-    addActivities([{icon:'💬',color:'#4A90E2',text:`Kommentar zu Karte <b>${card.title}</b> hinzugefügt`,time:_now}]);
+    addActivities([{icon:'💬',color:'#4A90E2',text:trf('actCommentAdded',{c:card.title}),time:_now}]);
   };
   // Checkliste render
   const clWrap=document.getElementById('kdCheckliste');
@@ -5305,7 +5357,7 @@ function renderKbDetail(card,col){
     document.getElementById('kbDetailModal').classList.add('hidden');
     syncKbCols();renderKanban();
     const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-    addActivities([{icon:'✎',color:'#4A90E2',text:`Karte <b>${card.title}</b> aktualisiert`,time:_now}]);
+    addActivities([{icon:'✎',color:'#4A90E2',text:trf('actCardUpdated',{c:card.title}),time:_now}]);
   };
   document.getElementById('kdArchive').onclick=()=>{
     document.getElementById('kbDetailModal').classList.add('hidden');
@@ -5378,19 +5430,19 @@ document.getElementById('kbDetailModal').addEventListener('click',e=>{if(e.targe
 })();
 
 document.getElementById('kbAddColBtn').onclick=()=>{
-  if(!kbSelectedBoardId){showToast('Bitte zuerst ein Board auswählen.','#EF9F27');return;}
+  if(!kbSelectedBoardId){showToast(tr('tSelectBoard'),'#EF9F27');return;}
   const newTitle=`Liste ${kbCols.length+1}`;
   kbCols.push({id:'k'+(++kbNextId),title:newTitle,color:null,cards:[]});
   syncKbCols();renderKanban();
   const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  addActivities([{icon:'➕',color:'#1D9E75',text:`Liste <b>${newTitle}</b> hinzugefügt`,time:_now}]);
+  addActivities([{icon:'➕',color:'#1D9E75',text:trf('actListAdded',{l:newTitle}),time:_now}]);
 };
 
 /* ════ TAB SWITCHING (updated to include kanban) ════ */
 /* ════ YEARLY CALENDAR ════ */
 let yrYear=new Date().getFullYear();
 let YR_DAY_NAMES=['Mo','Di','Mi','Do','Fr','Sa','So'];
-const YR_MONTH_NAMES=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+let YR_MONTH_NAMES=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 
 function renderYearlyCalendar(){
   document.getElementById('yrTitle').textContent=yrYear;
@@ -5583,11 +5635,11 @@ document.getElementById('mnMore').onclick=()=>{
   menu.id='moreMenu';
   menu.style.cssText='position:fixed;bottom:64px;right:8px;background:#fff;border:0.5px solid #e0e0e0;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,0.15);z-index:600;overflow:hidden;min-width:150px';
   const items=[
-    {label:'📅 Jahresansicht',view:'yearly'},
-    {label:'🏖 Feiertage',view:'holidays'},
-    {label:'👤 Benutzer',view:'users',adminOnly:true},
-    {label:'⚙ Plan speichern',action:savePlan},
-    {label:'🚪 Abmelden',action:doLogout},
+    {label:'📅 '+tr('yearly'),view:'yearly'},
+    {label:'🏖 '+tr('holidays'),view:'holidays'},
+    {label:'👤 '+tr('users'),view:'users',adminOnly:true},
+    {label:'⚙ '+tr('navSavePlan'),action:savePlan},
+    {label:'🚪 '+tr('signOut'),action:doLogout},
   ];
   items.forEach(item=>{
     if(item.adminOnly&&(!currentUser||currentUser.role!=='admin'))return;

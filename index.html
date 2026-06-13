@@ -309,6 +309,9 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
     pointer-events:none
   }
   #kbMemberSidebar.open{left:0;pointer-events:all}
+  /* When the member drawer is open, push the board to the right so cards aren't hidden behind it */
+  #kbBoardArea{transition:margin-left .25s ease}
+  #kbBoardArea.drawer-push{margin-left:min(80vw,240px)}
 
   /* ── Modals ── */
   .modal-box{padding:16px;width:calc(100vw - 24px)!important;max-height:85vh;overflow-y:auto}
@@ -349,7 +352,7 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
 }
 .mobile-nav-btn svg{flex-shrink:0}
 .mobile-nav-btn.active{color:#4A90E2}
-.sidebar-overlay{display:none}
+.sidebar-overlay{display:none;position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,0.28);z-index:250}
 .mobile-hamburger{display:none}
 @media(max-width:768px){
   .mobile-hamburger{display:flex;background:none;border:none;cursor:pointer;padding:4px;color:#555}
@@ -5615,6 +5618,19 @@ function toggleSidebar(){
   if(currentView==='kanban'){
     const isOpen=kb.classList.toggle('open');
     ov.classList.toggle('visible',isOpen);
+    if(isMobile()){
+      const top=Math.round(document.querySelector('.toolbar').getBoundingClientRect().bottom);
+      const ba=document.getElementById('kbBoardArea');
+      if(isOpen){
+        kb.style.top=top+'px';        // start below the header (don't cover the logo)
+        ov.style.top=top+'px';        // backdrop also starts below the header so it stays tappable
+        ov.style.display='block';     // show the tap-to-close backdrop on mobile
+        if(ba)ba.classList.add('drawer-push'); // push the cards to the right
+      }else{
+        kb.style.top=''; ov.style.top=''; ov.style.display='';
+        if(ba)ba.classList.remove('drawer-push');
+      }
+    }
   } else {
     const isOpen=lc.classList.toggle('open');
     ov.classList.toggle('visible',isOpen);
@@ -5623,8 +5639,12 @@ function toggleSidebar(){
 
 function closeSidebar(){
   document.getElementById('leftCol').classList.remove('open');
-  document.getElementById('kbMemberSidebar').classList.remove('open');
-  document.getElementById('sidebarOverlay').classList.remove('visible');
+  const kb=document.getElementById('kbMemberSidebar');
+  kb.classList.remove('open');kb.style.top='';
+  const ov=document.getElementById('sidebarOverlay');
+  ov.classList.remove('visible');ov.style.display='';ov.style.top='';
+  const ba=document.getElementById('kbBoardArea');
+  if(ba)ba.classList.remove('drawer-push');
 }
 
 document.getElementById('sidebarToggle').onclick=toggleSidebar;

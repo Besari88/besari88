@@ -414,6 +414,7 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
     <button class="tab" data-view="reports" id="reportsTab">Berichte</button>
     <button class="tab" data-view="yearly">Jahresansicht</button>
     <button class="tab" data-view="holidays">Feiertage</button>
+    <button class="tab" data-view="stempel" id="stempelTab">Stempelungen</button>
     <button class="tab" data-view="users" id="usersTab" style="display:none">Benutzer</button>
   </div>
   <div style="display:flex;align-items:center;gap:4px">
@@ -750,6 +751,57 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
   <div class="report-section"><h3>Aufgaben nach Mitarbeiter (Detail)</h3><div id="pvaMemberDetail"></div></div>
 </div>
 
+<!-- Stempelungen (Zeiterfassung-Terminal) -->
+<div class="page-view" id="stempelView">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;padding-bottom:14px;border-bottom:0.5px solid #e0e0e0">
+    <div style="font-size:13px;font-weight:500;color:#1a1a1a;margin-right:4px">Filter:</div>
+    <div class="field" style="margin:0;display:flex;align-items:center;gap:6px">
+      <label style="font-size:12px;color:#888;margin:0">Von</label>
+      <input type="date" id="stFrom" style="padding:5px 8px;border:0.5px solid #ccc;border-radius:6px;font-size:12px">
+    </div>
+    <div class="field" style="margin:0;display:flex;align-items:center;gap:6px">
+      <label style="font-size:12px;color:#888;margin:0">Bis</label>
+      <input type="date" id="stTo" style="padding:5px 8px;border:0.5px solid #ccc;border-radius:6px;font-size:12px">
+    </div>
+    <div class="field" style="margin:0;display:flex;align-items:center;gap:6px">
+      <label style="font-size:12px;color:#888;margin:0">Mitarbeiter</label>
+      <select id="stMember" style="padding:5px 8px;border:0.5px solid #ccc;border-radius:6px;font-size:12px;background:#fff;color:#1a1a1a;max-width:160px">
+        <option value="all">Alle Mitarbeiter</option>
+      </select>
+    </div>
+    <button class="btn-ghost" id="stThisWeek" style="font-size:11px;padding:4px 10px">Diese Woche</button>
+    <button class="btn-ghost" id="stThisMonth" style="font-size:11px;padding:4px 10px">Dieser Monat</button>
+    <button class="btn-primary" id="stApply" style="font-size:12px;padding:5px 14px;margin-left:4px">Anwenden</button>
+    <button class="btn-ghost" id="stReload" style="font-size:11px;padding:4px 10px;margin-left:auto;display:flex;align-items:center;gap:5px" title="Aktualisieren">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      Aktualisieren
+    </button>
+  </div>
+  <div id="stStatGrid" class="stat-grid"></div>
+  <div class="report-section"><h3>Stempelungen — Detail</h3><div id="stDetail"><div style="color:#888;font-size:13px;padding:20px 0">Wird geladen…</div></div></div>
+</div>
+
+<!-- Stempelung korrigieren (nur Admin) -->
+<div class="modal-overlay hidden" id="stEditModal">
+  <div class="modal-box" style="width:340px">
+    <h3 style="margin-bottom:4px">Stempelung korrigieren</h3>
+    <p id="stEditWho" style="font-size:12px;color:#888;margin-bottom:16px"></p>
+    <div style="display:flex;gap:10px">
+      <div class="field" style="flex:1"><label>Ein (Uhrzeit)</label><input type="time" id="stEditIn" style="width:100%;padding:6px 8px;border:0.5px solid #ccc;border-radius:6px;font-size:13px"></div>
+      <div class="field" style="flex:1"><label>Aus (Uhrzeit)</label><input type="time" id="stEditOut" style="width:100%;padding:6px 8px;border:0.5px solid #ccc;border-radius:6px;font-size:13px"></div>
+    </div>
+    <div class="field"><label>Pause (Minuten)</label><input type="number" id="stEditBreak" min="0" max="480" step="5" style="width:100%;padding:6px 8px;border:0.5px solid #ccc;border-radius:6px;font-size:13px"></div>
+    <div style="background:#f5f7f5;border-radius:8px;padding:10px 12px;font-size:13px;margin:6px 0 16px;display:flex;justify-content:space-between">
+      <span style="color:#888">Netto</span><b id="stEditNet" style="color:#378add">00:00</b>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-primary" id="stEditSave" style="flex:1;justify-content:center;padding:9px">Speichern</button>
+      <button class="btn-ghost" id="stEditCancel" style="padding:9px 12px">Abbrechen</button>
+    </div>
+    <button class="btn-ghost" id="stEditDelete" style="width:100%;margin-top:10px;padding:8px;font-size:12px;color:#e74c3c;justify-content:center">Stempelung löschen</button>
+  </div>
+</div>
+
 <!-- Transfer Modal -->
 <div class="modal-overlay hidden" id="transferModal">
   <div class="modal-box" style="width:360px;text-align:center">
@@ -798,6 +850,7 @@ body{font-family:system-ui,sans-serif;font-size:13px;color:#1a1a1a;background:#f
     <div class="field"><label data-i18n="nameLbl">Name</label><input id="emName" data-i18n-ph="emNamePh" placeholder="Vollständiger Name"></div>
     <div class="field"><label>Initialen (max. 2 Zeichen)</label><input id="emInitialen" maxlength="2" placeholder="z.B. AM"></div>
     <div class="field"><label data-i18n="amEmailLbl">E-Mail (für Benachrichtigungen)</label><input id="emEmail" type="email" data-i18n-ph="emailExamplePh" placeholder="z.B. alex@example.com" autocomplete="off"></div>
+    <div class="field"><label>Stempeluhr-PIN (4-stellig)</label><input id="emPin" inputmode="numeric" maxlength="4" placeholder="z.B. 1234" autocomplete="off" style="width:100%;padding:6px 8px;border:0.5px solid #ccc;border-radius:6px;font-size:13px;letter-spacing:3px"><div style="font-size:10px;color:#888;margin-top:3px">Code zum Ein-/Ausstempeln am Empfangs-Terminal</div></div>
     <div class="field"><label>Stunden pro Monat</label>
       <input type="number" id="emHours" value="160" min="1" max="744" step="1" placeholder="z.B. 160" style="width:100%;padding:6px 8px;border:0.5px solid #ccc;border-radius:6px;font-size:13px">
       <div style="font-size:10px;color:#888;margin-top:3px" data-i18n="amDefaultHrs">Standard: 160 Std/Monat (40 Std/Woche × 4 Wochen)</div>
@@ -1389,7 +1442,7 @@ async function doLogin(){
   document.getElementById('userBezeichnung').textContent=user.display;
   // Show Users tab only for admins, hide Reports for non-admins
   document.getElementById('usersTab').style.display='none';if(document.getElementById('usersTabBtn'))document.getElementById('usersTabBtn').style.display='none';
-  document.getElementById('reportsTab').style.display=user.role==='admin'?'':'none';document.getElementById('notifBtn').style.display=user.role==='admin'?'':'none';
+  document.getElementById('reportsTab').style.display=user.role==='admin'?'':'none';document.getElementById('notifBtn').style.display='';
   // Apply member visibility — filter MEMBERS for non-admins
   if(user.role!=='admin'&&user.visibleMembers&&user.visibleMembers.length>0){
     // Hide members not in visibleMembers list (by greying out their rows)
@@ -1582,7 +1635,7 @@ function restoreSession(){
     document.getElementById('userDot').textContent=user.initials||user.display.slice(0,2).toUpperCase();
     document.getElementById('userBezeichnung').textContent=user.display;
     document.getElementById('usersTab').style.display='none';if(document.getElementById('usersTabBtn'))document.getElementById('usersTabBtn').style.display='none';
-    document.getElementById('reportsTab').style.display=user.role==='admin'?'':'none';document.getElementById('notifBtn').style.display=user.role==='admin'?'':'none';
+    document.getElementById('reportsTab').style.display=user.role==='admin'?'':'none';document.getElementById('notifBtn').style.display='';
     window._visibleMemberIds=(user.role!=='admin'&&user.visibleMembers&&user.visibleMembers.length>0)?user.visibleMembers:null;
     window._readOnly=user.role==='viewer';
     const _p2=user.role==='editor'?(user.perms||{}):null;
@@ -1623,6 +1676,7 @@ function openUsersView(){
   document.getElementById('yearlyView').style.display='none';
   document.getElementById('holidaysView').style.display='none';
   document.getElementById('usersView').style.display='block';
+  var _sv=document.getElementById('stempelView');if(_sv)_sv.style.display='none';
   updatePlanFilterBarVisibility();
   renderUsersList();
 }
@@ -1913,7 +1967,7 @@ function applyStatusToSelected(status){
     if(status==='Erledigt'&&!t.actual)t.actual=t.hours;
   }});
   const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  addActivities([{icon:'✔',color:(STATUS[status]||['#888'])[0],text:trf('actTaskStatusSet',{n,s:statusLabel(status)}),time:_now}]);
+  addActivities([{icon:'✔',color:(STATUS[status]||['#888'])[0],text:trf('actTaskStatusSet',{n,s:statusLabel(status)}),time:_now,taskId:Aufgaben.find(x=>x.name===n&&x.status===status)?.id}]);
   selectedTaskIds.clear();
   render();
   updateSelectionBar();
@@ -2465,8 +2519,8 @@ function renderPanelBody(t){
   document.getElementById('pBreak').onchange=updateEndBezeichnung;
   renderSubAufgaben(t);
   const getTaskTags=wireTagEditor('pTagBox','pTagAdd',t.tags||[]);
-  document.getElementById('addStBtn').onclick=()=>{const v=document.getElementById('newSt').value.trim();if(!v)return;t.subAufgaben.push({id:Date.now(),n:v,done:false});document.getElementById('newSt').value='';renderSubAufgaben(t);};
-  document.getElementById('saveTaskBtn').onclick=()=>{
+  if(document.getElementById('addStBtn'))document.getElementById('addStBtn').onclick=()=>{const v=document.getElementById('newSt').value.trim();if(!v)return;t.subAufgaben.push({id:Date.now(),n:v,done:false});document.getElementById('newSt').value='';renderSubAufgaben(t);};
+  if(document.getElementById('saveTaskBtn'))document.getElementById('saveTaskBtn').onclick=()=>{
     pushUndoState(tr('undoTaskEdited'));suppressSyncBriefly();
     const oldMemberId=t.memberId;
     const newName=document.getElementById('pName').value.trim()||t.name;
@@ -2495,7 +2549,7 @@ function renderPanelBody(t){
     if(newStatus==='Erledigt'&&!t.actual)t.actual=t.hours;
     const newTags=getTaskTags();
     const _endT=t.startTime&&t.hours?endTimeWithBreak(t.startTime,t.hours,t.breakMin||0):'';
-    processTagChanges(t.tags||[],newTags,{type:'Aufgabe',name:newName,note:t.desc,details:{
+    processTagChanges(t.tags||[],newTags,{type:'Aufgabe',name:newName,note:t.desc,taskId:t.id,details:{
       'Datum':t.date||'—',
       'Uhrzeit':t.startTime?(t.startTime+(_endT?' – '+_endT:'')):'—',
       'Dauer':fmtHours(t.hours),
@@ -2519,10 +2573,10 @@ function renderPanelBody(t){
     document.getElementById('panelTitle').textContent=t.name;
     const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
     const m2=MEMBERS.find(x=>x.id===t.memberId);
-    addActivities([{icon:'✎',color:'#4A90E2',text:trf('actTaskUpdated',{n:t.name,m:m2?m2.name:'?'}),time:_now}]);
+    addActivities([{icon:'✎',color:'#4A90E2',text:trf('actTaskUpdated',{n:t.name,m:m2?m2.name:'?'}),time:_now,taskId:t.id}]);
     render();renderPanelBody(t);
   };
-  document.getElementById('delTaskBtn').onclick=()=>{
+  if(document.getElementById('delTaskBtn'))document.getElementById('delTaskBtn').onclick=()=>{
     pushUndoState(tr('undoDayDeleted'));suppressSyncBriefly();
     const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
     const removed=t;
@@ -2563,7 +2617,7 @@ function renderPanelBody(t){
       newDate.setDate(newDate.getDate()+daysToAdd);
       t.date=fmt(newDate);
       const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-      addActivities([{icon:'📅',color:'#4A90E2',text:trf('actDayMovedEnd',{n:t.name,d:t.date}),time:_now}]);
+      addActivities([{icon:'📅',color:'#4A90E2',text:trf('actDayMovedEnd',{n:t.name,d:t.date}),time:_now,taskId:t.id}]);
       render();
       openTaskPanel(t.id);
       showToast(`Tag verschoben → ${t.date}`,'#4A90E2');
@@ -2789,7 +2843,7 @@ document.getElementById('mtSave').onclick=()=>{
   render();
   const m=MEMBERS.find(x=>x.id===memberId);
   const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  addActivities([{icon:'✚',color:'#1D9E75',text:trf('actTaskAdded',{n:name,m:(m?m.name:'?'),d:dates.length}),time:now}]);
+  dates.forEach(dt=>addActivities([{icon:'✚',color:'#1D9E75',text:trf('actTaskAdded',{n:name,m:(m?m.name:'?'),d:dates.length}),time:now,taskId:Aufgaben.find(x=>x.name===name&&x.date===fmt(dt))?.id}]));
   showToast(trf('tLessonDaysAdded',{n:dates.length}),'#1D9E75');
   // Notify the assigned member by email
   if(m&&m.email){
@@ -2811,7 +2865,9 @@ let rptToDate='';
 function getFilteredAufgaben(){
   const selMember=document.getElementById('rptMember')?.value||'all';
   const selStatus=document.getElementById('rptStatus')?.value||'all';
+  const _vis=window._visibleMemberIds;
   return Aufgaben.filter(t=>{
+    if(_vis&&_vis.length&&!_vis.includes(t.memberId))return false;
     if(rptFromDate&&t.date<rptFromDate)return false;
     if(rptToDate&&t.date>rptToDate)return false;
     if(selMember!=='all'&&String(t.memberId)!==String(selMember))return false;
@@ -2839,7 +2895,7 @@ function renderReports(){
   const selEl=document.getElementById('rptMember');
   const prevSel=selEl.value;
   selEl.innerHTML='<option value="all">'+tr('allMembers')+'</option>'+
-    MEMBERS.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
+    getPlanBaseMembers().map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
   if(prevSel&&prevSel!=='all')selEl.value=prevSel;
 
   const ft=getFilteredAufgaben();
@@ -3328,6 +3384,7 @@ function openEditMember(memberId){
   document.getElementById('emName').value=m.name;
   document.getElementById('emInitialen').value=m.initials;
   document.getElementById('emEmail').value=m.email||'';
+  document.getElementById('emPin').value=m.pin||'';
   document.getElementById('emHours').value=m.monthlyHours||160;
   emLastRole=m.position||'';
   populateEmRoleSelect(m.position||'');
@@ -3439,6 +3496,11 @@ document.getElementById('emSave').onclick=()=>{
   m.name=name;
   m.initials=initials||name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
   m.email=emEmail;
+  const emPinVal=document.getElementById('emPin').value.trim();
+  if(emPinVal&&!/^\d{4}$/.test(emPinVal)){showToast('PIN muss 4 Ziffern haben','#e74c3c');document.getElementById('emPin').style.borderColor='#e74c3c';return;}
+  document.getElementById('emPin').style.borderColor='';
+  if(emPinVal&&MEMBERS.some(x=>x.id!==m.id&&String(x.pin)===emPinVal)){showToast('PIN bereits vergeben','#e74c3c');document.getElementById('emPin').style.borderColor='#e74c3c';return;}
+  m.pin=emPinVal;
   m.monthlyHours=monthlyHours;
   const emRoleSel=document.getElementById('emRole');
   if(emRoleSel&&emRoleSel.value!==ADD_ROLE_VALUE)m.position=emRoleSel.value;
@@ -3786,7 +3848,7 @@ function detectChanges(prev,curr,prevM,currM,prevKb,currKb){
   curr.forEach(t=>{
     if(!prev.find(p=>p.id===t.id)){
       const m=currM.find(x=>x.id===t.memberId);
-      changes.push({icon:'✚',color:'#1D9E75',text:trf('actTaskAddedDate',{n:t.name,m:(m?m.name:tr('unknownMember')),d:t.date}),time:now});
+      changes.push({icon:'✚',color:'#1D9E75',text:trf('actTaskAddedDate',{n:t.name,m:(m?m.name:tr('unknownMember')),d:t.date}),time:now,taskId:t.id});
     }
   });
   // Aufgaben removed
@@ -3802,13 +3864,13 @@ function detectChanges(prev,curr,prevM,currM,prevKb,currKb){
     const m=currM.find(x=>x.id===t.memberId);
     const oldM=prevM.find(x=>x.id===old.memberId);
     if(old.memberId!==t.memberId)
-      changes.push({icon:'↔',color:'#4A90E2',text:`Aufgabe <b>${t.name}</b> verschoben von <b>${oldM?oldM.name:'?'}</b> zu <b>${m?m.name:'?'}</b>`,time:now});
+      changes.push({icon:'↔',color:'#4A90E2',text:`Aufgabe <b>${t.name}</b> verschoben von <b>${oldM?oldM.name:'?'}</b> zu <b>${m?m.name:'?'}</b>`,time:now,taskId:t.id});
     if(old.status!==t.status)
-      changes.push({icon:'◎',color:'#BA7517',text:trf('actStatusChanged',{n:t.name,s:statusLabel(t.status)}),time:now});
+      changes.push({icon:'◎',color:'#BA7517',text:trf('actStatusChanged',{n:t.name,s:statusLabel(t.status)}),time:now,taskId:t.id});
     if(old.date!==t.date)
-      changes.push({icon:'📅',color:'#534AB7',text:trf('actTaskMoved',{n:t.name,d:t.date}),time:now});
+      changes.push({icon:'📅',color:'#534AB7',text:trf('actTaskMoved',{n:t.name,d:t.date}),time:now,taskId:t.id});
     if(old.hours!==t.hours)
-      changes.push({icon:'⏱',color:'#888',text:trf('actDurationChanged',{n:t.name,h:fmtHours(t.hours)}),time:now});
+      changes.push({icon:'⏱',color:'#888',text:trf('actDurationChanged',{n:t.name,h:fmtHours(t.hours)}),time:now,taskId:t.id});
   });
   // Members added/removed
   currM.forEach(m=>{if(!prevM.find(p=>p.id===m.id))changes.push({icon:'👤',color:'#1D9E75',text:trf('actMemberAdded',{n:m.name}),time:now});});
@@ -3818,7 +3880,7 @@ function detectChanges(prev,curr,prevM,currM,prevKb,currKb){
     const oldCol=prevKb.find(c=>c.id===col.id);
     col.cards.forEach(card=>{
       if(!oldCol||!oldCol.cards.find(c=>c.id===card.id))
-        changes.push({icon:'◻',color:'#0079bf',text:trf('actCardAdded',{c:card.title,l:col.title}),time:now});
+        changes.push({icon:'◻',color:'#0079bf',text:trf('actCardAdded',{c:card.title,l:col.title}),time:now,cardId:card.id});
     });
     if(oldCol) oldCol.cards.forEach(card=>{
       if(!col.cards.find(c=>c.id===card.id))
@@ -3836,6 +3898,9 @@ async function saveActivityToSupabase(entry){
       text:entry.text,
       username:entry.user||'Unbekannt',
       time:entry.time,
+      task_id:entry.taskId||null,
+      card_id:entry.cardId||null,
+      board_id:entry.boardId||null,
     });
   }catch(e){console.warn('Activity log save failed:',e);}
 }
@@ -3859,9 +3924,12 @@ async function loadActivityLog(){
       user:r.username||'',
       time:r.time||'',
       date:r.created_at?new Date(r.created_at).toLocaleDateString(LOCALE()):'',
+      taskId:r.task_id||null,
+      cardId:r.card_id||null,
+      boardId:r.board_id||null,
     }));
     renderNotifPanel();
-    if(activityLog.length>0)document.getElementById('notifDot').style.display='block';
+    if(activityLog.some(_activityVisibleToUser))document.getElementById('notifDot').style.display='block';
     // Cleanup entries older than 6 months
     cleanupOldActivityLog(cutoff);
   }catch(e){console.warn('Activity log load failed:',e);}
@@ -3882,6 +3950,21 @@ async function cleanupOldActivityLog(cutoff){
   }catch(e){console.warn('Activity log cleanup failed:',e);}
 }
 
+// Whether an activity entry should be shown to the current user.
+// Admins / unrestricted users see everything. Restricted users see only entries they
+// authored themselves or that mention one of the members they are allowed to see.
+function _activityVisibleToUser(a){
+  const vis=window._visibleMemberIds;
+  if(!vis||!vis.length)return true;                          // admin / unrestricted → all
+  // Tag notifications: visible ONLY to the tagged members (admins handled above).
+  // `a.tags` holds the tagged member-ids (present on locally-created entries);
+  // entries loaded from Supabase carry no `tags` → fall back to name matching below.
+  if(a&&Array.isArray(a.tags)&&a.tags.length)return a.tags.some(id=>vis.includes(id));
+  if(currentUser&&a&&a.user===currentUser.display)return true; // own action
+  const txt=(a&&a.text)||'';
+  const names=MEMBERS.filter(m=>vis.includes(m.id)).map(m=>m.name).filter(Boolean);
+  return names.some(n=>txt.indexOf(n)!==-1);                  // mentions a visible member
+}
 function addActivities(changes,opts){
   opts=opts||{};
   if(!changes.length)return;
@@ -3895,17 +3978,22 @@ function addActivities(changes,opts){
   });
   activityLog.unshift(...changes);
   renderNotifPanel();
-  document.getElementById('notifDot').style.display='block';
-  showToast(changes[0].text.replace(/<b>|<\/b>/g,''),'#4A90E2');
+  if(changes.some(_activityVisibleToUser))document.getElementById('notifDot').style.display='block';
+  if(_activityVisibleToUser(changes[0]))showToast(changes[0].text.replace(/<b>|<\/b>/g,''),'#4A90E2');
 }
 
 function renderNotifPanel(){
   const list=document.getElementById('notifList');
   const empty=document.getElementById('notifEmpty');
-  if(!activityLog.length){list.innerHTML='';empty.style.display='block';return;}
+  // Keep the original index (into activityLog) so click handlers below still resolve correctly.
+  const _items=activityLog.map((a,i)=>({a,i})).filter(o=>_activityVisibleToUser(o.a));
+  if(!_items.length){list.innerHTML='';empty.style.display='block';return;}
   empty.style.display='none';
-  list.innerHTML=activityLog.map(a=>`
-    <div style="padding:10px 16px;border-bottom:0.5px solid #f0f0f0;display:flex;gap:10px;align-items:flex-start">
+  list.innerHTML=_items.map(({a,i})=>{
+    const tid=a.taskId!=null?(typeof a.taskId==='string'?parseInt(a.taskId):a.taskId):null;
+    const task=tid!=null?Aufgaben.find(t=>t.id===tid||t.id===String(tid)):null;
+    const isClickable=!!task||!!a.cardId||!!a.boardId;
+    return`<div data-notif-idx="${i}" style="padding:10px 16px;border-bottom:0.5px solid #f0f0f0;display:flex;gap:10px;align-items:flex-start;${isClickable?'cursor:pointer;':''}transition:background .1s">
       <span style="font-size:16px;flex-shrink:0;margin-top:1px">${a.icon}</span>
       <div style="flex:1;min-width:0">
         <div style="font-size:12px;color:#1a1a1a;line-height:1.4">${a.text}</div>
@@ -3913,10 +4001,111 @@ function renderNotifPanel(){
           ${a.user?`<span style="font-size:10px;background:#f0f0f0;color:#555;border-radius:10px;padding:1px 7px;font-weight:500">👤 ${a.user}</span>`:''}
           ${a.date?`<span style="font-size:10px;color:#aaa">${a.date}</span>`:''}
           <span style="font-size:10px;color:#bbb">${a.time}</span>
+          ${isClickable?`<span style="font-size:10px;color:#4A90E2;font-weight:500">→ Anzeigen</span>`:''}
         </div>
       </div>
       <div style="width:3px;border-radius:2px;align-self:stretch;background:${a.color};flex-shrink:0"></div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
+
+  // Wire click handlers
+  list.querySelectorAll('[data-notif-idx]').forEach(el=>{
+    const idx=parseInt(el.dataset.notifIdx);
+    const a=activityLog[idx];
+    // Check for task
+    const tid=a&&a.taskId!=null?(typeof a.taskId==='string'?parseInt(a.taskId):a.taskId):null;
+    const task=tid!=null?Aufgaben.find(t=>t.id===tid||t.id===String(tid)):null;
+    const cid=a&&a.cardId!=null?a.cardId:null;
+    const bid=a&&a.boardId?a.boardId:null;
+    let cardResult=null;
+    if(cid){
+      // Search all boards for the card
+      for(const mid of Object.keys(kbBoards||{})){
+        for(const col of (kbBoards[mid]||[])){
+          const c=col.cards&&col.cards.find(x=>x.id===cid);
+          if(c){cardResult={card:c,col,memberId:parseInt(mid)};break;}
+        }
+        if(cardResult)break;
+      }
+      if(!cardResult){
+        for(const b of (kbSharedBoards||[])){
+          for(const col of (b.cols||[])){
+            const c=col.cards&&col.cards.find(x=>x.id===cid);
+            if(c){cardResult={card:c,col,boardId:b.id};break;}
+          }
+          if(cardResult)break;
+        }
+      }
+    }
+    if(!task&&!cardResult&&!bid)return;
+    el.addEventListener('mouseenter',()=>{el.style.background='#f0f7ff';});
+    el.addEventListener('mouseleave',()=>{el.style.background='';});
+    el.addEventListener('click',()=>{
+      notifPanelOpen=false;
+      document.getElementById('notifPanel').style.display='none';
+      if(task){
+        // Navigate to workload + open task
+        if(currentView!=='workload'){
+          document.querySelectorAll('.tab[data-view]').forEach(b=>b.classList.remove('active'));
+          currentView='workload';
+          document.getElementById('workloadView').style.display='flex';
+          ['kanbanView','reportsView','yearlyView','holidaysView','usersView'].forEach(id=>{
+            const e2=document.getElementById(id);if(e2)e2.style.display='none';
+          });
+        }
+        const taskDate=parseLocalDate(task.date);
+        if(mode==='week')rangeStart=getMonday(taskDate);
+        else if(mode==='month')rangeStart=getMonthStart(taskDate);
+        else rangeStart=new Date(taskDate.getFullYear(),0,1,12,0,0);
+        render();
+        requestAnimationFrame(()=>{
+          const days=getDays();
+          const di=days.findIndex(d=>fmt(d)===task.date);
+          if(di>=0){
+            const rc=document.getElementById('rightCol');
+            const cw=colW();
+            rc.scrollLeft=Math.max(0,di*cw-rc.clientWidth/2+cw/2);
+          }
+          openTaskPanel(task.id);
+        });
+      } else if(cardResult){
+        // Navigate to kanban + open card
+        if(currentView!=='kanban'){
+          document.querySelectorAll('.tab[data-view]').forEach(b=>b.classList.remove('active'));
+          currentView='kanban';
+          document.getElementById('kanbanView').style.display='flex';
+          ['workloadView','reportsView','yearlyView','holidaysView','usersView'].forEach(id=>{
+            const e2=document.getElementById(id);if(e2)e2.style.display='none';
+          });
+          initKbBoards();
+        }
+        if(cardResult.boardId){
+          selectKbSharedBoard(cardResult.boardId);
+        } else if(cardResult.memberId){
+          selectKbMember(cardResult.memberId);
+        }
+        requestAnimationFrame(()=>{
+          renderKbDetail(cardResult.card,cardResult.col);
+        });
+      } else if(bid){
+        // Navigate to kanban board (list added, board created etc.)
+        if(currentView!=='kanban'){
+          document.querySelectorAll('.tab[data-view]').forEach(b=>b.classList.remove('active'));
+          currentView='kanban';
+          document.getElementById('kanbanView').style.display='flex';
+          ['workloadView','reportsView','yearlyView','holidaysView','usersView'].forEach(id=>{
+            const e2=document.getElementById(id);if(e2)e2.style.display='none';
+          });
+          initKbBoards();
+        }
+        if(bid.startsWith('shared:')){
+          selectKbSharedBoard(bid.split(':')[1]);
+        } else if(bid.startsWith('member:')){
+          selectKbMember(parseInt(bid.split(':')[1]));
+        }
+      }
+    });
+  });
 }
 
 // Notification panel toggle
@@ -3978,7 +4167,7 @@ function processTagChanges(prevIds,newIds,ctx){
     if(m.email)sendTagEmail(m,ctx);else noMail.push(m.name);
   });
   if(!names.length)return;
-  addActivities([{icon:'🔔',color:'#4A90E2',text:trf('actTagged',{names:names.join(', '),type:(ctx.type==='Aufgabe'?tr('typeTask'):ctx.type),name:ctx.name}),time:_now}]);
+  addActivities([{icon:'🔔',color:'#4A90E2',text:trf('actTagged',{names:names.join(', '),type:(ctx.type==='Aufgabe'?tr('typeTask'):ctx.type),name:ctx.name}),tags:added.slice(),taskId:ctx.taskId||null,cardId:ctx.cardId||null,time:_now}]);
   if(noMail.length)showToast(trf('tNoEmailFor',{n:noMail.join(', ')}),'#EF9F27');
 }
 // Renders an editable list of member-tag chips into `boxId` with an add-dropdown in `addId`.
@@ -4061,16 +4250,64 @@ async function sbFetch(table,method='GET',body=null){
 /* ════ SNAPSHOTS ════ */
 async function saveSnapshot(label){
   try{
+    // Strip attachments and minimize data
+    const kbB=stripKbAttachments(kbBoards);
+    const kbS=(kbSharedBoards||[]).map(b=>({...b,cols:stripKbAttachments(b.cols||[])}));
     const data={
       Aufgaben,nextId,
       members:MEMBERS,
-      kbBoards,kbSharedBoards,kbNextId,
+      users:USERS,
+      kbBoards:kbB,kbSharedBoards:kbS,kbNextId,
+      kbArchive:(typeof kbArchive==='object'&&!Array.isArray(kbArchive))?kbArchive:{},
       kbGlobalBg:window.kbGlobalBg||'#f0f1f3',
       holidays:holidays.filter(h=>!h.official),
+      savedAt:new Date().toISOString(),
     };
-    await sbFetch('snapshots','POST',{label:label||new Date().toLocaleString(LOCALE()),data});
-    // Keep only last 30 snapshots — delete older ones
-    const all=await sbFetch('snapshots','GET');
+    const payload=JSON.stringify(data);
+    const sizeKB=Math.round(payload.length/1024);
+    console.log(`Snapshot size: ${sizeKB} KB`);
+    // Supabase jsonb limit is ~1MB per row
+    if(payload.length>900*1024){
+      console.warn(`Snapshot too large (${sizeKB}KB) — saving tasks only`);
+      // Save minimal version — tasks + members only
+      const minData={Aufgaben,nextId,members:MEMBERS,users:USERS,savedAt:new Date().toISOString()};
+      const minPayload=JSON.stringify(minData);
+      console.log(`Minimal snapshot size: ${Math.round(minPayload.length/1024)} KB`);
+    }
+    const res=await fetch(`${SB_URL}/rest/v1/snapshots`,{
+      method:'POST',
+      headers:{
+        'apikey':SB_KEY,
+        'Authorization':'Bearer '+SB_KEY,
+        'Content-Type':'application/json',
+        'Prefer':'return=minimal',
+      },
+      body:JSON.stringify({label:label||new Date().toLocaleString(LOCALE()),data}),
+    });
+    if(!res.ok){
+      const err=await res.text();
+      console.error('Snapshot save failed:',res.status,err);
+      // Try minimal snapshot as fallback
+      const minData={Aufgaben,nextId,members:MEMBERS,users:USERS,
+        holidays:holidays.filter(h=>!h.official),savedAt:new Date().toISOString()};
+      const res2=await fetch(`${SB_URL}/rest/v1/snapshots`,{
+        method:'POST',
+        headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,
+          'Content-Type':'application/json','Prefer':'return=minimal'},
+        body:JSON.stringify({label:(label||new Date().toLocaleString(LOCALE()))+' (minimal)',data:minData}),
+      });
+      if(!res2.ok){
+        const err2=await res2.text();
+        console.error('Minimal snapshot also failed:',res2.status,err2);
+        showToast('Snapshot fehlgeschlagen ('+res2.status+'). Bitte Konsole prüfen.','#e74c3c');
+        return;
+      }
+      showToast('⚠ Nur Aufgaben gespeichert (Kanban-Daten zu groß).','#EF9F27');
+      return;
+    }
+    showToast('✅ Snapshot gespeichert.','#1D9E75');
+    // Keep only last 30 snapshots
+    const all=await fetch(`${SB_URL}/rest/v1/snapshots?order=created_at.desc&limit=30`,{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}).then(r=>r.json());
     if(all&&all.length>30){
       const toDelete=all.sort((a,b)=>a.id-b.id).slice(0,all.length-30);
       for(const s of toDelete){
@@ -4079,53 +4316,67 @@ async function saveSnapshot(label){
         });
       }
     }
-  }catch(e){console.warn('Snapshot save failed:',e);}
+  }catch(e){
+    console.error('Snapshot error:',e);
+    showToast('Snapshot-Fehler: '+e.message,'#e74c3c');
+  }
 }
 
 async function showSnapshots(){
   try{
-    const rows=await sbFetch('snapshots','GET');
-    if(!rows||!rows.length){showToast('Noch keine Snapshots vorhanden.','#888');return;}
-    const sorted=rows.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
-    // Build restore panel
+    const rows=await fetch(`${SB_URL}/rest/v1/snapshots?order=created_at.desc&limit=30`,{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}).then(r=>r.json());
     const existing=document.getElementById('snapshotPanel');
     if(existing)existing.remove();
     const panel=document.createElement('div');
     panel.id='snapshotPanel';
-    panel.style.cssText='position:fixed;top:60px;right:12px;width:320px;max-height:480px;background:#fff;border:0.5px solid #e0e0e0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,0.15);z-index:600;display:flex;flex-direction:column;overflow:hidden';
-    panel.innerHTML=`<div style="padding:12px 16px;border-bottom:0.5px solid #e0e0e0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
-      <span style="font-size:13px;font-weight:600">💾 Snapshots</span>
-      <button onclick="document.getElementById('snapshotPanel').remove()" style="background:none;border:none;cursor:pointer;font-size:18px;color:#888;line-height:1">✕</button>
-    </div>
-    <div style="overflow-y:auto;flex:1">
-      ${sorted.map(s=>`<div style="padding:10px 16px;border-bottom:0.5px solid #f0f0f0;display:flex;align-items:center;gap:10px">
-        <div style="flex:1;min-width:0">
-          <div style="font-size:12px;font-weight:500;color:#1a1a1a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.label}</div>
-          <div style="font-size:10px;color:#aaa;margin-top:2px">${new Date(s.created_at).toLocaleString(LOCALE())}</div>
+    panel.style.cssText='position:fixed;top:60px;right:12px;width:340px;max-height:520px;background:#fff;border:0.5px solid #e0e0e0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,0.15);z-index:600;display:flex;flex-direction:column;overflow:hidden';
+    const sorted=(rows||[]).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+    panel.innerHTML=`
+      <div style="padding:12px 16px;border-bottom:0.5px solid #e0e0e0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+        <span style="font-size:13px;font-weight:600">💾 Snapshots (${sorted.length})</span>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button onclick="saveSnapshot('Manuell '+new Date().toLocaleString()).then(()=>{showSnapshots()})" style="background:#1D9E75;color:#fff;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:11px;font-weight:500">+ Jetzt speichern</button>
+          <button onclick="document.getElementById('snapshotPanel').remove()" style="background:none;border:none;cursor:pointer;font-size:18px;color:#888;line-height:1">✕</button>
         </div>
-        <button onclick="restoreSnapshot(${s.id})" style="background:#4A90E2;color:#fff;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:11px;font-weight:500;flex-shrink:0">Wiederherstellen</button>
-      </div>`).join('')}
-    </div>`;
+      </div>
+      <div style="overflow-y:auto;flex:1">
+        ${sorted.length===0?`<div style="padding:24px;text-align:center;color:#aaa;font-size:13px">
+          <div style="font-size:32px;margin-bottom:8px">📭</div>
+          Noch keine Snapshots vorhanden.<br>
+          <span style="font-size:11px">Klicke "+ Jetzt speichern" oder drücke Sicherungskopie.</span>
+        </div>`
+        :sorted.map(s=>`<div style="padding:10px 16px;border-bottom:0.5px solid #f0f0f0;display:flex;align-items:center;gap:10px">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:12px;font-weight:500;color:#1a1a1a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.label}</div>
+            <div style="font-size:10px;color:#aaa;margin-top:2px">${new Date(s.created_at).toLocaleString(LOCALE())}</div>
+          </div>
+          <button onclick="restoreSnapshot(${s.id})" style="background:#4A90E2;color:#fff;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:11px;font-weight:500;flex-shrink:0">Wiederherstellen</button>
+        </div>`).join('')}
+      </div>`;
     document.body.appendChild(panel);
     setTimeout(()=>document.addEventListener('click',function h(e){
       if(!panel.contains(e.target)){panel.remove();document.removeEventListener('click',h);}
     }),100);
-  }catch(e){showToast('Snapshots konnten nicht geladen werden.','#e74c3c');}
+  }catch(e){
+    showToast('Snapshots konnten nicht geladen werden: '+e.message,'#e74c3c');
+    console.error('showSnapshots error:',e);
+  }
 }
 
 async function restoreSnapshot(id){
   if(!confirm(tr('tSnapshotRestore')))return;
   try{
-    const rows=await sbFetch('snapshots','GET');
+    const rows=await fetch(`${SB_URL}/rest/v1/snapshots?order=created_at.desc&limit=30`,{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}).then(r=>r.json());
     const snap=rows&&rows.find(r=>r.id===id);
     if(!snap||!snap.data){showToast('Snapshot nicht gefunden.','#e74c3c');return;}
     const d=snap.data;
     if(d.Aufgaben){Aufgaben=d.Aufgaben;nextId=d.nextId||nextId;}
     if(d.members&&d.members.length){MEMBERS.length=0;d.members.forEach(m=>MEMBERS.push(m));}
+    if(d.users&&d.users.length){USERS.length=0;d.users.forEach(u=>USERS.push(u));if(!USERS.find(u=>u.username==='admin'))USERS.unshift({username:'admin',password:'1596',display:'Administrator',initials:'AD',role:'admin',visibleMembers:[]});}
     if(d.kbBoards)kbBoards=d.kbBoards;
     if(d.kbSharedBoards)kbSharedBoards=d.kbSharedBoards;
     if(d.kbNextId)kbNextId=d.kbNextId;
-    if(d.kbArchive)kbArchive=d.kbArchive;
+    if(d.kbArchive&&typeof d.kbArchive==='object'&&!Array.isArray(d.kbArchive))kbArchive=d.kbArchive;
     if(d.kbGlobalBg)window.kbGlobalBg=d.kbGlobalBg;
     if(d.holidays){holidays=holidays.filter(h=>h.official);d.holidays.forEach(h=>{if(!holidays.find(x=>x.date===h.date))holidays.push(h);});}
     document.getElementById('snapshotPanel')?.remove();
@@ -4137,6 +4388,36 @@ async function restoreSnapshot(id){
   }catch(e){showToast('Wiederherstellung fehlgeschlagen: '+e.message,'#e74c3c');}
 }
 
+/* Strip base64 attachment data before saving to Supabase — keeps URL-based attachments intact */
+function stripKbAttachments(boards){
+  if(!boards)return boards;
+  const stripCols=cols=>(cols||[]).map(col=>({...col,cards:(col.cards||[]).map(c=>({...c,
+    attachments:(c.attachments||[]).map(a=>
+      a.url?{name:a.name,type:a.type,size:a.size,url:a.url,path:a.path}
+           :{name:a.name,type:a.type,size:a.size}  // strip base64 data
+    )
+  }))}));
+  if(Array.isArray(boards))return stripCols(boards);
+  const r={};Object.keys(boards).forEach(k=>{r[k]=stripCols(boards[k]);});return r;
+}
+function kbSaveData(){
+  // Strip attachments from archive too
+  const archiveSave={};
+  Object.keys(kbArchive||{}).forEach(k=>{
+    archiveSave[k]={
+      cards:(kbArchive[k].cards||[]).map(c=>({...c,attachments:(c.attachments||[]).map(a=>a.url?{name:a.name,type:a.type,size:a.size,url:a.url,path:a.path}:{name:a.name,type:a.type,size:a.size})})),
+      lists:kbArchive[k].lists||[]
+    };
+  });
+  return{
+    kbBoards:stripKbAttachments(kbBoards),
+    kbSharedBoards:(kbSharedBoards||[]).map(b=>({...b,cols:stripKbAttachments(b.cols||[])})),
+    kbNextId,
+    kbArchive:archiveSave,
+    kbGlobalBg:window.kbGlobalBg||'#f0f1f3'
+  };
+}
+
 async function savePlan(){
   showToast(tr('asSaving'),'#4A90E2');
   isSaving=true;
@@ -4144,14 +4425,14 @@ async function savePlan(){
   const prevM=snapshotMembers(MEMBERS);
   try{
     const now=new Date().toISOString();
-    const [ok1,ok2,ok3,ok4]=await Promise.all([
+    const [ok1,ok2,ok3,ok4,ok5]=await Promise.all([
       sbFetch('task','POST',{id:'__all__',data:{Aufgaben,nextId,roles:ROLES,savedAt:now}}),
       sbFetch('Members','POST',{id:'__all__',data:{members:MEMBERS}}),
-      sbFetch('kanban_cards','POST',{id:'__all__',data:{kbBoards,kbSharedBoards,kbNextId,kbArchive,kbGlobalBg:window.kbGlobalBg||'#f0f1f3'}}),
+      sbFetch('kanban_cards','POST',{id:'__all__',data:kbSaveData()}),
       sbFetch('users_config','POST',{id:'__all__',data:{users:USERS}}),
       sbFetch('users_config','POST',{id:'__holidays__',data:{holidays:holidays.filter(h=>!h.official)}}),
     ]);
-    const allOk=ok1&&ok2&&ok3&&ok4;
+    const allOk=ok1&&ok2&&ok3&&ok4&&ok5;
     if(allOk){
       showToast('Plan gespeichert und synchronisiert!','#1D9E75');
       // Auto-save a snapshot on every save
@@ -4165,13 +4446,15 @@ async function savePlan(){
     } else {
       const failed=[];
       if(!ok1)failed.push('Aufgaben');
-      if(!ok2)failed.push('members');
-      if(!ok3)failed.push('kanban');
-      if(!ok4)failed.push('users — run SQL: create table users_config (id text primary key, data jsonb); alter table users_config disable row level security;');
+      if(!ok2)failed.push('Mitarbeiter');
+      if(!ok3)failed.push('Kanban');
+      if(!ok4)failed.push('Benutzer');
+      if(!ok5)failed.push('Feiertage');
       showToast(`Speicherproblem bei: ${failed.join(', ')}.`,'#EF9F27');
     }
   }catch(e){
     showToast('Speichern fehlgeschlagen: '+e.message,'#e74c3c');
+    console.error('savePlan error:',e);
   } finally {
     setTimeout(()=>{isSaving=false;},3000);
   }
@@ -4204,13 +4487,21 @@ async function doAutosave(){
     const oks=await Promise.all([
       sbFetch('task','POST',{id:'__all__',data:{Aufgaben,nextId,roles:ROLES,savedAt:now}}),
       sbFetch('Members','POST',{id:'__all__',data:{members:MEMBERS}}),
-      sbFetch('kanban_cards','POST',{id:'__all__',data:{kbBoards,kbSharedBoards,kbNextId,kbArchive,kbGlobalBg:window.kbGlobalBg||'#f0f1f3'}}),
+      sbFetch('kanban_cards','POST',{id:'__all__',data:kbSaveData()}),
       sbFetch('users_config','POST',{id:'__all__',data:{users:USERS}}),
       sbFetch('users_config','POST',{id:'__holidays__',data:{holidays:holidays.filter(h=>!h.official)}}),
     ]);
-    if(oks.every(Boolean)){_lastSavedSig=sig;setAutosaveStatus('saved');}
-    else setAutosaveStatus('error');
-  }catch(e){setAutosaveStatus('error');}
+    if(oks.every(Boolean)){
+      _lastSavedSig=sig;
+      setAutosaveStatus('saved');
+    } else {
+      setAutosaveStatus('error');
+      console.warn('Autosave: some tables failed to save');
+    }
+  }catch(e){
+    setAutosaveStatus('error');
+    console.warn('Autosave error:',e);
+  }
 }
 function scheduleAutosave(){
   if(!_autosaveReady||window._readOnly||!currentUser)return;
@@ -4220,7 +4511,15 @@ function scheduleAutosave(){
 }
 // Flush a pending save when the tab is hidden/closed.
 document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='hidden'&&_autosaveReady){clearTimeout(_autosaveTimer);doAutosave();}
+  if(document.visibilityState==='hidden'&&_autosaveReady){
+    clearTimeout(_autosaveTimer);
+    // Use sendBeacon for reliable save on tab close (non-blocking)
+    if(_autosaveSig()!==_lastSavedSig){
+      const now=new Date().toISOString();
+      const payload=JSON.stringify({id:'__all__',data:{Aufgaben,nextId,roles:ROLES,savedAt:now}});
+      navigator.sendBeacon(`${SB_URL}/rest/v1/task`,payload)||doAutosave();
+    }
+  }
 });
 
 async function loadFromSupabase(){
@@ -4255,7 +4554,7 @@ async function loadFromSupabase(){
         if(row.data.kbBoards)kbBoards=row.data.kbBoards;
         if(row.data.kbSharedBoards)kbSharedBoards=row.data.kbSharedBoards;
         if(row.data.kbNextId)kbNextId=row.data.kbNextId;
-        if(row.data.kbArchive)kbArchive=row.data.kbArchive;
+        if(row.data.kbArchive&&typeof row.data.kbArchive==='object'&&!Array.isArray(row.data.kbArchive))kbArchive=row.data.kbArchive;
         if(row.data.kbGlobalBg)window.kbGlobalBg=row.data.kbGlobalBg;
       }
     }
@@ -4552,7 +4851,12 @@ document.addEventListener('click',e=>{
 function renderKbSharedBoardList(){
   const list=document.getElementById('kbSharedBoardList');if(!list)return;
   list.innerHTML='';
-  kbSharedBoards.forEach(b=>{
+  // Visibility: admins / unrestricted users see all boards; restricted users see a board
+  // only if it has no members (board for everyone) or includes a member they're allowed to see.
+  const _vis=window._visibleMemberIds;
+  const _boards=(!_vis||!_vis.length)?kbSharedBoards
+    :kbSharedBoards.filter(b=>(!b.memberIds||!b.memberIds.length)||b.memberIds.some(id=>_vis.includes(id)));
+  _boards.forEach(b=>{
     const isSelected=kbSelectedBoardId==='shared:'+b.id;
     const row=document.createElement('div');
     row.style.cssText=`display:flex;align-items:center;gap:7px;padding:8px 12px;cursor:pointer;border-bottom:0.5px solid rgba(255,255,255,0.1);background:${isSelected?'rgba(255,255,255,0.25)':'transparent'}`;
@@ -4992,8 +5296,8 @@ function openArchivedCardPreview(entry){
       ${ro?'':`<button class="nav-btn" id="kbArchPreviewRestore" style="border-color:#1D9E75;color:#1D9E75">↩ ${tr('restore')}</button>`}
       <button class="btn-ghost" id="kbArchPreviewCloseBtn">${tr('closeBtn')}</button>
     </div>`;
-  document.getElementById('kbArchPreviewClose').onclick=()=>modal.classList.add('hidden');
-  document.getElementById('kbArchPreviewCloseBtn').onclick=()=>modal.classList.add('hidden');
+  if(document.getElementById('kbArchPreviewClose'))document.getElementById('kbArchPreviewClose').onclick=()=>modal.classList.add('hidden');
+  if(document.getElementById('kbArchPreviewCloseBtn'))document.getElementById('kbArchPreviewCloseBtn').onclick=()=>modal.classList.add('hidden');
   const rb=document.getElementById('kbArchPreviewRestore');
   if(rb)rb.onclick=()=>{modal.classList.add('hidden');restoreArchivedCard(entry);renderArchiveBody();showToast('Karte wiederhergestellt.','#1D9E75');};
 }
@@ -5086,7 +5390,7 @@ function renderKanban(){
         col.cards.push({id:'c'+(++kbNextId),title:t,desc:'',label:selBezeichnung||'',due:'',checklist:[],members:[],tags:[]});
         close();syncKbCols();renderKanban();
         const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-        addActivities([{icon:'◻',color:'#0079bf',text:trf('actCardAdded',{c:t,l:col.title}),time:_now}]);
+        const _newCard=col.cards[col.cards.length-1];addActivities([{icon:'◻',color:'#0079bf',text:trf('actCardAdded',{c:t,l:col.title}),time:_now,cardId:_newCard?.id}]);
       };
       ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();saveBtn.click();}if(e.key==='Escape')close();});
       btns.appendChild(saveBtn);btns.appendChild(cancelBtn);
@@ -5224,10 +5528,11 @@ function renderKbDetail(card,col){
     list.innerHTML='';
     card.attachments.forEach((att,i)=>{
       const isImg=/^image\//.test(att.type);
+      const src=att.url||att.data||'';
       const row=document.createElement('div');
       row.style.cssText='display:flex;align-items:center;gap:8px;padding:6px 8px;background:#fafafa;border:0.5px solid #e0e0e0;border-radius:6px';
-      if(isImg){
-        row.innerHTML=`<img src="${att.data}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;flex-shrink:0">`;
+      if(isImg&&src){
+        row.innerHTML=`<img src="${src}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;flex-shrink:0">`;
       } else {
         const ext=(att.name.split('.').pop()||'file').toUpperCase().slice(0,4);
         row.innerHTML=`<div style="width:40px;height:40px;background:#e8f0fb;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:#4A90E2;flex-shrink:0">${ext}</div>`;
@@ -5236,38 +5541,73 @@ function renderKbDetail(card,col){
       info.innerHTML=`<div style="font-size:12px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${att.name}</div>
         <div style="font-size:10px;color:#999">${(att.size/1024).toFixed(1)} KB · ${att.type||'file'}</div>`;
       const btns=document.createElement('div');btns.style.cssText='display:flex;gap:4px;flex-shrink:0';
-      // Herunterladen button
-      const dl=document.createElement('a');
-      dl.href=att.data;dl.download=att.name;
-      dl.style.cssText='background:#f0f0f0;border:0.5px solid #ccc;border-radius:4px;padding:3px 7px;font-size:11px;color:#555;text-decoration:none;cursor:pointer';
-      dl.textContent='↓';dl.title=tr('download');
-      // Delete button
+      // Download button
+      if(src){
+        const dl=document.createElement('a');
+        dl.href=src;dl.download=att.name;dl.target='_blank';
+        dl.style.cssText='background:#f0f0f0;border:0.5px solid #ccc;border-radius:4px;padding:3px 7px;font-size:11px;color:#555;text-decoration:none;cursor:pointer';
+        dl.textContent='↓';dl.title=tr('download');
+        btns.appendChild(dl);
+      }
+      // Delete button — also removes from Supabase Storage
       const del=document.createElement('button');
       del.style.cssText='background:none;border:0.5px solid #e74c3c;border-radius:4px;padding:3px 7px;font-size:11px;color:#e74c3c;cursor:pointer';
       del.textContent='✕';del.title=tr('removeShort');
-      del.onclick=()=>{card.attachments.splice(i,1);syncKbCols();renderAttachList();};
-      btns.appendChild(dl);btns.appendChild(del);
+      del.onclick=async()=>{
+        // Delete from Supabase Storage if it has a path
+        if(att.path){
+          try{
+            await fetch(`${SB_URL}/storage/v1/object/attachments/${att.path}`,{
+              method:'DELETE',
+              headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
+            });
+          }catch(e){console.warn('Storage delete failed:',e);}
+        }
+        card.attachments.splice(i,1);
+        syncKbCols();renderAttachList();
+      };
+      btns.appendChild(del);
       row.appendChild(info);row.appendChild(btns);
       list.appendChild(row);
     });
   }
   renderAttachList();
 
-  // File input handler
-  document.getElementById('kdFileInput').onchange=function(){
+  // File input handler — uploads to Supabase Storage
+  document.getElementById('kdFileInput').onchange=async function(){
     const files=Array.from(this.files);
-    let pending=files.length;
-    files.forEach(file=>{
-      if(file.size>2*1024*1024){showToast(`${file.name} is too large (max 2MB).`,'#e74c3c');pending--;return;}
-      const reader=new FileReader();
-      reader.onload=e=>{
-        card.attachments.push({name:file.name,type:file.type,size:file.size,data:e.target.result});
-        pending--;
-        if(pending===0){syncKbCols();renderAttachList();}
-      };
-      reader.readAsDataURL(file);
-    });
     this.value='';
+    for(const file of files){
+      if(file.size>10*1024*1024){showToast(`${file.name} ist zu groß (max. 10 MB).`,'#e74c3c');continue;}
+      try{
+        showToast(`📤 ${file.name} wird hochgeladen…`,'#4A90E2');
+        const ext=file.name.split('.').pop();
+        const path=`${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+        const uploadRes=await fetch(`${SB_URL}/storage/v1/object/attachments/${path}`,{
+          method:'POST',
+          headers:{
+            'apikey':SB_KEY,
+            'Authorization':'Bearer '+SB_KEY,
+            'Content-Type':file.type,
+            'x-upsert':'true',
+          },
+          body:file,
+        });
+        if(!uploadRes.ok){
+          const err=await uploadRes.text();
+          console.warn('Upload failed:',err);
+          showToast(`Fehler beim Hochladen von ${file.name}.`,'#e74c3c');
+          continue;
+        }
+        const publicUrl=`${SB_URL}/storage/v1/object/public/attachments/${path}`;
+        card.attachments.push({name:file.name,type:file.type,size:file.size,url:publicUrl,path});
+        syncKbCols();
+        renderAttachList();
+        showToast(`✅ ${file.name} hochgeladen.`,'#1D9E75');
+      }catch(e){
+        showToast(`Fehler: ${e.message}`,'#e74c3c');
+      }
+    }
   };
   // Bezeichnung picker
   const lp=document.getElementById('kdBezeichnungPicker');
@@ -5345,7 +5685,7 @@ function renderKbDetail(card,col){
     renderCl();
     window._kbRenderCl=renderCl;
   }
-  document.getElementById('kdClAdd').onclick=()=>{
+  if(document.getElementById('kdClAdd'))document.getElementById('kdClAdd').onclick=()=>{
     if(window._readOnly)return;
     const inp=document.getElementById('kdClInput');const t=inp.value.trim();if(!t)return;
     card.checklist.push({t,done:false});inp.value='';
@@ -5361,12 +5701,12 @@ function renderKbDetail(card,col){
     const clAdd=document.getElementById('kdClAdd');if(clAdd)clAdd.style.display='none';
     const clInp=document.getElementById('kdClInput');if(clInp)clInp.style.display='none';
   }
-  document.getElementById('kdSave').onclick=()=>{
+  if(document.getElementById('kdSave'))document.getElementById('kdSave').onclick=()=>{
     card.title=document.getElementById('kdTitle').value.trim()||card.title;
     card.desc=document.getElementById('kdDesc').value;
     card.due=document.getElementById('kdDue').value;
     const newTags=getCardTags();
-    processTagChanges(card.tags||[],newTags,{type:'Karte',name:card.title,note:card.desc,details:{
+    processTagChanges(card.tags||[],newTags,{type:'Karte',name:card.title,note:card.desc,cardId:card.id,details:{
       'Liste':col.title||'—',
       'Fälligkeitsdatum':card.due||'—',
     }});
@@ -5374,9 +5714,9 @@ function renderKbDetail(card,col){
     document.getElementById('kbDetailModal').classList.add('hidden');
     syncKbCols();renderKanban();
     const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-    addActivities([{icon:'✎',color:'#4A90E2',text:trf('actCardUpdated',{c:card.title}),time:_now}]);
+    addActivities([{icon:'✎',color:'#4A90E2',text:trf('actCardUpdated',{c:card.title}),time:_now,cardId:card.id}]);
   };
-  document.getElementById('kdArchive').onclick=()=>{
+  if(document.getElementById('kdArchive'))document.getElementById('kdArchive').onclick=()=>{
     document.getElementById('kbDetailModal').classList.add('hidden');
     archiveCard(card,col);
   };
@@ -5452,7 +5792,7 @@ document.getElementById('kbAddColBtn').onclick=()=>{
   kbCols.push({id:'k'+(++kbNextId),title:newTitle,color:null,cards:[]});
   syncKbCols();renderKanban();
   const _now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  addActivities([{icon:'➕',color:'#1D9E75',text:trf('actListAdded',{l:newTitle}),time:_now}]);
+  addActivities([{icon:'➕',color:'#1D9E75',text:trf('actListAdded',{l:newTitle}),time:_now,boardId:kbSelectedBoardId}]);
 };
 
 /* ════ TAB SWITCHING (updated to include kanban) ════ */
@@ -5531,6 +5871,7 @@ document.querySelectorAll('.tab[data-view]').forEach(btn=>{
     document.getElementById('yearlyView').style.display=currentView==='yearly'?'block':'none';
     document.getElementById('holidaysView').style.display=currentView==='holidays'?'block':'none';
     document.getElementById('usersView').style.display=currentView==='users'?'block':'none';
+    document.getElementById('stempelView').style.display=currentView==='stempel'?'block':'none';
     if(currentView==='kanban'){
       initKbBoards();renderKbSharedBoardList();renderKbMemberSidebar();
       if(window.kbGlobalBg)applyKbBg(window.kbGlobalBg);
@@ -5541,9 +5882,174 @@ document.querySelectorAll('.tab[data-view]').forEach(btn=>{
     if(currentView==='holidays')renderHolidays();
     if(currentView==='yearly')renderYearlyCalendar();
     if(currentView==='users')renderUsersList();
+    if(currentView==='stempel')renderStempel();
     updatePlanFilterBarVisibility();
   });
 });
+
+/* ════ STEMPELUNGEN (Zeiterfassung-Terminal) ════ */
+let stEntries=[];
+function stInitDates(){
+  const f=document.getElementById('stFrom'),t=document.getElementById('stTo');
+  if(f&&!f.value){const d=new Date();d.setDate(d.getDate()-30);f.value=fmt(d);}
+  if(t&&!t.value)t.value=fmt(new Date());
+}
+function stHM(iso){if(!iso)return '–';const d=new Date(iso);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
+function stMinToHM(min){min=Math.max(0,Math.round(min||0));return String(Math.floor(min/60)).padStart(2,'0')+':'+String(min%60).padStart(2,'0');}
+async function stLoad(){
+  const rows=await sbFetch('time_entries?select=*&order=clock_in.desc','GET');
+  stEntries=Array.isArray(rows)?rows:[];
+}
+async function renderStempel(){
+  stInitDates();
+  const sel=document.getElementById('stMember');
+  const prev=sel.value;
+  sel.innerHTML='<option value="all">Alle Mitarbeiter</option>'+getPlanBaseMembers().map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
+  if(prev)sel.value=prev;
+  document.getElementById('stDetail').innerHTML='<div style="color:#888;font-size:13px;padding:20px 0">Wird geladen…</div>';
+  await stLoad();
+  drawStempel();
+}
+function drawStempel(){
+  const from=document.getElementById('stFrom').value,to=document.getElementById('stTo').value;
+  const selM=document.getElementById('stMember').value;
+  const _vis=window._visibleMemberIds;
+  const _visSet=(_vis&&_vis.length)?_vis.map(String):null;
+  const rows=stEntries.filter(e=>{
+    if(_visSet&&!_visSet.includes(String(e.member_id)))return false;
+    if(from&&e.date<from)return false;
+    if(to&&e.date>to)return false;
+    if(selM!=='all'&&String(e.member_id)!==String(selM))return false;
+    return true;
+  });
+  const totNet=rows.reduce((s,e)=>s+(e.net_minutes||0),0);
+  const open=rows.filter(e=>!e.clock_out).length;
+  document.getElementById('stStatGrid').innerHTML=
+    `<div class="stat-card"><div class="stat-label">Stempelungen</div><div class="stat-val">${rows.length}</div></div>`+
+    `<div class="stat-card"><div class="stat-label">Netto gesamt</div><div class="stat-val">${stMinToHM(totNet)}</div></div>`+
+    `<div class="stat-card"><div class="stat-label">Offen (läuft)</div><div class="stat-val"${open?' style="color:#3aaf4a"':''}>${open}</div></div>`;
+  const byMember={};
+  rows.forEach(e=>{(byMember[e.member_id]=byMember[e.member_id]||[]).push(e);});
+  const det=document.getElementById('stDetail');
+  if(!rows.length){det.innerHTML='<div style="color:#888;font-size:13px;padding:20px 0">Keine Stempelungen im gewählten Zeitraum.</div>';return;}
+  const stAdmin=currentUser&&currentUser.role==='admin';
+  let html=stAdmin?'<div style="font-size:11px;color:#aaa;margin-bottom:10px">Tipp: Eine Zeile anklicken, um sie zu korrigieren.</div>':'';
+  Object.keys(byMember).forEach(mid=>{
+    const m=MEMBERS.find(x=>String(x.id)===String(mid));
+    const name=m?m.name:(byMember[mid][0].member_name||'Unbekannt');
+    const color=m?m.color:'#888';
+    const list=byMember[mid].slice().sort((a,b)=>(b.clock_in||'').localeCompare(a.clock_in||''));
+    const memberNet=byMember[mid].reduce((s,e)=>s+(e.net_minutes||0),0);
+    html+=`<div style="margin-bottom:22px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <span style="width:10px;height:10px;border-radius:50%;background:${color};flex:none"></span>
+        <span style="font-weight:600;font-size:14px">${name}</span>
+        <span style="color:#888;font-size:12px">· ${byMember[mid].length} Stempelung(en) · Netto ${stMinToHM(memberNet)}</span>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead><tr style="background:#f7f8f7">
+          <th style="padding:8px 10px;text-align:left;font-weight:500;color:#555">Datum</th>
+          <th style="padding:8px 10px;text-align:center;font-weight:500;color:#555">Geplant</th>
+          <th style="padding:8px 10px;text-align:center;font-weight:500;color:#555">Ein</th>
+          <th style="padding:8px 10px;text-align:center;font-weight:500;color:#555">Aus</th>
+          <th style="padding:8px 10px;text-align:center;font-weight:500;color:#555">Pause</th>
+          <th style="padding:8px 10px;text-align:center;font-weight:500;color:#555">Netto</th>
+        </tr></thead><tbody>`;
+    list.forEach(e=>{
+      const planned=e.planned_start?`${e.planned_start}–${e.planned_end||''}`:'–';
+      const nb=(e.breaks&&e.breaks.length)?e.breaks.length:0;
+      const pauseTxt=nb?`${nb}× · ${e.break_minutes||0} Min`:`${e.break_minutes||0} Min`;
+      const net=e.clock_out?stMinToHM(e.net_minutes):'<span style="color:#3aaf4a">läuft…</span>';
+      let dStr=e.date;try{dStr=parseLocalDate(e.date).toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'});}catch(x){}
+      html+=`<tr ${stAdmin?`data-st-id="${e.id}" title="Zum Korrigieren klicken" style="border-bottom:0.5px solid #eee;cursor:pointer"`:`style="border-bottom:0.5px solid #eee"`}>
+        <td style="padding:7px 10px">${dStr}</td>
+        <td style="padding:7px 10px;text-align:center;color:#888">${planned}</td>
+        <td style="padding:7px 10px;text-align:center;font-weight:600">${stHM(e.clock_in)}</td>
+        <td style="padding:7px 10px;text-align:center;font-weight:600">${e.clock_out?stHM(e.clock_out):'–'}</td>
+        <td style="padding:7px 10px;text-align:center;color:#888">${pauseTxt}</td>
+        <td style="padding:7px 10px;text-align:center;font-weight:600;color:#378add">${net}</td>
+      </tr>`;
+    });
+    html+='</tbody></table></div>';
+  });
+  det.innerHTML=html;
+}
+/* ── Admin-Korrektur einer Stempelung ── */
+let stEditId=null;
+function stRecalcNet(){
+  const ci=document.getElementById('stEditIn').value,co=document.getElementById('stEditOut').value;
+  const br=parseInt(document.getElementById('stEditBreak').value)||0;
+  let net=0;
+  if(ci&&co){let a=timeToMin(ci),b=timeToMin(co);if(b<a)b+=1440;net=Math.max(0,(b-a)-br);}
+  document.getElementById('stEditNet').textContent=stMinToHM(net);
+  return net;
+}
+function openStEdit(id){
+  const e=stEntries.find(x=>String(x.id)===String(id));if(!e)return;
+  stEditId=id;
+  const m=MEMBERS.find(x=>String(x.id)===String(e.member_id));
+  document.getElementById('stEditWho').textContent=(m?m.name:e.member_name||'')+' · '+(e.date||'');
+  document.getElementById('stEditIn').value=e.clock_in?stHM(e.clock_in):'';
+  document.getElementById('stEditOut').value=e.clock_out?stHM(e.clock_out):'';
+  document.getElementById('stEditBreak').value=e.break_minutes||0;
+  stRecalcNet();
+  document.getElementById('stEditModal').classList.remove('hidden');
+}
+async function stSaveEdit(){
+  const e=stEntries.find(x=>String(x.id)===String(stEditId));if(!e)return;
+  const ci=document.getElementById('stEditIn').value,co=document.getElementById('stEditOut').value;
+  const br=parseInt(document.getElementById('stEditBreak').value)||0;
+  if(!ci){showToast('Einstempelzeit fehlt','#e74c3c');return;}
+  const base=e.date||fmt(new Date());
+  const inD=new Date(base+'T'+ci+':00');
+  let outD=null,net=null;
+  if(co){outD=new Date(base+'T'+co+':00');if(outD<inD)outD=new Date(outD.getTime()+86400000);net=Math.max(0,Math.round((outD-inD)/60000)-br);}
+  e.clock_in=inD.toISOString();
+  e.clock_out=outD?outD.toISOString():null;
+  e.break_minutes=br;
+  e.net_minutes=net;
+  e.net_hours=net!=null?Math.round(net/60*100)/100:null;
+  const ok=await sbFetch('time_entries','POST',e);
+  if(ok===false){showToast('Speichern fehlgeschlagen','#e74c3c');return;}
+  if(e.task_id&&e.net_hours!=null){
+    const t=Aufgaben.find(x=>String(x.id)===String(e.task_id));
+    if(t){t.actual=e.net_hours;if(t.status!=='Erledigt')t.status='Erledigt';
+      sbFetch('task','POST',{id:'__all__',data:{Aufgaben,nextId,roles:ROLES,savedAt:new Date().toISOString()}});}
+  }
+  document.getElementById('stEditModal').classList.add('hidden');
+  showToast('Stempelung aktualisiert','#1D9E75');
+  drawStempel();
+}
+async function stDeleteEdit(){
+  if(!stEditId)return;
+  if(!confirm('Diese Stempelung wirklich löschen?'))return;
+  try{await fetch(SB_URL+'/rest/v1/time_entries?id=eq.'+encodeURIComponent(stEditId),{method:'DELETE',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});}
+  catch(x){showToast('Löschen fehlgeschlagen','#e74c3c');return;}
+  stEntries=stEntries.filter(x=>String(x.id)!==String(stEditId));
+  document.getElementById('stEditModal').classList.add('hidden');
+  showToast('Stempelung gelöscht','#1D9E75');
+  drawStempel();
+}
+(function bindStempel(){
+  const on=(id,ev,fn)=>{const el=document.getElementById(id);if(el)el.addEventListener(ev,fn);};
+  on('stApply','click',drawStempel);
+  on('stMember','change',drawStempel);
+  on('stReload','click',renderStempel);
+  on('stThisWeek','click',()=>{const d=new Date();const day=(d.getDay()+6)%7;const mon=new Date(d);mon.setDate(d.getDate()-day);document.getElementById('stFrom').value=fmt(mon);document.getElementById('stTo').value=fmt(d);drawStempel();});
+  on('stThisMonth','click',()=>{const d=new Date();document.getElementById('stFrom').value=fmt(new Date(d.getFullYear(),d.getMonth(),1));document.getElementById('stTo').value=fmt(d);drawStempel();});
+  on('stEditSave','click',stSaveEdit);
+  on('stEditDelete','click',stDeleteEdit);
+  on('stEditCancel','click',()=>document.getElementById('stEditModal').classList.add('hidden'));
+  ['stEditIn','stEditOut','stEditBreak'].forEach(id=>on(id,'input',stRecalcNet));
+  const sd=document.getElementById('stDetail');
+  if(sd)sd.addEventListener('click',ev=>{
+    if(!(currentUser&&currentUser.role==='admin'))return;
+    const r=ev.target.closest('tr[data-st-id]');
+    if(r)openStEdit(r.getAttribute('data-st-id'));
+  });
+  const ov=document.getElementById('stEditModal');
+  if(ov)ov.addEventListener('click',ev=>{if(ev.target===ov)ov.classList.add('hidden');});
+})();
 
 /* ════ GLOBAL SEARCH ════ */
 function ensureWorkloadView(){

@@ -12655,6 +12655,13 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
 
     <!-- ============ VERLAUF ============ -->
     <section class="view" id="view-verlauf">
+      <div class="card" style="margin-bottom:18px">
+        <h2>Google-Tabelle (Sync)</h2>
+        <p class="hint">Web-App-URL des Google-Apps-Scripts einfügen, damit alle Geräte dieselbe Liste teilen. Leer lassen = nur dieses Gerät.</p>
+        <div class="field"><label>Web-App-URL</label><input id="syncUrl" type="text" placeholder="https://script.google.com/macros/s/.../exec"></div>
+        <div class="btns"><button class="btn btn-primary" id="syncSave"><span class="ic">🔗</span> Verbinden</button><button class="btn btn-ghost" id="syncRefresh"><span class="ic">🔄</span> Aktualisieren</button><button class="btn btn-ghost" id="syncOff">Trennen</button></div>
+        <p class="hint" id="syncStatus" style="margin-top:12px"></p>
+      </div>
       <div class="card">
         <h2>Erstellte Gutscheine</h2>
         <p class="hint">Gespeichert auf diesem Gerät. Tippen zum erneuten Öffnen, Teilen oder Einlösen.</p>
@@ -12751,14 +12758,41 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
   function loadList(){ try{ return JSON.parse(localStorage.getItem(LS_LIST)||'[]'); }catch(e){ return []; } }
   function saveList(l){ localStorage.setItem(LS_LIST, JSON.stringify(l)); }
   function peekNext(){
-    var y = new Date().getFullYear(), st=null;
-    try{ st = JSON.parse(localStorage.getItem(LS_CNT)||'null'); }catch(e){}
-    var seq = (st && st.year===y) ? st.seq+1 : 1;
-    return 'HS-'+y+'-'+String(seq).padStart(4,'0');
+    var y = new Date().getFullYear(), seq=0;
+    loadList().forEach(function(r){ var m=/HS-(\d{4})-(\d+)/.exec(r.id||''); if(m && +m[1]===y) seq=Math.max(seq,+m[2]); });
+    try{ var st=JSON.parse(localStorage.getItem(LS_CNT)||'null'); if(st && st.year===y) seq=Math.max(seq,st.seq); }catch(e){}
+    return 'HS-'+y+'-'+String(seq+1).padStart(4,'0');
   }
   function commitNumber(id){
     var m = /HS-(\d{4})-(\d+)/.exec(id||'');
     if(m) localStorage.setItem(LS_CNT, JSON.stringify({year:+m[1], seq:+m[2]}));
+  }
+  function upsertLocalRec(rec){ var l=loadList(); var i=-1; for(var k=0;k<l.length;k++) if(l[k].id===rec.id){i=k;break;} if(i>=0) l[i]=rec; else l.push(rec); saveList(l); }
+
+  // ---------- sync (Google Sheet via Apps Script web app) ----------
+  var SYNC_URL = '';
+  try{ SYNC_URL = localStorage.getItem('hegart_sync_url')||''; }catch(e){}
+  var editingId = null;
+  function api(action, payload, method){
+    if(method==='GET'){
+      var u=SYNC_URL+(SYNC_URL.indexOf('?')<0?'?':'&')+'action='+encodeURIComponent(action);
+      if(payload && payload.id) u+='&id='+encodeURIComponent(payload.id);
+      return fetch(u).then(function(r){ return r.json(); });
+    }
+    return fetch(SYNC_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(Object.assign({action:action},payload))}).then(function(r){ return r.json(); });
+  }
+  function refreshFromServer(){
+    if(!SYNC_URL) return Promise.resolve(false);
+    return api('list',{},'GET').then(function(r){
+      if(r && r.ok && r.rows){ saveList(r.rows); renderList(); return true; }
+      return false;
+    }).catch(function(){ return false; });
+  }
+  function updateSyncUI(){
+    var inp=$('syncUrl'), st=$('syncStatus'); if(!inp) return;
+    inp.value=SYNC_URL;
+    if(st) st.innerHTML = SYNC_URL ? '🟢 Verbunden mit Google-Tabelle.' : '⚪ Nicht verbunden – Daten nur auf diesem Gerät.';
   }
 
   // ---------- form helpers ----------
@@ -13007,21 +13041,33 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
     a.href=u; a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(u);},1500); }
 
   // ---------- save ----------
-  function ensureSaved(){
-    var d=readForm(); var list=loadList();
-    var idx=-1; for(var i=0;i<list.length;i++) if(list[i].id===d.id){ idx=i; break; }
-    var rec;
-    if(idx>=0){ rec=list[idx]; rec.leistung=d.leistung; rec.betrag=d.betrag; rec.waehrung=d.waehrung;
-      rec.empfaenger=d.empfaenger; rec.gueltigBis=d.gueltigBis; rec.tpl=d.tpl; }
-    else{ rec={id:d.id,leistung:d.leistung,betrag:d.betrag,waehrung:d.waehrung,empfaenger:d.empfaenger,
-      gueltigBis:d.gueltigBis,tpl:d.tpl,status:'aktiv',createdAt:new Date().toISOString()}; list.push(rec); }
-    saveList(list); commitNumber(d.id);
-    return d;
+  async function ensureSaved(){
+    var d=readForm();
+    var rec={leistung:d.leistung,betrag:d.betrag,waehrung:d.waehrung,empfaenger:d.empfaenger,gueltigBis:d.gueltigBis,tpl:d.tpl};
+    if(SYNC_URL){
+      if(editingId) rec.id=editingId;
+      var res=null; try{ res=await api('save',{rec:rec}); }catch(e){}
+      if(res && res.ok && res.rec){
+        var s=res.rec; upsertLocalRec(s); editingId=s.id;
+        if($('f-nummer').value!==s.id){ $('f-nummer').value=s.id; redraw(); }
+        renderList(); return s;
+      }
+      toast('Keine Verbindung zur Tabelle – provisorisch lokal gespeichert.');
+    }
+    // local (no sync, or sync failed)
+    rec.id = editingId || ($('f-nummer').value.trim() || peekNext());
+    var list=loadList(), idx=-1; for(var i=0;i<list.length;i++) if(list[i].id===rec.id){ idx=i; break; }
+    if(idx>=0){ rec.status=list[idx].status; rec.createdAt=list[idx].createdAt; rec.eingeloestAt=list[idx].eingeloestAt; list[idx]=rec; }
+    else{ rec.status='aktiv'; rec.createdAt=new Date().toISOString(); list.push(rec); }
+    saveList(list); commitNumber(rec.id); editingId=rec.id;
+    $('f-nummer').value=rec.id; renderList();
+    return rec;
   }
-  $('btn-save').addEventListener('click', function(){ ensureSaved(); renderList(); toast('Gutschein '+readForm().id+' gespeichert.'); });
+  $('btn-save').addEventListener('click', function(){ ensureSaved().then(function(rec){ toast('Gutschein '+rec.id+' gespeichert.'); }); });
   $('btn-new').addEventListener('click', function(){ resetForm(); toast('Neuer Gutschein angelegt.'); });
 
   function resetForm(){
+    editingId=null;
     $('f-leistung').value=''; $('f-betrag').value=''; $('f-empfaenger').value='';
     $('f-nummer').value=peekNext(); setDefaultDate(); redraw();
   }
@@ -13038,18 +13084,18 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
   }
 
   // ---------- actions ----------
-  $('btn-print').addEventListener('click', function(){
-    var d=ensureSaved(); renderList();
+  $('btn-print').addEventListener('click', async function(){
+    await ensureSaved();
     $('printImg').src=canvas.toDataURL('image/png');
     $('printImg').onload=function(){ window.print(); };
   });
   $('btn-png').addEventListener('click', async function(){
-    var d=ensureSaved(); renderList();
+    var d=await ensureSaved();
     var b=await canvasBlob(); downloadBlob(b,'Gutschein-'+d.id+'.png'); toast('Bild heruntergeladen.');
   });
 
   async function shareTo(channel){
-    var d=ensureSaved(); renderList();
+    var d=await ensureSaved();
     var blob=await canvasBlob();
     var file=new File([blob],'Gutschein-'+d.id+'.png',{type:'image/png'});
     var txt=shareText(d);
@@ -13078,6 +13124,7 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
     $('f-leistung').value=rec.leistung||''; $('f-betrag').value=rec.betrag||'';
     $('f-waehrung').value=rec.waehrung||'EUR'; $('f-empfaenger').value=rec.empfaenger||'';
     $('f-gueltig').value=rec.gueltigBis||''; $('f-nummer').value=rec.id;
+    editingId=rec.id;
     if(rec.tpl && TPL_BY_ID[rec.tpl]) selectTpl(rec.tpl);
     switchView('erstellen'); redraw();
   }
@@ -13152,15 +13199,18 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
       return {id:o.id,leistung:o.l,betrag:o.b,waehrung:o.c,gueltigBis:o.e,empfaenger:o.f}; }catch(e){}
     return null;
   }
-  function onScan(data){
+  async function onScan(data){
     stopScan();
     var d=parsePayload(data);
-    if(!d){ renderScanResult(null, data); return; }
-    renderScanResult(d, data);
+    if(!d){ renderScanResult(null, data, null); return; }
+    var rec=null;
+    if(SYNC_URL){ try{ var r=await api('get',{id:d.id},'GET'); rec=r&&r.rec; }catch(e){} }
+    else { rec=findRec(d.id); }
+    renderScanResult(d, data, rec);
   }
   function findRec(id){ var l=loadList(); for(var i=0;i<l.length;i++) if(l[i].id===id) return l[i]; return null; }
 
-  function renderScanResult(d, raw){
+  function renderScanResult(d, raw, rec){
     var box=$('scanResult');
     if(!d){
       box.innerHTML='<div class="card result-card"><div class="warn">Kein gültiger Hegart-Gutschein-Code.</div>'+
@@ -13168,7 +13218,7 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
         '<div class="btns" style="margin-top:14px"><button class="btn btn-primary" id="rescan">Erneut scannen</button></div></div>';
       $('rescan').onclick=startScan; return;
     }
-    var rec=findRec(d.id);
+    if(rec===undefined) rec=findRec(d.id);
     var status = rec ? rec.status : 'unbekannt';
     var statusBox='';
     if(status==='eingeloest'){
@@ -13202,16 +13252,21 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
     $('rescan2').onclick=startScan;
   }
 
-  function redeem(d){
-    var list=loadList(), idx=-1; for(var i=0;i<list.length;i++) if(list[i].id===d.id){ idx=i; break; }
-    if(idx<0){ // external -> create record as redeemed
-      list.push({id:d.id,leistung:d.leistung,betrag:d.betrag,waehrung:d.waehrung,empfaenger:d.empfaenger,
-        gueltigBis:d.gueltigBis,status:'eingeloest',createdAt:new Date().toISOString(),eingeloestAt:new Date().toISOString()});
-    }else{
-      if(list[idx].status==='eingeloest'){ toast('Bereits eingelöst.'); return; }
-      list[idx].status='eingeloest'; list[idx].eingeloestAt=new Date().toISOString();
+  async function redeem(d){
+    if(SYNC_URL){
+      var r=null; try{ r=await api('redeem',{id:d.id}); }catch(e){}
+      if(r && r.ok){ upsertLocalRec(r.rec); renderList(); renderScanResult(d, null, r.rec);
+        toast(r.already?'War bereits eingelöst.':'Gutschein '+d.id+' eingelöst.'); }
+      else if(r && r.error==='not_found'){ toast('Nicht in der Tabelle gefunden.'); }
+      else { toast('Keine Verbindung zur Tabelle.'); }
+      return;
     }
-    saveList(list); renderList(); renderScanResult(d); toast('Gutschein '+d.id+' eingelöst.');
+    var list=loadList(), idx=-1; for(var i=0;i<list.length;i++) if(list[i].id===d.id){ idx=i; break; }
+    if(idx<0){ list.push({id:d.id,leistung:d.leistung,betrag:d.betrag,waehrung:d.waehrung,empfaenger:d.empfaenger,
+        gueltigBis:d.gueltigBis,status:'eingeloest',createdAt:new Date().toISOString(),eingeloestAt:new Date().toISOString()}); }
+    else{ if(list[idx].status==='eingeloest'){ toast('Bereits eingelöst.'); return; }
+      list[idx].status='eingeloest'; list[idx].eingeloestAt=new Date().toISOString(); }
+    saveList(list); renderList(); renderScanResult(d, null, findRec(d.id)); toast('Gutschein '+d.id+' eingelöst.');
   }
 
   // ---------- tabs ----------
@@ -13219,7 +13274,7 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
     document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.dataset.view===name); });
     document.querySelectorAll('.view').forEach(function(v){ v.classList.toggle('active', v.id==='view-'+name); });
     if(name!=='verifizieren') stopScan();
-    if(name==='verlauf') renderList();
+    if(name==='verlauf'){ renderList(); refreshFromServer(); }
   }
   document.querySelectorAll('.tab').forEach(function(t){ t.addEventListener('click', function(){ switchView(t.dataset.view); }); });
 
@@ -13246,12 +13301,25 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
     redraw();
   }
 
+  // ---------- sync settings wiring ----------
+  $('syncSave').addEventListener('click', function(){
+    var v=$('syncUrl').value.trim();
+    if(v && !/^https:\/\/script\.google\.com\/.*\/exec/.test(v) && !confirm('Die URL sieht ungewöhnlich aus. Trotzdem speichern?')) return;
+    SYNC_URL=v; try{ localStorage.setItem('hegart_sync_url',v); }catch(e){}
+    updateSyncUI();
+    if(SYNC_URL){ toast('Verbinde…'); refreshFromServer().then(function(ok){ toast(ok?'Verbunden – Liste geladen.':'Verbindung fehlgeschlagen. URL prüfen.'); $('f-nummer').value=peekNext(); redraw(); }); }
+  });
+  $('syncRefresh').addEventListener('click', function(){ if(!SYNC_URL){ toast('Keine URL gesetzt.'); return;} toast('Aktualisiere…'); refreshFromServer().then(function(ok){ toast(ok?'Aktualisiert.':'Fehler beim Laden.'); }); });
+  $('syncOff').addEventListener('click', function(){ SYNC_URL=''; try{ localStorage.removeItem('hegart_sync_url'); }catch(e){} updateSyncUI(); toast('Getrennt – nur dieses Gerät.'); });
+
   // ---------- init ----------
   function init(){
-    setDefaultDate();
-    $('f-nummer').value=peekNext();
+    setDefaultDate(); editingId=null;
+    updateSyncUI();
     buildPicker();
+    $('f-nummer').value=peekNext();
     renderList();
+    if(SYNC_URL){ refreshFromServer().then(function(){ if(!editingId) $('f-nummer').value=peekNext(); redraw(); }); }
     var go=function(){ redraw(); };
     if(document.fonts && document.fonts.load){
       var want=['500 40px "Cormorant Garamond"','500 40px "Jost"','700 40px "Playfair Display"','700 40px "Dancing Script"','700 40px "Quicksand"'];

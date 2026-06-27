@@ -11,6 +11,7 @@ Eine eigenständige Web-App (eine einzige `index.html`) zum schnellen Erstellen,
   - Am **Desktop**: lädt das Bild herunter und öffnet den Kanal mit vorbereitetem Text.
 - **Verlauf** – alle erstellten Gutscheine, gespeichert im Browser (localStorage). Erneut öffnen, teilen oder löschen.
 - **Verifizieren** – Kamera starten, QR-Code scannen, alle Daten ansehen und als **„Eingelöst"** markieren (oder schließen).
+- **Sync über Google-Tabelle (optional)** – mehrere Geräte teilen dieselbe Liste: serverseitig vergebene Nummern (keine Duplikate), gemeinsamer Einlöse-Status, alles direkt in der Tabelle sichtbar. Einrichtung siehe `google-apps-script.gs` (Tab *Verlauf → Google-Tabelle (Sync)*). Ohne URL bleibt alles lokal auf dem Gerät.
 
 ## Technik
 

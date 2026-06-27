@@ -4,7 +4,8 @@ Eine eigenständige Web-App (eine einzige `index.html`) zum schnellen Erstellen,
 
 ## Funktionen
 
-- **Erstellen** – Leistung und Betrag eingeben, die elegante Gutschein-Vorschau aktualisiert sich live. Jeder Gutschein erhält einen **QR-Code** mit eindeutigem Verifizierungs-Code.
+- **Erstellen** – Leistung und Betrag eingeben, die Gutschein-Vorschau aktualisiert sich live. Jeder Gutschein erhält einen **QR-Code** mit eindeutigem Verifizierungs-Code.
+- **5 Vorlagen** (live wählbar, pro Gutschein gespeichert): *Edel · Luxus* (Schwarz/Gold), *Paar-Shooting* (romantisch, Schreibschrift), *Baby Shooting* (sanfte Pastelltöne), *Natur · Boho* (erdige Farben, Bogen-Motiv), *Modern* (Weiß + Smaragd-Seitenleiste).
 - **Teilen** – Drucken / PDF, als Bild herunterladen, E-Mail, WhatsApp und „Teilen".
   - Am **Handy**: teilt das Bild direkt (Web Share) an WhatsApp, E-Mail usw.
   - Am **Desktop**: lädt das Bild herunter und öffnet den Kanal mit vorbereitetem Text.
@@ -16,7 +17,7 @@ Eine eigenständige Web-App (eine einzige `index.html`) zum schnellen Erstellen,
 - Reines HTML/CSS/JS, keine Build-Tools, keine Server.
 - QR-Erzeugung: [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) (MIT), inline eingebettet.
 - QR-Scannen: [jsQR](https://github.com/cozmo/jsQR) (Apache-2.0), inline eingebettet.
-- Schriften: Cormorant Garamond + Jost (Google Fonts).
+- Schriften: lokal eingebunden (`fonts/`, WOFF2) – Cormorant Garamond, Jost, Playfair Display, Dancing Script, Quicksand. Keine externe Abhängigkeit, funktioniert offline.
 - Daten bleiben **lokal auf dem Gerät** (localStorage) – keine Datenübertragung.
 
 ## Nutzung

@@ -5,10 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#15181d">
 <title>Hegart Studio – Gutschein Generator</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+  /* ---- local fonts (self-contained, offline-capable) ---- */
+  @font-face{font-family:'Cormorant Garamond';font-weight:500;font-style:normal;font-display:swap;src:url('fonts/cormorant-garamond-latin-500-normal.woff2') format('woff2');}
+  @font-face{font-family:'Cormorant Garamond';font-weight:600;font-style:normal;font-display:swap;src:url('fonts/cormorant-garamond-latin-600-normal.woff2') format('woff2');}
+  @font-face{font-family:'Cormorant Garamond';font-weight:500;font-style:italic;font-display:swap;src:url('fonts/cormorant-garamond-latin-500-italic.woff2') format('woff2');}
+  @font-face{font-family:'Jost';font-weight:300;font-style:normal;font-display:swap;src:url('fonts/jost-latin-300-normal.woff2') format('woff2');}
+  @font-face{font-family:'Jost';font-weight:400;font-style:normal;font-display:swap;src:url('fonts/jost-latin-400-normal.woff2') format('woff2');}
+  @font-face{font-family:'Jost';font-weight:500;font-style:normal;font-display:swap;src:url('fonts/jost-latin-500-normal.woff2') format('woff2');}
+  @font-face{font-family:'Jost';font-weight:600;font-style:normal;font-display:swap;src:url('fonts/jost-latin-600-normal.woff2') format('woff2');}
+  @font-face{font-family:'Playfair Display';font-weight:600;font-style:normal;font-display:swap;src:url('fonts/playfair-display-latin-600-normal.woff2') format('woff2');}
+  @font-face{font-family:'Playfair Display';font-weight:700;font-style:normal;font-display:swap;src:url('fonts/playfair-display-latin-700-normal.woff2') format('woff2');}
+  @font-face{font-family:'Playfair Display';font-weight:500;font-style:italic;font-display:swap;src:url('fonts/playfair-display-latin-500-italic.woff2') format('woff2');}
+  @font-face{font-family:'Dancing Script';font-weight:700;font-style:normal;font-display:swap;src:url('fonts/dancing-script-latin-700-normal.woff2') format('woff2');}
+  @font-face{font-family:'Quicksand';font-weight:500;font-style:normal;font-display:swap;src:url('fonts/quicksand-latin-500-normal.woff2') format('woff2');}
+  @font-face{font-family:'Quicksand';font-weight:600;font-style:normal;font-display:swap;src:url('fonts/quicksand-latin-600-normal.woff2') format('woff2');}
+  @font-face{font-family:'Quicksand';font-weight:700;font-style:normal;font-display:swap;src:url('fonts/quicksand-latin-700-normal.woff2') format('woff2');}
   :root{
     --ink:#15181d; --ink2:#0f1115; --panel:#1c2026; --panel2:#23282f;
     --gold:#c9a86a; --gold-soft:rgba(201,168,106,.5);
@@ -12726,11 +12738,12 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
     return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="210 118 214 198">'+ logoMarkSVG(color) +'</svg>';
   }
 
-  var ASSETS = { cream:new Image(), dark:new Image(), emblem:new Image(), n:0, total:3 };
+  var ASSETS = { cream:new Image(), dark:new Image(), gold:new Image(), emblem:new Image(), n:0, total:4 };
   function assetLoaded(){ ASSETS.n++; if(ASSETS.n>=ASSETS.total){ ASSETS.ready=true; } redraw(); }
-  ASSETS.cream.onload=assetLoaded; ASSETS.dark.onload=assetLoaded; ASSETS.emblem.onload=assetLoaded;
+  ASSETS.cream.onload=assetLoaded; ASSETS.dark.onload=assetLoaded; ASSETS.gold.onload=assetLoaded; ASSETS.emblem.onload=assetLoaded;
   ASSETS.cream.src  = 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(logoMonoFile('#f1eadb'));
   ASSETS.dark.src   = 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(logoMonoFile('#1d1b18'));
+  ASSETS.gold.src   = 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(logoMonoFile('#c9a86a'));
   ASSETS.emblem.src = 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(logoEmblemSVG());
   var EMBLEM_VB = {w:494, h:494};
 
@@ -12814,119 +12827,135 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
     c.fillText('ZUM VERIFIZIEREN SCANNEN', x+size/2, y+size+22); setLS(c,'0px');
   }
   function hasAmt(d){ return d.betrag!=='' && d.betrag!=null; }
+  function vgrad(c,a,b){ var g=c.createLinearGradient(0,0,0,H); g.addColorStop(0,a); g.addColorStop(1,b); c.fillStyle=g; c.fillRect(0,0,W,H); }
+  function dot(c,x,y,r,col){ c.fillStyle=col; c.beginPath(); c.arc(x,y,r,0,Math.PI*2); c.fill(); }
+  function dots(c,pts,col){ for(var i=0;i<pts.length;i++) dot(c,pts[i][0],pts[i][1],pts[i][2],col); }
+  function ringC(c,x,y,r,col,lw){ c.strokeStyle=col; c.lineWidth=lw||2.5; c.beginPath(); c.arc(x,y,r,0,Math.PI*2); c.stroke(); }
+  function heart(c,x,y,s,col){ c.save(); c.fillStyle=col; c.translate(x,y); c.beginPath();
+    c.moveTo(0,s*0.32);
+    c.bezierCurveTo(0,s*0.05,-s*0.5,-s*0.05,-s*0.5,s*0.25);
+    c.bezierCurveTo(-s*0.5,s*0.55,-s*0.18,s*0.7,0,s);
+    c.bezierCurveTo(s*0.18,s*0.7,s*0.5,s*0.55,s*0.5,s*0.25);
+    c.bezierCurveTo(s*0.5,-s*0.05,0,s*0.05,0,s*0.32);
+    c.closePath(); c.fill(); c.restore(); }
+  function sprig(c,x,y,dir,col){ c.strokeStyle=col; c.lineWidth=1.4; c.beginPath();
+    c.moveTo(x,y); c.quadraticCurveTo(x+dir*34,y-10,x+dir*74,y-6); c.stroke();
+    c.fillStyle=col; for(var i=1;i<=3;i++){ var lx=x+dir*22*i, ly=y-6-i*1.2;
+      c.save(); c.translate(lx,ly); c.rotate(dir>0?-0.5:0.5); c.beginPath(); c.ellipse(0,0,8,3.2,0,0,Math.PI*2); c.fill(); c.restore(); } }
+  function archShape(c,cx,topY,w,h){ var r=w/2; c.beginPath();
+    c.moveTo(cx-r,topY+h); c.lineTo(cx-r,topY+r); c.arc(cx,topY+r,r,Math.PI,0); c.lineTo(cx+r,topY+h); c.closePath(); }
+  function cornerDiamonds(c,col,inset){ inset=inset||58; var s=5;
+    [[inset,inset],[W-inset,inset],[inset,H-inset],[W-inset,H-inset]].forEach(function(p){
+      c.save(); c.fillStyle=col; c.translate(p[0],p[1]); c.rotate(Math.PI/4); c.fillRect(-s,-s,s*2,s*2); c.restore(); }); }
+  function goldText(c){ var g=c.createLinearGradient(0,250,0,420); g.addColorStop(0,'#e8d49a'); g.addColorStop(.5,'#c9a86a'); g.addColorStop(1,'#a8843f'); return g; }
 
   // ======================= TEMPLATES =======================
   var templates = [
-    // 1) Klassik Dunkel
-    { id:'klassik', name:'Klassik Dunkel', draw:function(c,d){
-      radialBg(c,'#20242a','#15181d','#0f1115');
-      frame2(c,'rgba(201,168,106,0.55)','rgba(201,168,106,0.28)');
+    // 1) Edel · Luxus — black & gold, high-contrast, posh
+    { id:'edel', name:'Edel · Luxus', draw:function(c,d){
+      radialBg(c,'#26231c','#16140f','#0c0b08');
+      frame2(c,'rgba(201,168,106,0.85)','rgba(201,168,106,0.4)');
+      cornerDiamonds(c,'#c9a86a',58);
       var cx=W/2;
-      markCentered(c,ASSETS.cream,LOGO_VB,cx,44,78);
+      markCentered(c,ASSETS.gold,LOGO_VB,cx,46,68);
       c.textAlign='center'; c.textBaseline='alphabetic';
-      c.fillStyle='#f1eadb'; c.font='500 23px "Jost",sans-serif'; setLS(c,'8px'); c.fillText('HEGART STUDIO',cx+4,158); setLS(c,'0px');
-      c.font='300 12px "Jost",sans-serif'; setLS(c,'5px'); c.fillStyle='rgba(201,168,106,0.85)';
-      c.fillText('DESIGN · FOTOGRAFIE · BRANDING · EVENTS',cx+3,182); setLS(c,'0px');
-      ruleDiamond(c,cx,206,'#c9a86a');
-      c.fillStyle='#f5efe2'; c.font='500 92px "Cormorant Garamond",serif'; setLS(c,'7px'); c.fillText('GUTSCHEIN',cx,300); setLS(c,'0px');
-      if(hasAmt(d)){ c.fillStyle='rgba(239,233,221,0.7)'; c.font='300 16px "Jost",sans-serif'; setLS(c,'5px'); c.fillText('IM WERT VON',cx,330); setLS(c,'0px');
-        c.fillStyle='#f5efe2'; c.font='500 76px "Cormorant Garamond",serif'; c.fillText(fmtAmount(d),cx,412); }
-      if(d.leistung){ c.fillStyle='#d8c79a'; c.font='400 26px "Jost",sans-serif'; setLS(c,'1px');
-        var lab=hasAmt(d)?('für: '+d.leistung):d.leistung, ly=hasAmt(d)?470:380, mx=720;
-        if(!hasAmt(d)){ c.font='500 40px "Cormorant Garamond",serif'; mx=760; ly=400; }
-        var lines=wrap(c,lab,mx); for(var i=0;i<lines.length&&i<2;i++) c.fillText(lines[i],cx,ly+i*(hasAmt(d)?34:48)); setLS(c,'0px'); }
-      fieldsLeft(c,d,92,H-200,58,'rgba(239,233,221,0.5)','#efe9dd');
-      qrCaption(c,d,W-92-150,H-92-150-22,150,{},'rgba(201,168,106,0.8)');
-      c.textAlign='left'; c.fillStyle='rgba(216,199,154,0.9)'; c.font='300 13px "Jost",sans-serif'; setLS(c,'2.5px'); c.fillText('WWW.HEGART.DE',92,H-70); setLS(c,'0px');
+      c.fillStyle='#d8bd86'; c.font='500 20px "Jost",sans-serif'; setLS(c,'10px'); c.fillText('HEGART STUDIO',cx+5,156); setLS(c,'0px');
+      ruleDiamond(c,cx,186,'#c9a86a',84);
+      c.fillStyle=goldText(c); c.font='700 86px "Playfair Display",serif'; setLS(c,'5px'); c.fillText('GUTSCHEIN',cx,288); setLS(c,'0px');
+      if(hasAmt(d)){ c.fillStyle='rgba(216,189,134,0.8)'; c.font='400 16px "Jost",sans-serif'; setLS(c,'6px'); c.fillText('IM WERT VON',cx,326); setLS(c,'0px');
+        c.fillStyle=goldText(c); c.font='600 72px "Playfair Display",serif'; c.fillText(fmtAmount(d),cx,402); }
+      if(d.leistung){ c.fillStyle='#e6d4a6'; c.font='italic 500 26px "Playfair Display",serif';
+        var ly=hasAmt(d)?458:368; var lines=wrap(c,(hasAmt(d)?'für: ':'')+d.leistung,720);
+        for(var i=0;i<lines.length&&i<2;i++) c.fillText(lines[i],cx,ly+i*32); }
+      fieldsLeft(c,d,96,H-206,54,'rgba(216,189,134,0.5)','#ece0c2');
+      qrCaption(c,d,W-96-140,H-84-140,140,{panelColor:'#fbf6ea',border:'#c9a86a'},'rgba(201,168,106,0.85)');
+      c.textAlign='center'; c.fillStyle='#d8bd86'; c.font='300 13px "Jost",sans-serif'; setLS(c,'3px'); c.fillText('WWW.HEGART.DE',cx,H-46); setLS(c,'0px');
     }},
 
-    // 2) Elegant Hell
-    { id:'hell', name:'Elegant Hell', draw:function(c,d){
-      solidBg(c,'#f4efe5');
-      frame2(c,'rgba(176,141,79,0.65)','rgba(176,141,79,0.30)');
-      var cx=W/2, ink='#2a2521', gold='#9c7a32';
-      markCentered(c,ASSETS.dark,LOGO_VB,cx,44,78);
+    // 2) Paar-Shooting — romantic script, warm ivory
+    { id:'paar', name:'Paar-Shooting', draw:function(c,d){
+      vgrad(c,'#f7eee6','#efe1d4');
+      c.lineWidth=1; c.strokeStyle='rgba(124,58,69,0.35)'; c.strokeRect(40,40,W-80,H-80);
+      var cx=W/2, ink='#5b4742', burg='#8a3f4c', rose='#b87f63';
+      markCentered(c,ASSETS.dark,LOGO_VB,cx,48,56);
       c.textAlign='center'; c.textBaseline='alphabetic';
-      c.fillStyle=ink; c.font='500 23px "Jost",sans-serif'; setLS(c,'8px'); c.fillText('HEGART STUDIO',cx+4,158); setLS(c,'0px');
-      c.font='300 12px "Jost",sans-serif'; setLS(c,'5px'); c.fillStyle=gold; c.fillText('DESIGN · FOTOGRAFIE · BRANDING · EVENTS',cx+3,182); setLS(c,'0px');
-      ruleDiamond(c,cx,206,'#b08d4f');
-      c.fillStyle=ink; c.font='500 92px "Cormorant Garamond",serif'; setLS(c,'7px'); c.fillText('GUTSCHEIN',cx,300); setLS(c,'0px');
-      if(hasAmt(d)){ c.fillStyle='rgba(42,37,33,0.6)'; c.font='300 16px "Jost",sans-serif'; setLS(c,'5px'); c.fillText('IM WERT VON',cx,330); setLS(c,'0px');
-        c.fillStyle=gold; c.font='500 76px "Cormorant Garamond",serif'; c.fillText(fmtAmount(d),cx,412); }
-      if(d.leistung){ c.fillStyle='#7a6a4f'; c.font='400 26px "Jost",sans-serif'; setLS(c,'1px');
-        var lab=hasAmt(d)?('für: '+d.leistung):d.leistung, ly=hasAmt(d)?470:380, mx=720;
-        if(!hasAmt(d)){ c.fillStyle=ink; c.font='500 40px "Cormorant Garamond",serif'; mx=760; ly=400; }
-        var lines=wrap(c,lab,mx); for(var i=0;i<lines.length&&i<2;i++) c.fillText(lines[i],cx,ly+i*(hasAmt(d)?34:48)); setLS(c,'0px'); }
-      fieldsLeft(c,d,92,H-200,58,'rgba(42,37,33,0.45)',ink);
-      qrCaption(c,d,W-92-150,H-92-150-22,150,{panel:false,moduleColor:'#1d1b18',border:'rgba(176,141,79,0.5)'},'rgba(156,122,50,0.9)');
-      c.textAlign='left'; c.fillStyle=gold; c.font='300 13px "Jost",sans-serif'; setLS(c,'2.5px'); c.fillText('WWW.HEGART.DE',92,H-70); setLS(c,'0px');
+      c.fillStyle=ink; c.font='600 16px "Jost",sans-serif'; setLS(c,'7px'); c.fillText('HEGART STUDIO',cx+4,142); setLS(c,'0px');
+      ringC(c,cx-15,172,16,rose,2.5); ringC(c,cx+15,172,16,burg,2.5);
+      c.fillStyle=burg; c.font='700 98px "Dancing Script",cursive'; setLS(c,'0px'); c.fillText('Gutschein',cx,276);
+      if(hasAmt(d)){ c.fillStyle=ink; c.font='400 15px "Jost",sans-serif'; setLS(c,'5px'); c.fillText('IM WERT VON',cx,314); setLS(c,'0px');
+        c.fillStyle=burg; c.font='500 70px "Cormorant Garamond",serif'; c.fillText(fmtAmount(d),cx,386); }
+      if(d.leistung){ c.fillStyle=rose; c.font='italic 500 27px "Cormorant Garamond",serif';
+        var ly=hasAmt(d)?440:356; var lines=wrap(c,d.leistung,660);
+        for(var i=0;i<lines.length&&i<2;i++) c.fillText(lines[i],cx,ly+i*32); }
+      fieldsLeft(c,d,96,H-206,54,'rgba(91,71,66,0.55)',ink);
+      qrCaption(c,d,W-96-132,H-84-132,132,{panel:false,moduleColor:'#3a2b28',border:'rgba(124,58,69,0.5)'},'rgba(138,63,76,0.9)');
+      c.textAlign='center'; c.fillStyle=burg; c.font='300 13px "Jost",sans-serif'; setLS(c,'2.5px'); c.fillText('WWW.HEGART.DE',cx,H-46); setLS(c,'0px');
     }},
 
-    // 3) Emblem / Siegel
-    { id:'emblem', name:'Emblem / Siegel', draw:function(c,d){
-      radialBg(c,'#1a1e24','#14171c','#0e1014');
-      frame1(c,'rgba(201,168,106,0.45)',40);
-      var cx=W/2;
-      markCentered(c,ASSETS.emblem,EMBLEM_VB,cx,42,118);
+    // 3) Baby Shooting — soft pastel, playful
+    { id:'baby', name:'Baby Shooting', draw:function(c,d){
+      vgrad(c,'#fdf7f3','#f8e9e6');
+      c.lineWidth=1.5; c.strokeStyle='#e6c9c3'; roundRect(c,42,42,W-84,H-84,28); c.stroke();
+      if(c.setLineDash){ c.setLineDash([2,7]); c.lineWidth=1; c.strokeStyle='#d9b3ac'; roundRect(c,54,54,W-108,H-108,22); c.stroke(); c.setLineDash([]); }
+      dots(c,[[112,120,4],[150,150,2.5],[W-120,128,4],[W-152,164,2.5],[120,H-140,3],[W-128,H-150,3.5],[W-176,H-118,2]],'rgba(201,150,140,0.4)');
+      dots(c,[[142,116,3],[W-110,158,2.5],[100,H-108,2.5]],'rgba(158,178,150,0.5)');
+      var cx=W/2, ink='#7a6056', rose='#c98a7e';
+      markCentered(c,ASSETS.dark,LOGO_VB,cx,54,58);
       c.textAlign='center'; c.textBaseline='alphabetic';
-      c.fillStyle='#f1eadb'; c.font='500 22px "Jost",sans-serif'; setLS(c,'8px'); c.fillText('HEGART STUDIO',cx+4,196); setLS(c,'0px');
-      ruleDiamond(c,cx,224,'#c9a86a',54);
-      c.fillStyle='#f5efe2'; c.font='500 84px "Cormorant Garamond",serif'; setLS(c,'6px'); c.fillText('GUTSCHEIN',cx,312); setLS(c,'0px');
-      if(hasAmt(d)){ c.fillStyle='rgba(239,233,221,0.65)'; c.font='300 15px "Jost",sans-serif'; setLS(c,'5px'); c.fillText('IM WERT VON',cx,342); setLS(c,'0px');
-        c.fillStyle='#f5efe2'; c.font='500 70px "Cormorant Garamond",serif'; c.fillText(fmtAmount(d),cx,414); }
-      if(d.leistung){ c.fillStyle='#d8c79a'; c.font='400 24px "Jost",sans-serif'; setLS(c,'1px');
-        var lab=hasAmt(d)?('für: '+d.leistung):d.leistung, ly=hasAmt(d)?462:372, mx=740;
-        if(!hasAmt(d)){ c.font='500 38px "Cormorant Garamond",serif'; }
-        var lines=wrap(c,lab,mx); for(var i=0;i<lines.length&&i<2;i++) c.fillText(lines[i],cx,ly+i*32); setLS(c,'0px'); }
-      c.textAlign='center'; c.fillStyle='rgba(239,233,221,0.55)'; c.font='300 13px "Jost",sans-serif'; setLS(c,'2px');
-      var det='GUTSCHEIN-NR. '+d.id+'   ·   GÜLTIG BIS '+fmtDate(d.gueltigBis)+(d.empfaenger?('   ·   FÜR '+d.empfaenger.toUpperCase()):'');
-      c.fillText(det,cx,H-220); setLS(c,'0px');
-      qrCaption(c,d,cx-46,H-104-92,92,{},'rgba(201,168,106,0.8)');
-      c.textAlign='center'; c.fillStyle='rgba(216,199,154,0.9)'; c.font='300 12px "Jost",sans-serif'; setLS(c,'2.5px'); c.fillText('WWW.HEGART.DE',cx,H-40); setLS(c,'0px');
+      c.fillStyle=ink; c.font='600 16px "Jost",sans-serif'; setLS(c,'7px'); c.fillText('HEGART STUDIO',cx+4,150); setLS(c,'0px');
+      heart(c,cx-156,196,16,'rgba(201,138,126,0.55)'); heart(c,cx+140,196,16,'rgba(201,138,126,0.55)');
+      c.fillStyle=rose; c.font='600 80px "Quicksand",sans-serif'; setLS(c,'1px'); c.fillText('Gutschein',cx,240); setLS(c,'0px');
+      if(hasAmt(d)){ c.fillStyle=ink; c.font='400 15px "Jost",sans-serif'; setLS(c,'5px'); c.fillText('IM WERT VON',cx,290); setLS(c,'0px');
+        c.fillStyle=rose; c.font='700 68px "Quicksand",sans-serif'; c.fillText(fmtAmount(d),cx,358); }
+      if(d.leistung){ c.fillStyle=ink; c.font='500 26px "Quicksand",sans-serif';
+        var ly=hasAmt(d)?412:328; if(!hasAmt(d)){ c.font='600 40px "Quicksand",sans-serif'; }
+        var lines=wrap(c,d.leistung,700); for(var i=0;i<lines.length&&i<2;i++) c.fillText(lines[i],cx,ly+i*34); }
+      fieldsLeft(c,d,96,H-200,54,'rgba(122,96,86,0.55)',ink);
+      qrCaption(c,d,W-96-130,H-84-130,130,{panel:false,moduleColor:'#7a6056',border:'rgba(201,138,126,0.5)'},'rgba(201,138,126,0.95)');
+      c.textAlign='center'; c.fillStyle=rose; c.font='400 13px "Jost",sans-serif'; setLS(c,'2.5px'); c.fillText('WWW.HEGART.DE',cx,H-46); setLS(c,'0px');
     }},
 
-    // 4) Minimal Weiß
-    { id:'minimal', name:'Minimal Weiß', draw:function(c,d){
-      solidBg(c,'#fcfbf8');
-      c.lineWidth=1; c.strokeStyle='#e4e1da'; c.strokeRect(30,30,W-60,H-60);
-      var x0=78, ink='#171513';
-      drawImg(c,ASSETS.dark,x0,60,52*(LOGO_VB.w/LOGO_VB.h),52);
+    // 4) Natur · Boho — earthy, arch motif
+    { id:'natur', name:'Natur · Boho', draw:function(c,d){
+      solidBg(c,'#ece2d2');
+      c.lineWidth=1; c.strokeStyle='rgba(120,110,82,0.4)'; c.strokeRect(40,40,W-80,H-80);
+      var cx=W/2, ink='#5c543f', terra='#a5694a', sage='#8a9072';
+      c.fillStyle='#dcd2bb'; archShape(c,cx,54,148,150); c.fill();
+      markCentered(c,ASSETS.dark,LOGO_VB,cx,86,56);
+      c.textAlign='center'; c.textBaseline='alphabetic';
+      c.fillStyle=ink; c.font='500 16px "Jost",sans-serif'; setLS(c,'7px'); c.fillText('HEGART STUDIO',cx+4,238); setLS(c,'0px');
+      c.strokeStyle=terra; c.lineWidth=1; c.beginPath(); c.moveTo(cx-72,262); c.lineTo(cx+72,262); c.stroke(); dot(c,cx,262,4,terra);
+      c.fillStyle=terra; c.font='500 76px "Cormorant Garamond",serif'; setLS(c,'4px'); c.fillText('GUTSCHEIN',cx,330); setLS(c,'0px');
+      if(hasAmt(d)){ c.fillStyle=sage; c.font='400 15px "Jost",sans-serif'; setLS(c,'5px'); c.fillText('IM WERT VON',cx,364); setLS(c,'0px');
+        c.fillStyle=ink; c.font='500 64px "Cormorant Garamond",serif'; c.fillText(fmtAmount(d),cx,430); }
+      if(d.leistung){ c.fillStyle=terra; c.font='italic 500 25px "Cormorant Garamond",serif';
+        var ly=hasAmt(d)?476:386; var lines=wrap(c,(hasAmt(d)?'für: ':'')+d.leistung,700);
+        for(var i=0;i<lines.length&&i<2;i++) c.fillText(lines[i],cx,ly+i*30); }
+      fieldsLeft(c,d,96,H-198,52,'rgba(92,84,63,0.55)',ink);
+      qrCaption(c,d,W-96-130,H-84-130,130,{panel:false,moduleColor:'#4a4534',border:'rgba(165,105,74,0.5)'},'rgba(165,105,74,0.95)');
+      c.textAlign='center'; c.fillStyle=terra; c.font='300 13px "Jost",sans-serif'; setLS(c,'2.5px'); c.fillText('WWW.HEGART.DE',cx,H-46); setLS(c,'0px');
+    }},
+
+    // 5) Modern — white + emerald sidebar, bold sans
+    { id:'modern', name:'Modern', draw:function(c,d){
+      solidBg(c,'#ffffff');
+      var bw=150, emer='#15473a';
+      c.fillStyle=emer; c.fillRect(0,0,bw,H);
+      drawImg(c,ASSETS.cream,(bw-58*(LOGO_VB.w/LOGO_VB.h))/2,56,58*(LOGO_VB.w/LOGO_VB.h),58);
+      c.save(); c.translate(bw/2,H-72); c.rotate(-Math.PI/2);
+      c.textAlign='left'; c.textBaseline='middle'; c.fillStyle='#cfe0d6'; c.font='500 15px "Jost",sans-serif'; setLS(c,'7px'); c.fillText('HEGART STUDIO',0,0); setLS(c,'0px'); c.restore();
+      var x0=bw+70, ink='#14201b';
       c.textAlign='left'; c.textBaseline='alphabetic';
-      c.fillStyle=ink; c.font='500 18px "Jost",sans-serif'; setLS(c,'6px'); c.fillText('HEGART STUDIO',x0+78,84); setLS(c,'0px');
-      c.fillStyle='#9a948a'; c.font='300 11px "Jost",sans-serif'; setLS(c,'4px'); c.fillText('DESIGN · FOTOGRAFIE · BRANDING · EVENTS',x0+78,104); setLS(c,'0px');
-      c.strokeStyle='#171513'; c.lineWidth=2; c.beginPath(); c.moveTo(x0,150); c.lineTo(x0+70,150); c.stroke();
-      c.fillStyle=ink; c.font='500 70px "Jost",sans-serif'; setLS(c,'10px'); c.fillText('GUTSCHEIN',x0,250); setLS(c,'0px');
-      if(hasAmt(d)){ c.fillStyle='#9a948a'; c.font='300 14px "Jost",sans-serif'; setLS(c,'5px'); c.fillText('IM WERT VON',x0,300); setLS(c,'0px');
-        c.fillStyle=ink; c.font='400 84px "Jost",sans-serif'; setLS(c,'1px'); c.fillText(fmtAmount(d),x0,388); setLS(c,'0px'); }
-      if(d.leistung){ c.fillStyle='#3c372f'; c.font='400 26px "Jost",sans-serif';
-        var ly=hasAmt(d)?436:330;
-        if(!hasAmt(d)){ c.font='400 44px "Jost",sans-serif'; }
-        var lines=wrap(c,d.leistung,820); for(var i=0;i<lines.length&&i<2;i++) c.fillText(lines[i],x0,ly+i*34); }
-      fieldsLeft(c,d,x0,H-176,52,'#9a948a',ink);
-      qrCaption(c,d,W-78-130,H-78-130-20,130,{panel:false,moduleColor:'#171513'},'#9a948a');
-      c.textAlign='left'; c.fillStyle='#171513'; c.font='400 13px "Jost",sans-serif'; setLS(c,'2.5px'); c.fillText('WWW.HEGART.DE',x0,H-58); setLS(c,'0px');
-    }},
-
-    // 5) Modern Akzent (gold top band)
-    { id:'modern', name:'Modern Akzent', draw:function(c,d){
-      solidBg(c,'#16181d');
-      var bandH=170, g=c.createLinearGradient(0,0,W,bandH);
-      g.addColorStop(0,'#cfae6e'); g.addColorStop(1,'#b8965a'); c.fillStyle=g; c.fillRect(0,0,W,bandH);
-      var x0=80, ink='#1c1a16';
-      drawImg(c,ASSETS.dark,x0,40,90*(LOGO_VB.w/LOGO_VB.h),90);
-      c.textAlign='left'; c.textBaseline='alphabetic';
-      c.fillStyle=ink; c.font='500 22px "Jost",sans-serif'; setLS(c,'8px'); c.fillText('HEGART STUDIO',x0+118,84); setLS(c,'0px');
-      c.fillStyle='rgba(28,26,22,0.7)'; c.font='300 12px "Jost",sans-serif'; setLS(c,'4px'); c.fillText('DESIGN · FOTOGRAFIE · BRANDING · EVENTS',x0+118,108); setLS(c,'0px');
-      c.fillStyle='#f3ecdc'; c.font='500 84px "Cormorant Garamond",serif'; setLS(c,'6px'); c.fillText('GUTSCHEIN',x0,290); setLS(c,'0px');
-      if(hasAmt(d)){ c.fillStyle='#c9a86a'; c.font='300 15px "Jost",sans-serif'; setLS(c,'5px'); c.fillText('IM WERT VON',x0,330); setLS(c,'0px');
-        c.fillStyle='#f5efe2'; c.font='500 72px "Cormorant Garamond",serif'; c.fillText(fmtAmount(d),x0,404); }
-      if(d.leistung){ c.fillStyle='#d8c79a'; c.font='400 25px "Jost",sans-serif';
-        var lab=hasAmt(d)?('für: '+d.leistung):d.leistung, ly=hasAmt(d)?452:356;
-        if(!hasAmt(d)){ c.fillStyle='#f3ecdc'; c.font='500 40px "Cormorant Garamond",serif'; }
-        var lines=wrap(c,lab,760); for(var i=0;i<lines.length&&i<2;i++) c.fillText(lines[i],x0,ly+i*32); }
-      fieldsLeft(c,d,x0,H-190,54,'rgba(239,233,221,0.5)','#efe9dd');
-      qrCaption(c,d,W-80-150,H-80-150-22,150,{},'rgba(201,168,106,0.8)');
-      c.textAlign='left'; c.fillStyle='rgba(216,199,154,0.9)'; c.font='300 13px "Jost",sans-serif'; setLS(c,'2.5px'); c.fillText('WWW.HEGART.DE',x0,H-64); setLS(c,'0px');
+      c.fillStyle=ink; c.font='600 76px "Jost",sans-serif'; setLS(c,'3px'); c.fillText('GUTSCHEIN',x0,200); setLS(c,'0px');
+      c.strokeStyle=emer; c.lineWidth=4; c.beginPath(); c.moveTo(x0,230); c.lineTo(x0+92,230); c.stroke();
+      if(hasAmt(d)){ c.fillStyle='#6f8a7f'; c.font='400 14px "Jost",sans-serif'; setLS(c,'5px'); c.fillText('IM WERT VON',x0,290); setLS(c,'0px');
+        c.fillStyle=emer; c.font='600 84px "Jost",sans-serif'; setLS(c,'1px'); c.fillText(fmtAmount(d),x0,374); setLS(c,'0px'); }
+      if(d.leistung){ c.fillStyle='#33403a'; c.font='400 26px "Jost",sans-serif';
+        var ly=hasAmt(d)?422:312; var lines=wrap(c,d.leistung,760);
+        for(var i=0;i<lines.length&&i<2;i++) c.fillText(lines[i],x0,ly+i*34); }
+      fieldsLeft(c,d,x0,H-176,52,'#6f8a7f',ink);
+      qrCaption(c,d,W-78-130,H-78-130,130,{panel:false,moduleColor:'#14201b'},'#6f8a7f');
+      c.textAlign='left'; c.fillStyle=emer; c.font='500 13px "Jost",sans-serif'; setLS(c,'2.5px'); c.fillText('WWW.HEGART.DE',x0,H-56); setLS(c,'0px');
     }}
   ];
   var TPL_BY_ID={}; templates.forEach(function(t){ TPL_BY_ID[t.id]=t; });
@@ -13224,8 +13253,11 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
     buildPicker();
     renderList();
     var go=function(){ redraw(); };
-    if(document.fonts && document.fonts.ready){ document.fonts.ready.then(go); setTimeout(go,600); }
-    else go();
+    if(document.fonts && document.fonts.load){
+      var want=['500 40px "Cormorant Garamond"','500 40px "Jost"','700 40px "Playfair Display"','700 40px "Dancing Script"','700 40px "Quicksand"'];
+      Promise.all(want.map(function(f){ return document.fonts.load(f).catch(function(){}); })).then(go);
+      document.fonts.ready.then(go); setTimeout(go,500); setTimeout(go,1100);
+    } else go();
   }
   init();
 })();

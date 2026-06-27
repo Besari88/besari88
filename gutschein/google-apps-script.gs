@@ -18,8 +18,14 @@
  * Die Tabelle "Gutscheine" wird automatisch mit Kopfzeile angelegt.
  */
 
+// >>> WICHTIG: hier denselben geheimen Token eintragen, den du auch in der App eingibst.
+// Ersetze den Platzhalter durch deinen eigenen Token (z. B. das in der App generierte 'hegart-...').
+var SECRET = 'DEIN-GEHEIMER-TOKEN';
+
 var SHEET_NAME = 'Gutscheine';
 var HEADERS = ['id','leistung','betrag','waehrung','empfaenger','gueltigBis','tpl','status','createdAt','eingeloestAt'];
+
+function authOK_(token) { return SECRET && String(token||'') === SECRET; }
 
 function getSheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -51,6 +57,7 @@ function nextId_(sh) {
 }
 
 function doGet(e) {
+  if (!authOK_(e && e.parameter && e.parameter.token)) return json_({ ok: false, error: 'unauthorized' });
   var sh = getSheet_();
   var action = (e && e.parameter && e.parameter.action) || 'list';
   if (action === 'get') {
@@ -66,6 +73,7 @@ function doPost(e) {
   lock.waitLock(20000);
   try {
     var body = JSON.parse(e.postData.contents);
+    if (!authOK_(body.token)) return json_({ ok: false, error: 'unauthorized' });
     var sh = getSheet_();
     var action = body.action;
 

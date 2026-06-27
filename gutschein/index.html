@@ -12659,6 +12659,7 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
         <h2>Google-Tabelle (Sync)</h2>
         <p class="hint">Web-App-URL des Google-Apps-Scripts einfügen, damit alle Geräte dieselbe Liste teilen. Leer lassen = nur dieses Gerät.</p>
         <div class="field"><label>Web-App-URL</label><input id="syncUrl" type="text" placeholder="https://script.google.com/macros/s/.../exec"></div>
+        <div class="field"><label>Token (geheim)</label><input id="syncToken" type="text" placeholder="hegart-..."></div>
         <div class="btns"><button class="btn btn-primary" id="syncSave"><span class="ic">🔗</span> Verbinden</button><button class="btn btn-ghost" id="syncRefresh"><span class="ic">🔄</span> Aktualisieren</button><button class="btn btn-ghost" id="syncOff">Trennen</button></div>
         <p class="hint" id="syncStatus" style="margin-top:12px"></p>
       </div>
@@ -12772,17 +12773,17 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
   // ---------- sync (Google Sheet via Apps Script web app) ----------
   // No URL is embedded in the app for privacy: each studio device must enter
   // the Web-App URL once (stored locally). Public visitors cannot reach the DB.
-  var SYNC_URL = '';
-  try{ SYNC_URL = localStorage.getItem('hegart_sync_url')||''; }catch(e){}
+  var SYNC_URL = '', SYNC_TOKEN = '';
+  try{ SYNC_URL = localStorage.getItem('hegart_sync_url')||''; SYNC_TOKEN = localStorage.getItem('hegart_sync_token')||''; }catch(e){}
   var editingId = null;
   function api(action, payload, method){
     if(method==='GET'){
-      var u=SYNC_URL+(SYNC_URL.indexOf('?')<0?'?':'&')+'action='+encodeURIComponent(action);
+      var u=SYNC_URL+(SYNC_URL.indexOf('?')<0?'?':'&')+'action='+encodeURIComponent(action)+'&token='+encodeURIComponent(SYNC_TOKEN||'');
       if(payload && payload.id) u+='&id='+encodeURIComponent(payload.id);
       return fetch(u).then(function(r){ return r.json(); });
     }
     return fetch(SYNC_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify(Object.assign({action:action},payload))}).then(function(r){ return r.json(); });
+      body:JSON.stringify(Object.assign({action:action,token:SYNC_TOKEN||''},payload))}).then(function(r){ return r.json(); });
   }
   function refreshFromServer(){
     if(!SYNC_URL) return Promise.resolve(false);
@@ -12792,8 +12793,8 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
     }).catch(function(){ return false; });
   }
   function updateSyncUI(){
-    var inp=$('syncUrl'), st=$('syncStatus'); if(!inp) return;
-    inp.value=SYNC_URL;
+    var inp=$('syncUrl'), tok=$('syncToken'), st=$('syncStatus'); if(!inp) return;
+    inp.value=SYNC_URL; if(tok) tok.value=SYNC_TOKEN;
     if(st) st.innerHTML = SYNC_URL ? '🟢 Verbunden mit Google-Tabelle.' : '⚪ Nicht verbunden – Daten nur auf diesem Gerät.';
   }
 
@@ -13305,14 +13306,14 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
 
   // ---------- sync settings wiring ----------
   $('syncSave').addEventListener('click', function(){
-    var v=$('syncUrl').value.trim();
+    var v=$('syncUrl').value.trim(), t=$('syncToken').value.trim();
     if(v && !/^https:\/\/script\.google\.com\/.*\/exec/.test(v) && !confirm('Die URL sieht ungewöhnlich aus. Trotzdem speichern?')) return;
-    SYNC_URL=v; try{ localStorage.setItem('hegart_sync_url',v); }catch(e){}
+    SYNC_URL=v; SYNC_TOKEN=t; try{ localStorage.setItem('hegart_sync_url',v); localStorage.setItem('hegart_sync_token',t); }catch(e){}
     updateSyncUI();
-    if(SYNC_URL){ toast('Verbinde…'); refreshFromServer().then(function(ok){ toast(ok?'Verbunden – Liste geladen.':'Verbindung fehlgeschlagen. URL prüfen.'); $('f-nummer').value=peekNext(); redraw(); }); }
+    if(SYNC_URL){ toast('Verbinde…'); refreshFromServer().then(function(ok){ toast(ok?'Verbunden – Liste geladen.':'Verbindung fehlgeschlagen. URL/Token prüfen.'); $('f-nummer').value=peekNext(); redraw(); }); }
   });
   $('syncRefresh').addEventListener('click', function(){ if(!SYNC_URL){ toast('Keine URL gesetzt.'); return;} toast('Aktualisiere…'); refreshFromServer().then(function(ok){ toast(ok?'Aktualisiert.':'Fehler beim Laden.'); }); });
-  $('syncOff').addEventListener('click', function(){ SYNC_URL=''; try{ localStorage.removeItem('hegart_sync_url'); }catch(e){} updateSyncUI(); toast('Getrennt – nur dieses Gerät.'); });
+  $('syncOff').addEventListener('click', function(){ SYNC_URL=''; SYNC_TOKEN=''; try{ localStorage.removeItem('hegart_sync_url'); localStorage.removeItem('hegart_sync_token'); }catch(e){} updateSyncUI(); toast('Getrennt – nur dieses Gerät.'); });
 
   // ---------- init ----------
   function init(){

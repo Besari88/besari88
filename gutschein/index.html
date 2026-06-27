@@ -45,6 +45,21 @@
   .tab{padding:8px 16px;border-radius:999px;background:transparent;color:var(--muted);font-size:14px;letter-spacing:.5px;transition:.15s}
   .tab.active{background:var(--gold);color:#1a1a1a;font-weight:500}
   .tab:hover:not(.active){color:var(--text)}
+  .top-right{display:flex;align-items:center;gap:10px}
+  .gear{position:relative;width:40px;height:40px;border-radius:999px;background:var(--panel);border:1px solid var(--line);color:var(--muted);font-size:18px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .gear:hover{color:var(--gold);border-color:var(--gold-soft)}
+  .gear-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:transparent}
+  .gear.connected .gear-dot{background:var(--green);box-shadow:0 0 0 2px var(--panel)}
+
+  /* ---- modal ---- */
+  .modal-backdrop{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
+    display:none;align-items:center;justify-content:center;padding:20px}
+  .modal-backdrop.show{display:flex}
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;width:100%;max-width:480px;max-height:90vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
+  .modal-head h2{font-family:'Cormorant Garamond',serif;font-size:24px}
+  .modal-close{width:36px;height:36px;border-radius:9px;background:var(--panel2);border:1px solid var(--line);color:var(--text);font-size:15px}
+  .modal-close:hover{border-color:var(--gold-soft)}
 
   /* ---- layout ---- */
   .wrap{max-width:1180px;margin:0 auto;padding:24px 20px 60px}
@@ -12580,11 +12595,14 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
 <body>
   <div class="topbar">
     <div class="logo"><svg viewBox="210 118 214 198" width="22" height="20" style="vertical-align:-3px;margin-right:8px"><g fill="none" stroke="#c9a86a" stroke-width="12.6" stroke-linecap="square" stroke-miterlimit="3.6"><line x1="218" y1="126.5" x2="218" y2="306.5"/><line x1="308" y1="126.5" x2="308" y2="306.5"/><line x1="218" y1="216.5" x2="308" y2="216.5"/><line x1="308" y1="126.5" x2="416" y2="126.5"/><line x1="416" y1="149.5" x2="416" y2="306.5"/><line x1="308" y1="306.5" x2="416" y2="306.5"/><line x1="362" y1="216.5" x2="416" y2="216.5"/></g></svg>HEGART STUDIO</div>
-    <nav class="tabs" id="tabs">
-      <button class="tab active" data-view="erstellen">Erstellen</button>
-      <button class="tab" data-view="verlauf">Verlauf</button>
-      <button class="tab" data-view="verifizieren">Verifizieren</button>
-    </nav>
+    <div class="top-right">
+      <nav class="tabs" id="tabs">
+        <button class="tab active" data-view="erstellen">Erstellen</button>
+        <button class="tab" data-view="verlauf">Verlauf</button>
+        <button class="tab" data-view="verifizieren">Verifizieren</button>
+      </nav>
+      <button class="gear" id="settingsBtn" title="Sync-Einstellungen" aria-label="Einstellungen">⚙<span class="gear-dot" id="gearDot"></span></button>
+    </div>
   </div>
 
   <div class="wrap">
@@ -12655,14 +12673,6 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
 
     <!-- ============ VERLAUF ============ -->
     <section class="view" id="view-verlauf">
-      <div class="card" style="margin-bottom:18px">
-        <h2>Google-Tabelle (Sync)</h2>
-        <p class="hint">Web-App-URL des Google-Apps-Scripts einfügen, damit alle Geräte dieselbe Liste teilen. Leer lassen = nur dieses Gerät.</p>
-        <div class="field"><label>Web-App-URL</label><input id="syncUrl" type="text" placeholder="https://script.google.com/macros/s/.../exec"></div>
-        <div class="field"><label>Token (geheim)</label><input id="syncToken" type="text" placeholder="hegart-..."></div>
-        <div class="btns"><button class="btn btn-primary" id="syncSave"><span class="ic">🔗</span> Verbinden</button><button class="btn btn-ghost" id="syncRefresh"><span class="ic">🔄</span> Aktualisieren</button><button class="btn btn-ghost" id="syncOff">Trennen</button></div>
-        <p class="hint" id="syncStatus" style="margin-top:12px"></p>
-      </div>
       <div class="card">
         <h2>Erstellte Gutscheine</h2>
         <p class="hint">Gespeichert auf diesem Gerät. Tippen zum erneuten Öffnen, Teilen oder Einlösen.</p>
@@ -12693,6 +12703,18 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
       </div>
     </section>
 
+  </div>
+
+  <!-- settings modal -->
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="modal">
+      <div class="modal-head"><h2>Google-Tabelle (Sync)</h2><button class="modal-close" id="settingsClose" aria-label="Schließen">✕</button></div>
+      <p class="hint">Web-App-URL des Google-Apps-Scripts + Token einfügen, damit alle Geräte dieselbe Liste teilen. Leer lassen = nur dieses Gerät.</p>
+      <div class="field"><label>Web-App-URL</label><input id="syncUrl" type="text" placeholder="https://script.google.com/macros/s/.../exec"></div>
+      <div class="field"><label>Token (geheim)</label><input id="syncToken" type="text" placeholder="hegart-..."></div>
+      <div class="btns"><button class="btn btn-primary" id="syncSave"><span class="ic">🔗</span> Verbinden</button><button class="btn btn-ghost" id="syncRefresh"><span class="ic">🔄</span> Aktualisieren</button><button class="btn btn-ghost" id="syncOff">Trennen</button></div>
+      <p class="hint" id="syncStatus" style="margin-top:12px"></p>
+    </div>
   </div>
 
   <!-- print + toast -->
@@ -12785,18 +12807,26 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
     return fetch(SYNC_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
       body:JSON.stringify(Object.assign({action:action,token:SYNC_TOKEN||''},payload))}).then(function(r){ return r.json(); });
   }
+  var SYNC_OK = false;
   function refreshFromServer(){
-    if(!SYNC_URL) return Promise.resolve(false);
+    if(!SYNC_URL){ SYNC_OK=false; updateSyncUI(); return Promise.resolve(false); }
     return api('list',{},'GET').then(function(r){
-      if(r && r.ok && r.rows){ saveList(r.rows); renderList(); return true; }
-      return false;
-    }).catch(function(){ return false; });
+      if(r && r.ok && r.rows){ saveList(r.rows); renderList(); SYNC_OK=true; updateSyncUI(); return true; }
+      SYNC_OK=false; updateSyncUI(); return false;
+    }).catch(function(){ SYNC_OK=false; updateSyncUI(); return false; });
   }
   function updateSyncUI(){
+    var g=$('settingsBtn'); if(g) g.classList.toggle('connected', !!(SYNC_URL && SYNC_OK));
     var inp=$('syncUrl'), tok=$('syncToken'), st=$('syncStatus'); if(!inp) return;
     inp.value=SYNC_URL; if(tok) tok.value=SYNC_TOKEN;
-    if(st) st.innerHTML = SYNC_URL ? '🟢 Verbunden mit Google-Tabelle.' : '⚪ Nicht verbunden – Daten nur auf diesem Gerät.';
+    if(st){
+      if(!SYNC_URL) st.innerHTML='⚪ Nicht verbunden – Daten nur auf diesem Gerät.';
+      else if(SYNC_OK) st.innerHTML='🟢 Verbunden mit Google-Tabelle.';
+      else st.innerHTML='🟡 URL gesetzt – noch keine Antwort. Auf „Verbinden" tippen / URL & Token prüfen.';
+    }
   }
+  function openSettings(){ updateSyncUI(); $('settingsModal').classList.add('show'); }
+  function closeSettings(){ $('settingsModal').classList.remove('show'); }
 
   // ---------- form helpers ----------
   function fmtDate(s){ if(!s) return '—'; var p=s.split('-'); return p.length===3 ? p[2]+'.'+p[1]+'.'+p[0] : s; }
@@ -13305,12 +13335,21 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
   }
 
   // ---------- sync settings wiring ----------
+  $('settingsBtn').addEventListener('click', openSettings);
+  $('settingsClose').addEventListener('click', closeSettings);
+  $('settingsModal').addEventListener('click', function(e){ if(e.target===this) closeSettings(); });
+
   $('syncSave').addEventListener('click', function(){
     var v=$('syncUrl').value.trim(), t=$('syncToken').value.trim();
     if(v && !/^https:\/\/script\.google\.com\/.*\/exec/.test(v) && !confirm('Die URL sieht ungewöhnlich aus. Trotzdem speichern?')) return;
     SYNC_URL=v; SYNC_TOKEN=t; try{ localStorage.setItem('hegart_sync_url',v); localStorage.setItem('hegart_sync_token',t); }catch(e){}
     updateSyncUI();
-    if(SYNC_URL){ toast('Verbinde…'); refreshFromServer().then(function(ok){ toast(ok?'Verbunden – Liste geladen.':'Verbindung fehlgeschlagen. URL/Token prüfen.'); $('f-nummer').value=peekNext(); redraw(); }); }
+    if(SYNC_URL){ toast('Verbinde…'); refreshFromServer().then(function(ok){
+      toast(ok?'Verbunden – Liste geladen.':'Verbindung fehlgeschlagen. URL/Token prüfen.');
+      $('f-nummer').value=peekNext(); redraw();
+      if(ok) setTimeout(closeSettings,700);
+    }); }
+    else closeSettings();
   });
   $('syncRefresh').addEventListener('click', function(){ if(!SYNC_URL){ toast('Keine URL gesetzt.'); return;} toast('Aktualisiere…'); refreshFromServer().then(function(ok){ toast(ok?'Aktualisiert.':'Fehler beim Laden.'); }); });
   $('syncOff').addEventListener('click', function(){ SYNC_URL=''; SYNC_TOKEN=''; try{ localStorage.removeItem('hegart_sync_url'); localStorage.removeItem('hegart_sync_token'); }catch(e){} updateSyncUI(); toast('Getrennt – nur dieses Gerät.'); });

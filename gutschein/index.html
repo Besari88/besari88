@@ -67,6 +67,32 @@
   .view.active{display:block}
   .grid{display:grid;grid-template-columns:380px 1fr;gap:26px;align-items:start}
   @media(max-width:860px){.grid{grid-template-columns:1fr}.tabs .tab{padding:8px 12px;font-size:13px}.logo{font-size:18px;letter-spacing:2px}}
+  @media(max-width:600px){
+    .topbar{flex-wrap:wrap;gap:10px;padding:10px 14px}
+    .logo{font-size:15px;letter-spacing:1px}
+    .top-right{width:100%;gap:8px}
+    .tabs{flex:1;padding:3px}
+    .tabs .tab{flex:1;text-align:center;padding:9px 4px;font-size:12.5px;letter-spacing:0}
+    .gear{width:38px;height:38px;font-size:17px}
+    .wrap{padding:16px 12px 56px}
+    .grid{gap:18px}
+    .card{padding:16px}
+    .card h2{font-size:22px}
+    .canvas-shell{padding:10px}
+    .btns{gap:8px}
+    .btn{padding:12px 14px;font-size:14px}
+    .preview-wrap .btns .btn{flex:1 1 calc(50% - 8px);justify-content:center}
+    .tpl-card{width:150px}
+    .vitem{gap:10px 12px}
+    .vitem .num{min-width:auto}
+    .vitem .acts{margin-left:auto}
+    .modal{padding:18px;border-radius:14px}
+    .scan-stage{max-width:100%}
+  }
+  @media(max-width:380px){
+    .tabs .tab{font-size:11.5px;padding:9px 2px}
+    .logo svg{display:none}
+  }
 
   /* ---- template picker ---- */
   .tpl-bar{margin-bottom:22px}
@@ -87,7 +113,7 @@
   .field{margin-bottom:16px}
   .field label{display:block;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
   .field input,.field textarea,.field select{width:100%;background:var(--ink);border:1px solid var(--line);
-    border-radius:10px;padding:12px 13px;color:var(--text);font-size:15px;transition:.15s}
+    border-radius:10px;padding:12px 13px;color:var(--text);font-size:16px;transition:.15s}
   .field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--gold-soft);background:#13161b}
   .field textarea{resize:vertical;min-height:64px;line-height:1.4}
   .row2{display:grid;grid-template-columns:1fr 110px;gap:12px}

@@ -22,13 +22,18 @@
 // Ersetze den Platzhalter durch deinen eigenen Token (z. B. das in der App generierte 'hegart-...').
 var SECRET = 'DEIN-GEHEIMER-TOKEN';
 
+// >>> Trage hier die ID deiner Google-Tabelle ein.
+// Sie steht in der Tabellen-URL zwischen /d/ und /edit:
+//   https://docs.google.com/spreadsheets/d/  DIESE-ID  /edit
+var SHEET_ID = 'HIER-DEINE-SHEET-ID';
+
 var SHEET_NAME = 'Gutscheine';
 var HEADERS = ['id','leistung','betrag','waehrung','empfaenger','gueltigBis','tpl','status','createdAt','eingeloestAt'];
 
 function authOK_(token) { return SECRET && String(token||'') === SECRET; }
 
 function getSheet_() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = SpreadsheetApp.openById(SHEET_ID);
   var sh = ss.getSheetByName(SHEET_NAME);
   if (!sh) { sh = ss.insertSheet(SHEET_NAME); }
   if (sh.getLastRow() === 0) { sh.appendRow(HEADERS); }

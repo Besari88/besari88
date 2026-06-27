@@ -12770,10 +12770,10 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
   function upsertLocalRec(rec){ var l=loadList(); var i=-1; for(var k=0;k<l.length;k++) if(l[k].id===rec.id){i=k;break;} if(i>=0) l[i]=rec; else l.push(rec); saveList(l); }
 
   // ---------- sync (Google Sheet via Apps Script web app) ----------
-  // Default backend so every device is connected out of the box (no manual setup).
-  var DEFAULT_SYNC_URL = 'https://script.google.com/macros/s/AKfycbzlpcOD2OBVmD5UnHBnvTDzuGvsc72UmATCB0omp4j62Q8CyxGUgHEPmQGlwHVDG34O/exec';
-  var SYNC_URL = DEFAULT_SYNC_URL;
-  try{ var _stored = localStorage.getItem('hegart_sync_url'); if(_stored!==null) SYNC_URL=_stored; }catch(e){}
+  // No URL is embedded in the app for privacy: each studio device must enter
+  // the Web-App URL once (stored locally). Public visitors cannot reach the DB.
+  var SYNC_URL = '';
+  try{ SYNC_URL = localStorage.getItem('hegart_sync_url')||''; }catch(e){}
   var editingId = null;
   function api(action, payload, method){
     if(method==='GET'){
@@ -13312,7 +13312,7 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
     if(SYNC_URL){ toast('Verbinde…'); refreshFromServer().then(function(ok){ toast(ok?'Verbunden – Liste geladen.':'Verbindung fehlgeschlagen. URL prüfen.'); $('f-nummer').value=peekNext(); redraw(); }); }
   });
   $('syncRefresh').addEventListener('click', function(){ if(!SYNC_URL){ toast('Keine URL gesetzt.'); return;} toast('Aktualisiere…'); refreshFromServer().then(function(ok){ toast(ok?'Aktualisiert.':'Fehler beim Laden.'); }); });
-  $('syncOff').addEventListener('click', function(){ SYNC_URL=''; try{ localStorage.setItem('hegart_sync_url',''); }catch(e){} updateSyncUI(); toast('Getrennt – nur dieses Gerät.'); });
+  $('syncOff').addEventListener('click', function(){ SYNC_URL=''; try{ localStorage.removeItem('hegart_sync_url'); }catch(e){} updateSyncUI(); toast('Getrennt – nur dieses Gerät.'); });
 
   // ---------- init ----------
   function init(){

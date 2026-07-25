@@ -3936,9 +3936,30 @@ async function newFFCat(){
 }
 async function mvF(i,d){const j=i+d;if(j<0||j>=S.fields.length)return;
   [S.fields[i],S.fields[j]]=[S.fields[j],S.fields[i]];await pt('cfg-f3',S.fields,true);render();}
+/* All category ids the Form Fields admin knows about (built-in + custom). */
+const allFFCatIds=()=>ffCatList().map(c=>c.id);
+/* A field edited/deleted while a specific course/exam tab is open must only
+   affect that tab. If the field is shared (or shared with other categories
+   too), split it in place: the original keeps every OTHER category it
+   applied to, and a scoped clone (only:[cat]) is returned for `cat` alone.
+   Already-exclusive fields (only:[cat]) are returned unchanged. */
+function scopeFieldToCat(f,cat){
+  if(f.only&&f.only.length===1&&f.only[0]===cat)return f;
+  const cur=(f.only&&f.only.length)?f.only.slice():allFFCatIds();
+  f.only=cur.filter(c=>c!==cat);
+  const clone=JSON.parse(JSON.stringify(f));
+  clone.id=uid('f');clone.only=[cat];
+  return clone;
+}
 async function dlF(id){if(!(await confirmModal(t('delFQ'))))return;
-  const f=S.fields.find(x=>x.id===id);
-  S.fields=S.fields.filter(x=>x.id!==id);await pt('cfg-f3',S.fields,true);
+  const f=S.fields.find(x=>x.id===id),cat=S.ffCat||'';
+  if(cat&&f&&!(f.only&&f.only.length===1&&f.only[0]===cat)){
+    const cur=(f.only&&f.only.length)?f.only.slice():allFFCatIds();
+    f.only=cur.filter(c=>c!==cat);           // remove from this tab only
+  }else{
+    S.fields=S.fields.filter(x=>x.id!==id);   // exclusive to this tab (or global tab) — delete for real
+  }
+  await pt('cfg-f3',S.fields,true);
   if(f)logAct('field',{de:L(f.label),en:L(f.label)},null,{act:'del',sub:f.label});
   render();}
 function edF(id){
@@ -4002,8 +4023,15 @@ async function svF(id){
     op=lines.map(x=>parseOptLine(x));
   }
   const cat=S.ffCat||'';
-  if(id){const f=S.fields.find(x=>x.id===id);f.label=lb;f.type=ty;f.sec=sc;f.required=rq;
-    if(op)f.options=op;else delete f.options;}
+  if(id){
+    let f=S.fields.find(x=>x.id===id);
+    if(cat){
+      const i=S.fields.indexOf(f),scoped=scopeFieldToCat(f,cat);
+      if(scoped!==f){S.fields.splice(i+1,0,scoped);f=scoped;}
+    }
+    f.label=lb;f.type=ty;f.sec=sc;f.required=rq;
+    if(op)f.options=op;else delete f.options;
+  }
   else{const n={id:uid('f'),label:lb,type:ty,sec:sc,required:rq,w:'f'};
     if(op)n.options=op;
     if(cat)n.only=[cat];          // adding under a course tab limits the field to it

@@ -472,6 +472,7 @@ body.admin-wide .tin{max-width:1600px}
 @media(max-width:1000px){.offgrid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:660px){.offgrid{grid-template-columns:1fr}}
 .offbox{grid-column:span 1;text-align:left;background:var(--cd);border:1px solid var(--ln);border-radius:var(--r2);padding:16px;cursor:pointer;transition:.12s;display:block;width:100%}
+.offbox.past{opacity:.45}
 .offbox:hover{border-color:var(--or)}
 .offbox-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px}
 .offbox-title{font-weight:800;font-size:15px;color:var(--ink)}
@@ -4839,7 +4840,8 @@ function offerBox(offer,kind){
   const full=free<=0;
   const lbl=title.replace(/[^A-Za-z0-9]+/g,'_');
   const ids=regs.all.map(r=>r.id).join(',');
-  return `<button class="offbox" onclick="S.offOpen=(S.offOpen==='${offer.id}'?null:'${offer.id}');reOff('${kind}')">
+  const past=isStale(kind==='telc'?offer.date:offer.end);
+  return `<button class="offbox ${past?'past':''}" onclick="S.offOpen=(S.offOpen==='${offer.id}'?null:'${offer.id}');reOff('${kind}')">
     <div class="offbox-hd">
       <div class="offbox-title">${esc(title)}</div>
       <div class="offbox-badges">

@@ -550,6 +550,7 @@ tr:hover td{background:#fdfcfa}
 .mdl{background:#fff;border-radius:var(--r);max-width:540px;width:100%;max-height:86vh;overflow-y:auto;padding:26px;box-shadow:var(--sh2)}
 .mdl-sm{max-width:400px}
 .arow{display:flex;align-items:center;gap:12px;background:var(--cd);border:1px solid var(--ln);border-radius:var(--r2);padding:14px 16px;margin-bottom:9px}
+.arow.past{opacity:.45}
 .ord{display:flex;flex-direction:column;gap:2px}
 .ord button{width:21px;height:17px;border:1px solid var(--ln);border-radius:4px;font-size:9px;display:flex;align-items:center;justify-content:center;background:#fff}
 .ord button:disabled{opacity:.3;cursor:not-allowed}
@@ -1979,6 +1980,7 @@ function fd(iso,full){if(!iso)return '';const d=new Date(iso+'T00:00:00');if(isN
   const m=(full?MONF:MON)[S.lang]||MON.de;return S.lang==='de'?`${d.getDate()}. ${m[d.getMonth()]} ${d.getFullYear()}`:`${d.getDate()} ${m[d.getMonth()]} ${d.getFullYear()}`;}
 const fdw=iso=>iso?(DOW[S.lang]||DOW.de)[new Date(iso+'T00:00:00').getDay()]:'';
 const dun=iso=>Math.ceil((new Date(iso+'T00:00:00')-new Date())/864e5);
+const isStale=iso=>!!iso&&dun(iso)<-30;
 /* Booking windows differ by product:
    - telc exams: open until the day before the exam (last open day = 2 days before);
      seats-full is handled separately via seatState.
@@ -3603,7 +3605,7 @@ function vAC(){
       const lv=Object.keys(by).sort();
       return `<div class="grp"><h4>${esc(L(ct.n))} (${L2.length})</h4>
       ${lv.length===0?`<div class="emp">—</div>`:lv.map(l=>
-        by[l].sort((a,b)=>a.start.localeCompare(b.start)).map(c=>`<div class="arow"><div class="ai">
+        by[l].sort((a,b)=>a.start.localeCompare(b.start)).map(c=>`<div class="arow ${isStale(c.end)?'past':''}"><div class="ai">
           <div class="t">${esc(l)} · ${fd(c.start)} — ${fd(c.end)}${c.active?'':`<span class="tg g">${esc(t('inactive'))}</span>`}</div>
           <div class="s"><span class="mini">${esc(c.time)}</span><span class="mini">${c.weeks} ${esc(t('weeks'))}</span><span class="mini">€${c.price}+€${c.reg}</span>${c.seats!==null?`<span class="mini">${c.seats} ${esc(t('seats'))}</span>`:''}</div>
         </div><div style="display:flex;gap:6px;flex-shrink:0">
@@ -3826,7 +3828,7 @@ function vAE(){
         <h2>${esc(t('eT'))}</h2><p>${esc(t('eS'))} <strong>${esc(t('feDead'))}</strong></p>
     ${l.length===0?`<div class="emp">${esc(S.lang==='de'?'Noch keine Prüfungstermine. Bis dahin sehen Teilnehmer bei telc keine buchbaren Termine.':'No exam dates yet. Until then, participants see no bookable telc dates.')}</div>`
     :l.map(e=>{const op=isOpenExam(e),fee=e.fee||FEES[e.level]||0,ss=seatState(e);
-      return `<div class="arow"><div class="ai">
+      return `<div class="arow ${isStale(e.date)?'past':''}"><div class="ai">
         <div class="t">telc ${esc(e.level)} · ${fdw(e.date)}, ${fd(e.date,true)}
           ${e.active===false?`<span class="tg g">${esc(t('inactive'))}</span>`:(op?'':`<span class="tg w">${esc(t('closed'))}</span>`)}</div>
         <div class="s"><span class="mini">€${fee}</span><span class="mini">${esc(ss.t)}</span><span class="mini">${dun(e.date)>0?dun(e.date):0} ${esc(S.lang==='de'?'Tage':'days')}</span></div>

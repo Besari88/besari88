@@ -3606,7 +3606,7 @@ function vAC(){
       const lv=Object.keys(by).sort();
       return `<div class="grp"><h4>${esc(L(ct.n))} (${L2.length})</h4>
       ${lv.length===0?`<div class="emp">—</div>`:lv.map(l=>
-        by[l].sort((a,b)=>a.start.localeCompare(b.start)).map(c=>`<div class="arow ${isStale(c.end)?'past':''}"><div class="ai">
+        by[l].sort((a,b)=>a.start.localeCompare(b.start)).map(c=>`<div class="arow ${isStale(c.start)?'past':''}"><div class="ai">
           <div class="t">${esc(l)} · ${fd(c.start)} — ${fd(c.end)}${c.active?'':`<span class="tg g">${esc(t('inactive'))}</span>`}</div>
           <div class="s"><span class="mini">${esc(c.time)}</span><span class="mini">${c.weeks} ${esc(t('weeks'))}</span><span class="mini">€${c.price}+€${c.reg}</span>${c.seats!==null?`<span class="mini">${c.seats} ${esc(t('seats'))}</span>`:''}</div>
         </div><div style="display:flex;gap:6px;flex-shrink:0">
@@ -4840,7 +4840,7 @@ function offerBox(offer,kind){
   const full=free<=0;
   const lbl=title.replace(/[^A-Za-z0-9]+/g,'_');
   const ids=regs.all.map(r=>r.id).join(',');
-  const past=isStale(kind==='telc'?offer.date:offer.end);
+  const past=isStale(kind==='telc'?offer.date:offer.start);
   return `<button class="offbox ${past?'past':''}" onclick="S.offOpen=(S.offOpen==='${offer.id}'?null:'${offer.id}');reOff('${kind}')">
     <div class="offbox-hd">
       <div class="offbox-title">${esc(title)}</div>

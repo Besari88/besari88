@@ -65,19 +65,20 @@ if (is_file($lockFile) && (time() - (int) filemtime($lockFile)) < 30) {
 @touch($lockFile);
 
 // ───────── 4. Leximi dhe validimi ─────────
-$anliegen   = clean((string) ($_POST['anliegen']   ?? ''));
-$name       = clean((string) ($_POST['name']       ?? ''));
-$firma      = clean((string) ($_POST['firma']      ?? ''));
+$leistung   = clean((string) ($_POST['leistung']   ?? ''));
+$vorname    = clean((string) ($_POST['vorname']    ?? ''));
+$nachname   = clean((string) ($_POST['nachname']   ?? ''));
 $email      = clean((string) ($_POST['email']      ?? ''));
 $telefon    = clean((string) ($_POST['telefon']    ?? ''));
-$stelle     = clean((string) ($_POST['stelle']     ?? ''));
-$nachricht  = trim((string) ($_POST['nachricht']   ?? ''));
+$land       = clean((string) ($_POST['herkunftsland'] ?? ''));
+$nachricht  = trim((string)  ($_POST['nachricht']  ?? ''));
 $consent    = isset($_POST['datenschutz']);
 
 $errors = [];
-if ($name === '')                                            $errors[] = 'Name fehlt.';
+if ($vorname === '')                                         $errors[] = 'Vorname fehlt.';
+if ($nachname === '')                                        $errors[] = 'Nachname fehlt.';
 if (!filter_var($email, FILTER_VALIDATE_EMAIL))              $errors[] = 'E-Mail-Adresse ungültig.';
-if ($telefon === '')                                         $errors[] = 'Telefonnummer fehlt.';
+if ($leistung === '')                                        $errors[] = 'Bitte wählen Sie ein Anliegen.';
 if ($nachricht === '')                                       $errors[] = 'Nachricht fehlt.';
 if (!$consent)                                               $errors[] = 'Zustimmung zur Datenschutzerklärung fehlt.';
 if (mb_strlen($nachricht) > MAX_LEN)                         $errors[] = 'Nachricht zu lang.';
@@ -88,23 +89,22 @@ if ($errors) {
 
 // ───────── 5. Ndërtimi i email-it ─────────
 $body = "Neue Anfrage über ake-personal.de\n"
-      . str_repeat('=', 40) . "\n\n"
-      . "Anliegen:  " . ($anliegen ?: '—') . "\n"
-      . "Name:      {$name}\n"
-      . "Firma:     " . ($firma ?: '—') . "\n"
+      . str_repeat('=', 44) . "\n\n"
+      . "Anliegen:  " . ($leistung ?: '—') . "\n"
+      . "Name:      {$vorname} {$nachname}\n"
       . "E-Mail:    {$email}\n"
-      . "Telefon:   {$telefon}\n"
-      . "Stelle:    " . ($stelle ?: '—') . "\n\n"
+      . "Telefon:   " . ($telefon ?: '—') . "\n"
+      . "Land:      " . ($land ?: '—') . "\n\n"
       . "Nachricht:\n{$nachricht}\n\n"
-      . str_repeat('-', 40) . "\n"
+      . str_repeat('-', 44) . "\n"
       . "Gesendet:  " . date('d.m.Y H:i:s') . "\n"
       . "IP:        " . ($_SERVER['REMOTE_ADDR'] ?? '—') . "\n";
 
-$subject = MAIL_SUBJECT . ($anliegen ? " – {$anliegen}" : '');
+$subject = MAIL_SUBJECT . ($leistung ? " – {$leistung}" : '');
 
 $headers = [
-    'From: AKE Personal Website <' . MAIL_FROM . '>',
-    'Reply-To: ' . $name . ' <' . $email . '>',
+    'From: AKE Website <' . MAIL_FROM . '>',
+    'Reply-To: ' . $vorname . ' ' . $nachname . ' <' . $email . '>',
     'Content-Type: text/plain; charset=UTF-8',
     'Content-Transfer-Encoding: 8bit',
     'X-Mailer: PHP/' . PHP_VERSION,

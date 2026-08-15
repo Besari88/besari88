@@ -1,15 +1,14 @@
-# AKE Personal — rindërtim nga Wix në HTML/CSS/JS
+# AKE – Agentur für Karriere und Entwicklung — rindërtim nga Wix në HTML/CSS/JS
 
 Projekt i plotë për të hequr faqen nga Wix dhe për ta pritur në server-in tuaj.
 Pa framework, pa build-step, pa varësi të jashtme — vetëm file statikë që i
 ngarkoni me FTP.
 
-> **E RËNDËSISHME:** Përmbajtja aktuale është **shabllon**. Faqja `ake-personal.de`
-> nuk arrihej dot nga mjedisi ku u ndërtua ky projekt (proxy i bllokoi lidhjen),
-> prandaj tekstet, adresa, telefoni, emrat dhe të dhënat e Impressum-it janë
-> **placeholder** dhe duhen zëvendësuar me ato realet nga Wix.
-> Çdo vend që duhet ndryshuar është shënuar me `<span class="todo">…</span>` ose
-> me komentin `PLOTËSO`.
+> **Gjendja:** tekstet, ngjyrat, struktura dhe të dhënat e kontaktit janë marrë
+> nga screenshot-et e faqes aktuale. Ende mungojnë: fotot, orari i punës, të dhënat
+> ligjore të Impressum-it dhe disa tekste që në faqen origjinale janë të kopjuara
+> gabimisht. Çdo vend i tillë është shënuar me `<span class="todo">…</span>` ose me
+> komentin `PLOTËSO` në kod.
 
 ---
 
@@ -17,29 +16,37 @@ ngarkoni me FTP.
 
 ```
 ake-personal/
-├── index.html              Faqja kryesore
-├── leistungen.html         Shërbimet (5 shërbime me ankera)
-├── fuer-unternehmen.html   Për firmat — proces, kalkulim kostoje
-├── stellenangebote.html    Vendet e punës me filtra (JS)
-├── ueber-uns.html          Rreth nesh, vlerat, ekipi
-├── kontakt.html            Formular + të dhëna kontakti
-├── danke.html              Faqja pas dërgimit të formularit
-├── impressum.html          Impressum (§ 5 DDG)
-├── datenschutz.html        Datenschutzerklärung (DSGVO)
-├── 404.html                Faqja e gabimit
-├── kontakt.php             Pranon formularin, dërgon email
-├── .htaccess               HTTPS, redirects, cache, siguri
+├── index.html          Faqja kryesore — një faqe e vetme me seksione:
+│                       hero, Leistungen, Anerkennung, Jobs & Bewerbungen,
+│                       Behörden & Visa, Übersetzungen
+├── kontakt.html        Formular + të dhëna kontakti
+├── danke.html          Faqja pas dërgimit të formularit
+├── impressum.html      Impressum (§ 5 DDG)
+├── datenschutz.html    Datenschutzerklärung (DSGVO)
+├── 404.html            Faqja e gabimit
+├── kontakt.php         Pranon formularin, dërgon email
+├── .htaccess           HTTPS, redirects, cache, siguri
 ├── robots.txt
 ├── sitemap.xml
 └── assets/
-    ├── css/style.css       I gjithë stili (design tokens në krye)
-    ├── js/main.js          Nav, filtra, akordeon, formular
-    ├── data/jobs.json      Vendet e punës — përditësohen KËTU
-    └── img/                Fotot dhe favicon
+    ├── css/style.css   I gjithë stili (design tokens në krye)
+    ├── js/main.js      Nav, scroll-spy, akordeon, validim formulari
+    └── img/            Fotot dhe favicon
 ```
 
-**Madhësia totale:** rreth 90 KB pa foto. Për krahasim, një faqe Wix ngarkon
+**Madhësia totale:** rreth 80 KB pa foto. Për krahasim, një faqe Wix ngarkon
 zakonisht 2–5 MB JavaScript.
+
+## Struktura e faqes
+
+Faqja origjinale është një **one-pager** me seksione, prandaj u rindërtua ashtu.
+Menuja lidhet me ankera (`#leistungen`, `#anerkennung`, `#bewerbungen`,
+`#behoerden`, `#uebersetzungen`) dhe gjatë scroll-it seksioni aktual theksohet vetë.
+
+**Rekomandim për Google:** më vonë ia vlen t'i ndani seksionet kryesore në faqe
+më vete (`anerkennung.html`, `uebersetzungen.html`, `visum-aufenthalt.html`).
+Kërkimet si „Anerkennung ausländischer Abschlüsse Singen" renditen shumë më mirë
+me një faqe të dedikuar sesa me një ankor brenda një faqeje të gjatë.
 
 ---
 
@@ -73,73 +80,69 @@ zakonisht 2–5 MB JavaScript.
 
    Kjo listë është kritike për hapin 5 (redirects) — pa të, humbisni renditjen në Google.
 
-### Faza 2 — Mbushja e përmbajtjes (~3 orë)
+### Faza 2 — Fotot dhe pamja (~2 orë)
 
-5. Zëvendësoni në të gjitha faqet:
-   - `Musterstraße 1` / `00000 Musterstadt` → adresa reale
-   - `+49 000 0000000` → telefoni real (edhe te `href="tel:..."`, pa hapësira: `tel:+4930123456`)
-   - `info@ake-personal.de` → email-i real
-   - Tekstet e seksioneve → tekstet tuaja nga Faza 1
-
-   Truk: gjeni e zëvendësoni në të gjitha file-t njëherësh:
+5. Të dhënat e kontaktit janë **tashmë** të futura (Hegaustraße 23, 78224 Singen,
+   +49 178 3486195, info@ake-personal.de). Kontrollojini një herë dhe korrigjoni
+   nëse ka ndryshuar diçka. Gjejini me:
    ```bash
-   cd ake-personal
-   grep -rl "Musterstadt" . | xargs sed -i 's/Musterstadt/Qyteti juaj/g'
+   grep -rn "Hegaustra\|3486195\|info@ake-personal" *.html
    ```
 
-6. Vendosni fotot te `assets/img/` dhe shtoni `<img>` aty ku duhet.
-   Konvertojini në WebP para ngarkimit (te [squoosh.app](https://squoosh.app)) —
-   kursen 60–80 % nga madhësia.
+6. **Fotoja e madhe nën hero:** vendoseni si `assets/img/hero.webp` (1600×900) dhe
+   te `index.html` shtoni `url('assets/img/hero.webp') center/cover no-repeat,`
+   para `var(--c-brand)` në rreshtin `background` — komenti aty e shpjegon.
+   Konvertojini fotot në WebP te [squoosh.app](https://squoosh.app) — kursen 60–80 %.
 
-7. Ndryshoni ngjyrat: hapni `assets/css/style.css`, rreshtat 10–20.
-   Ndryshoni vetëm `--c-brand` dhe `--c-accent` — gjithë faqja përshtatet vetë.
+7. **Ngjyrat janë tashmë ato të markës suaj** (`style.css`, rreshtat 8–17):
+   `--c-brand` petrol `#1d4b45`, `--c-accent` portokalli `#e9973f`,
+   `--c-teal` `#4fbebf`, `--c-mint` `#ddf3f3`. Nëse keni kodet e sakta nga
+   manuali i markës, zëvendësojini aty — e gjithë faqja përshtatet vetë.
 
 8. **Impressum + Datenschutz:** kopjoni tekstin real. Nëse s'jeni i sigurt,
    gjenerojeni te [e-recht24.de](https://www.e-recht24.de/impressum-generator.html).
    Në Gjermani një Impressum i gabuar sjell *Abmahnung* me kosto reale — mos e lini
    për në fund.
 
-### Faza 3 — Vendet e punës
+### Faza 3 — Tekstet që mungojnë
 
-9. Hapni `assets/data/jobs.json` dhe futni vendet reale. Struktura:
-   ```json
-   {
-     "id": "AKE-1001",
-     "titel": "Produktionshelfer (m/w/d)",
-     "ort": "Berlin",
-     "branche": "Produktion",
-     "art": "Vollzeit",
-     "tags": ["Schichtarbeit", "Übernahme geplant"]
-   }
-   ```
-   Filtrat (branche/ort) mbushen **automatikisht** nga ky file — nuk prekni HTML.
-   Kur doni një vend të ri: shtoni një objekt, ngarkoni file-in, gati.
+9. Në faqen origjinale ka tri vende ku teksti është kopjuar gabimisht.
+   Janë shënuar me `class="todo"` dhe duhen plotësuar:
+
+   | Vendi | Problemi në faqen aktuale |
+   |---|---|
+   | Anerkennung, hapi 4 „Maßnahmen zur Schließung der Lücke" | përsërit fjalë për fjalë hapin 3 |
+   | Jobs & Bewerbungen, karta e 4-t | përsërit „Familie & Sozialdienste" nga seksioni i mësipërm |
+   | Jobs & Bewerbungen, teksti hyrës | përmend markën **„AnerkennungPlus"**, jo AKE — kontrollo nëse është gabim |
+
+10. Seksioni i përkthimeve: shtoni gjuhët që mungojnë (në screenshot dukeshin
+    Deutsch, Englisch, Französisch, Spanisch, Italienisch, Albanisch — kishte
+    edhe një rresht më poshtë). Kopjoni bllokun `<div class="lang-card">`.
 
 ### Faza 4 — Formulari i kontaktit
 
-10. Zgjidhni njërën:
+11. Zgjidhni njërën:
     - **Me PHP** (rekomandohet nëse hosting-u ka PHP — shih seksionin 6)
     - **Pa PHP:** hapni llogari falas te [Formspree](https://formspree.io) dhe
       te `kontakt.html` ndryshoni `action="kontakt.php"` → `action="https://formspree.io/f/KODI_JUAJ"`
 
 ### Faza 5 — Testimi lokal
 
-11. ```bash
+12. ```bash
     cd ake-personal
     python3 -m http.server 8000
     ```
-    Hapni `http://localhost:8000`. **Duhet server** — `jobs.json` nuk ngarkohet
-    nëse hapni file-in direkt me `file://`.
+    Hapni `http://localhost:8000`. Përdorni server, jo `file://`.
 
-12. Kontrolloni: menuja në telefon, filtrat e punëve, formularin, të gjitha linqet.
+13. Kontrolloni: menuja në telefon, ankerat e menusë, formularin, të gjitha linqet.
 
 ### Faza 6 — Ngarkimi në server
 
-13. Shih seksionin 5.
+14. Shih seksionin 5.
 
 ### Faza 7 — Kalimi i domain-it
 
-14. Shih seksionin 8. **Mos e fshini Wix-in derisa e reja të punojë.**
+15. Shih seksionin 8. **Mos e fshini Wix-in derisa e reja të punojë.**
 
 ---
 
@@ -341,13 +344,14 @@ Rendi i saktë:
 ## 9. Lista përfundimtare e kontrollit
 
 **Përmbajtja**
-- [ ] Të gjitha tekstet zëvendësuar (kërko `Muster` në projekt — nuk duhet të ketë rezultate)
-- [ ] Adresa, telefoni, email-i realë kudo (edhe te `tel:` dhe JSON-LD te `index.html`)
-- [ ] Impressum i plotë dhe i saktë
-- [ ] Datenschutzerklärung e kontrolluar
+- [ ] Të gjitha `class="todo"` plotësuar (kërko `todo` në projekt — nuk duhet të mbetet asnjë)
+- [ ] Tre tekstet e kopjuara gabimisht janë rishkruar (Faza 3)
+- [ ] Adresa, telefoni, email-i të verifikuar (edhe te `tel:` dhe JSON-LD te `index.html`)
+- [ ] Impressum i plotë — sidomos pika për RDG (shih shënimin brenda faqes)
+- [ ] Datenschutzerklärung e kontrolluar nga jurist
 - [ ] Fotot e ngarkuara, të optimizuara, me `alt` përshkrues
-- [ ] Vendet e punës te `jobs.json`
 - [ ] Logo dhe favicon të vërteta
+- [ ] Vendosur si trajtohet dyqani (shih seksionin për shportën)
 
 **Teknike**
 - [ ] Faqja hapet me `https://`
@@ -371,9 +375,9 @@ Rendi i saktë:
 
 ## 10. Mirëmbajtja
 
-**Vend i ri pune:** hapni `assets/data/jobs.json`, shtoni objektin, ngarkoni.
-
 **Ndryshim teksti:** hapni file-in `.html` përkatës, ndryshoni, ngarkoni.
+
+**Shërbim i ri në formular:** shtoni një `<option>` te `#leistung` në `kontakt.html`.
 
 **Ngjyra të reja:** `assets/css/style.css`, rreshtat 10–20.
 
@@ -390,10 +394,10 @@ file statikë, pa databazë, falas.
 
 | Faza | Kush | Kohë |
 |---|---|---|
-| Nxjerrja e përmbajtjes nga Wix | ju | 2 orë |
-| Mbushja e teksteve dhe fotove | ju / unë | 3–4 orë |
-| Impressum + Datenschutz | ju + jurist | 1 orë |
-| Vendet e punës | ju | 30 min |
+| Fotot dhe logoja | ju | 1 orë |
+| Tekstet që mungojnë (Faza 3) | ju | 1 orë |
+| Impressum + Datenschutz + kontrolli RDG | ju + jurist | 2 orë |
+| Vendimi për dyqanin | ju | 30 min |
 | Formulari + testim | ju / unë | 1 orë |
 | Ngarkimi në server | ju | 1 orë |
 | Kalimi i DNS-it + redirects | ju | 1 orë + pritje |
@@ -405,10 +409,36 @@ file statikë, pa databazë, falas.
 
 Dërgomëni:
 
-1. **Tekstet reale** nga çdo faqe e Wix-it (kopjo-ngjit mjafton)
-2. **Të dhënat e kontaktit**: adresa, telefoni, email-i, orari
-3. **Impressum-in** ekzistues fjalë për fjalë
-4. **Logon** dhe ngjyrat e markës (ose një screenshot i faqes aktuale)
+1. **Logon origjinale** si SVG ose PNG me sfond transparent (tani përdoret një
+   version i thjeshtë me tekst)
+2. **Fotot** nga faqja aktuale — sidomos fotoja e madhe nën hero
+3. **Impressum-in** ekzistues fjalë për fjalë (emri ligjor i firmës, HRB, USt-IdNr.,
+   Geschäftsführer)
+4. **Orarin e punës**
 5. **Listën e URL-ve të vjetra** për redirects
+6. Përgjigje për **dyqanin** (shih më poshtë)
 
-Me këto, e mbush projektin me përmbajtjen tuaj dhe faqja bëhet gati për ngarkim.
+## Dyqani (ikona e shportës)
+
+Faqja aktuale ka një ikonë shporte me „0" — pra Wix Stores është aktiv.
+Kjo **nuk kalon dot** në HTML statik: një dyqan i vërtetë kërkon pagesa, porosi
+dhe faturim. Tre rrugë:
+
+| Zgjidhja | Kosto | Kur ka kuptim |
+|---|---|---|
+| **Hiqe fare** | 0 € | Nëse shporta nuk përdoret realisht (kishte 0 artikuj) |
+| **Stripe Payment Links** | 1,5 % + 0,25 € për pagesë | Nëse shisni disa shërbime me çmim fiks (p.sh. „Përkthim i noterizuar 60 €") — merrni një link nga Stripe dhe e vendosni si buton normal |
+| **Shopify Lite / Ecwid** | ~9–15 €/muaj | Nëse ka shumë produkte dhe ju duhet menaxhim stoku |
+
+Për një agjenci shërbimesh, **Stripe Payment Links** është zakonisht zgjidhja e
+duhur: mbetet HTML statik, pa server, pa mirëmbajtje.
+
+## Fontet
+
+Faqja origjinale përdor fonte të Wix-it (një sans gjeometrik + një serif).
+Këtu janë zëvendësuar me fonte sistemi, sepse Google Fonts në Gjermani kërkon
+pëlqim cookie (gjykata e Mynihut, 2022) dhe ka sjellë valë *Abmahnung*.
+
+Nëse doni fontet origjinale, **vetë-strehojini**: shkarkoni `.woff2`,
+vendosini te `assets/fonts/`, shtoni `@font-face` te `style.css` dhe ndryshoni
+`--font-sans` / `--font-serif`. Kështu nuk shkon asnjë IP te Google.

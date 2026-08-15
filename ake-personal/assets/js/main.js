@@ -95,93 +95,34 @@
     });
   }
 
-  /* ---------- 6. Vendet e punes (lexon assets/data/jobs.json) ---------- */
-  function initJobs() {
-    const list = $('#job-list');
-    if (!list) return;
+  /* ---------- 6. Seksioni aktiv ne meny gjate scroll-it (faqja nje-faqeshe) ---------- */
+  function initScrollSpy() {
+    const links = $$('.nav__link[href*="#"]').filter((a) => {
+      const h = a.getAttribute('href');
+      return h.startsWith('#') || h.startsWith('index.html#');
+    });
+    if (!links.length || !('IntersectionObserver' in window)) return;
 
-    const fBranche = $('#filter-branche');
-    const fOrt     = $('#filter-ort');
-    const fSuche   = $('#filter-suche');
-    const counter  = $('#job-count');
-    let jobs = [];
+    const map = new Map();
+    links.forEach((a) => {
+      const id = a.getAttribute('href').split('#')[1];
+      const sec = id && document.getElementById(id);
+      if (sec) map.set(sec, a);
+    });
+    if (!map.size) return;
 
-    const esc = (s) => String(s).replace(/[&<>"']/g, (c) => (
-      { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
-    ));
-
-    const fillSelect = (sel, values) => {
-      if (!sel) return;
-      [...new Set(values)].sort((a, b) => a.localeCompare(b, 'de')).forEach((v) => {
-        const o = document.createElement('option');
-        o.value = v; o.textContent = v;
-        sel.appendChild(o);
-      });
-    };
-
-    const render = (items) => {
-      if (counter) {
-        counter.textContent = items.length === 1
-          ? '1 offene Stelle'
-          : items.length + ' offene Stellen';
-      }
-      if (!items.length) {
-        list.innerHTML =
-          '<li class="job-empty"><p><strong>Keine passenden Stellen gefunden.</strong></p>' +
-          '<p>Senden Sie uns gerne eine Initiativbewerbung — wir melden uns, sobald etwas passt.</p>' +
-          '<p style="margin-top:1rem"><a class="btn btn--brand" href="kontakt.html">Initiativbewerbung senden</a></p></li>';
-        return;
-      }
-      list.innerHTML = items.map((j) => `
-        <li class="job">
-          <div>
-            <h3>${esc(j.titel)}</h3>
-            <div class="job__meta">
-              <span>📍 ${esc(j.ort)}</span>
-              <span>🏭 ${esc(j.branche)}</span>
-              <span>🕒 ${esc(j.art)}</span>
-              ${j.id ? `<span>🔖 Ref. ${esc(j.id)}</span>` : ''}
-            </div>
-            ${Array.isArray(j.tags) && j.tags.length
-              ? `<div class="job__tags">${j.tags.map((t) => `<span class="badge">${esc(t)}</span>`).join('')}</div>`
-              : ''}
-          </div>
-          <a class="btn btn--brand"
-             href="kontakt.html?stelle=${encodeURIComponent(j.id || j.titel)}">Jetzt bewerben</a>
-        </li>`).join('');
-    };
-
-    const apply = () => {
-      const q = (fSuche?.value || '').trim().toLowerCase();
-      render(jobs.filter((j) => {
-        if (fBranche?.value && j.branche !== fBranche.value) return false;
-        if (fOrt?.value && j.ort !== fOrt.value) return false;
-        if (q) {
-          const hay = [j.titel, j.ort, j.branche, j.art, ...(j.tags || [])].join(' ').toLowerCase();
-          if (!hay.includes(q)) return false;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        const link = map.get(e.target);
+        if (!link) return;
+        if (e.isIntersecting) {
+          links.forEach((l) => l.removeAttribute('aria-current'));
+          link.setAttribute('aria-current', 'true');
         }
-        return true;
-      }));
-    };
-
-    fetch('assets/data/jobs.json', { cache: 'no-cache' })
-      .then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-      .then((data) => {
-        jobs = Array.isArray(data) ? data : [];
-        fillSelect(fBranche, jobs.map((j) => j.branche));
-        fillSelect(fOrt, jobs.map((j) => j.ort));
-        render(jobs);
-        [fBranche, fOrt].forEach((el) => el && el.addEventListener('change', apply));
-        if (fSuche) {
-          let t;
-          fSuche.addEventListener('input', () => { clearTimeout(t); t = setTimeout(apply, 180); });
-        }
-      })
-      .catch(() => {
-        list.innerHTML =
-          '<li class="job-empty"><p><strong>Die Stellenliste konnte nicht geladen werden.</strong></p>' +
-          '<p>Bitte rufen Sie uns an oder schreiben Sie uns direkt.</p></li>';
       });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+
+    map.forEach((_, sec) => io.observe(sec));
   }
 
   /* ---------- 7. Formulari i kontaktit ---------- */
@@ -192,10 +133,19 @@
     const note   = $('#form-note');
     const submit = form.querySelector('[type="submit"]');
 
-    // Parambush fushen "Stelle" nga ?stelle=... (link nga lista e vendeve te punes)
-    const stelle = new URLSearchParams(location.search).get('stelle');
-    const stelleField = form.querySelector('[name="stelle"]');
-    if (stelle && stelleField) stelleField.value = stelle;
+    // Parazgjedh sherbimin nga ?leistung=… (butonat CTA te faqes kryesore
+    // e cojne perdoruesin ketu me sherbimin e duhur te zgjedhur paraprakisht)
+    const leistung = new URLSearchParams(location.search).get('leistung');
+    const field = form.querySelector('[name="leistung"]');
+    if (leistung && field) {
+      const match = [...field.options || []].find((o) => o.value === leistung);
+      if (field.options && !match) {
+        const o = document.createElement('option');
+        o.value = o.textContent = leistung;
+        field.appendChild(o);
+      }
+      field.value = leistung;
+    }
 
     const showNote = (type, msg) => {
       if (!note) return;
@@ -277,7 +227,7 @@
     initActiveLink();
     initReveal();
     initAccordion();
-    initJobs();
+    initScrollSpy();
     initForm();
     initYear();
   });

@@ -1,0 +1,110 @@
+# =============================================================================
+# AKE Personal — konfigurim Apache
+# Ky file punon në pothuajse çdo hosting gjerman (IONOS, Strato, All-Inkl,
+# Hetzner Webhosting). Nëse serveri juaj është nginx, shih README seksionin 7.
+# =============================================================================
+
+# ---------- 1. HTTPS + www i njësuar ----------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Detyro HTTPS
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Detyro www  (nëse doni PA www, komento këto 2 rreshta dhe hiq komentin te blloku poshtë)
+  RewriteCond %{HTTP_HOST} !^www\. [NC]
+  RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Variant PA www:
+  # RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  # RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+  # URL të pastra: /kontakt  →  /kontakt.html
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.+?)/?$ $1.html [L]
+
+  # ---------- 2. Redirect nga URL-të e vjetra të Wix ----------
+  # PLOTËSO këtu çdo URL të vjetër që Google e ka të indeksuar.
+  # Formati:  Redirect 301 /rruga-e-vjeter  https://www.ake-personal.de/rruga-e-re
+  #
+  # Shembuj tipikë për Wix:
+  # Redirect 301 /home                    https://www.ake-personal.de/
+  # Redirect 301 /ueber-uns-1             https://www.ake-personal.de/ueber-uns
+  # Redirect 301 /kontakt-1               https://www.ake-personal.de/kontakt
+  # Redirect 301 /jobs                    https://www.ake-personal.de/stellenangebote
+</IfModule>
+
+# ---------- 3. Faqet e gabimeve ----------
+ErrorDocument 404 /404.html
+
+# ---------- 4. Kompresim ----------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+  AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+  AddOutputFilterByType DEFLATE application/json application/xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/css application/javascript
+  AddOutputFilterByType BROTLI_COMPRESS application/json image/svg+xml
+</IfModule>
+
+# ---------- 5. Caching ----------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault                          "access plus 1 month"
+  ExpiresByType text/html                 "access plus 0 seconds"
+  ExpiresByType application/json          "access plus 1 hour"
+  ExpiresByType text/css                  "access plus 1 year"
+  ExpiresByType application/javascript    "access plus 1 year"
+  ExpiresByType image/svg+xml             "access plus 1 year"
+  ExpiresByType image/webp                "access plus 1 year"
+  ExpiresByType image/avif                "access plus 1 year"
+  ExpiresByType image/jpeg                "access plus 1 year"
+  ExpiresByType image/png                 "access plus 1 year"
+  ExpiresByType font/woff2                "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|woff2|svg|webp|avif|jpg|jpeg|png|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  # ---------- 6. Siguri ----------
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+
+  # CSP: e ngushtë sepse faqja nuk përdor asgjë të jashtme.
+  # Nëse shtoni Google Maps / Analytics, kjo duhet zgjeruar.
+  Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; form-action 'self' https://formspree.io; frame-ancestors 'self'; base-uri 'self'"
+
+  # Hiq header-in që tregon versionin e PHP
+  Header unset X-Powered-By
+</IfModule>
+
+# ---------- 7. Encoding & MIME ----------
+AddDefaultCharset UTF-8
+<IfModule mod_mime.c>
+  AddType image/svg+xml    .svg
+  AddType image/webp       .webp
+  AddType image/avif       .avif
+  AddType font/woff2       .woff2
+  AddType application/json .json
+</IfModule>
+
+# ---------- 8. Bllokim aksesi ----------
+Options -Indexes
+
+<FilesMatch "^(\.htaccess|\.htpasswd|\.git.*|README\.md|.*\.log|.*\.bak|.*\.sql)$">
+  Require all denied
+</FilesMatch>

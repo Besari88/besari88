@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kontakt – AKE Personal</title>
+<meta name="description" content="Kontaktieren Sie AKE Personal: Personalanfrage, Bewerbung oder allgemeine Fragen. Antwort in der Regel innerhalb von 24 Stunden.">
+<link rel="canonical" href="https://www.ake-personal.de/kontakt.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#103d68">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+<header class="site-header">
+  <div class="container">
+    <nav class="nav" aria-label="Hauptnavigation">
+      <a class="logo" href="index.html">
+        <span class="logo__mark" aria-hidden="true">AKE</span>
+        <span class="logo__text">AKE Personal<small>Personaldienstleistung</small></span>
+      </a>
+      <ul class="nav__menu" id="nav-menu">
+        <li><a class="nav__link" href="index.html">Startseite</a></li>
+        <li><a class="nav__link" href="leistungen.html">Leistungen</a></li>
+        <li><a class="nav__link" href="fuer-unternehmen.html">Für Unternehmen</a></li>
+        <li><a class="nav__link" href="stellenangebote.html">Stellenangebote</a></li>
+        <li><a class="nav__link" href="ueber-uns.html">Über uns</a></li>
+        <li><a class="nav__link" href="kontakt.html">Kontakt</a></li>
+      </ul>
+      <div class="nav__actions">
+        <a class="btn btn--brand" href="tel:+4900000000">Anrufen</a>
+        <button class="nav__toggle" type="button" aria-expanded="false"
+                aria-controls="nav-menu" aria-label="Menü öffnen"><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="page-head">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Brotkrumennavigation">
+        <ol>
+          <li><a href="index.html">Startseite</a></li>
+          <li>Kontakt</li>
+        </ol>
+      </nav>
+      <h1>Kontakt</h1>
+      <p>Ob Personalbedarf, Bewerbung oder einfach eine Frage – schreiben Sie uns
+         oder rufen Sie an. Wir antworten in der Regel innerhalb von 24 Stunden.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid--sidebar">
+
+        <!-- FORMULARI -->
+        <div>
+          <h2 style="margin-bottom:1.5rem">Nachricht senden</h2>
+
+          <!--
+            action="kontakt.php"  → varianti me PHP (shih README, seksioni 6)
+            Alternativë pa PHP:   action="https://formspree.io/f/XXXXXXX"
+          -->
+          <form class="form" id="contact-form" action="kontakt.php" method="post" novalidate>
+
+            <div id="form-note" class="form-note" aria-live="polite"></div>
+
+            <div class="field">
+              <label for="anliegen">Ihr Anliegen <span class="req" aria-hidden="true">*</span></label>
+              <select id="anliegen" name="anliegen" required>
+                <option value="">Bitte wählen …</option>
+                <option value="Personalanfrage">Ich suche Personal (Unternehmen)</option>
+                <option value="Bewerbung">Ich suche einen Job (Bewerbung)</option>
+                <option value="Initiativbewerbung">Initiativbewerbung</option>
+                <option value="Sonstiges">Sonstiges</option>
+              </select>
+              <p class="field__error"></p>
+            </div>
+
+            <div class="form__row">
+              <div class="field">
+                <label for="name">Name <span class="req" aria-hidden="true">*</span></label>
+                <input type="text" id="name" name="name" autocomplete="name" required>
+                <p class="field__error"></p>
+              </div>
+              <div class="field">
+                <label for="firma">Firma <span class="field__hint" style="font-weight:400">(optional)</span></label>
+                <input type="text" id="firma" name="firma" autocomplete="organization">
+              </div>
+            </div>
+
+            <div class="form__row">
+              <div class="field">
+                <label for="email">E-Mail <span class="req" aria-hidden="true">*</span></label>
+                <input type="email" id="email" name="email" autocomplete="email" required>
+                <p class="field__error"></p>
+              </div>
+              <div class="field">
+                <label for="telefon">Telefon <span class="req" aria-hidden="true">*</span></label>
+                <input type="tel" id="telefon" name="telefon" autocomplete="tel" required>
+                <p class="field__error"></p>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="stelle">Stelle / Referenznummer
+                <span class="field__hint" style="font-weight:400">(optional)</span></label>
+              <input type="text" id="stelle" name="stelle" placeholder="z. B. AKE-1002">
+              <p class="field__hint">Wird automatisch ausgefüllt, wenn Sie über ein Stellenangebot kommen.</p>
+            </div>
+
+            <div class="field">
+              <label for="nachricht">Ihre Nachricht <span class="req" aria-hidden="true">*</span></label>
+              <textarea id="nachricht" name="nachricht" required
+                        placeholder="Beschreiben Sie kurz Ihr Anliegen – z. B. gesuchte Qualifikation, Zeitraum und Einsatzort."></textarea>
+              <p class="field__error"></p>
+            </div>
+
+            <div class="check">
+              <input type="checkbox" id="datenschutz" name="datenschutz" required>
+              <label for="datenschutz">
+                Ich habe die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen und
+                stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu.
+                <span class="req" aria-hidden="true">*</span>
+                <span class="field__error" style="display:block"></span>
+              </label>
+            </div>
+
+            <!-- Honeypot kundër spam-it: përdoruesit nuk e shohin -->
+            <div class="hp" aria-hidden="true">
+              <label for="website">Bitte nicht ausfüllen</label>
+              <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+
+            <div class="btn-row">
+              <button class="btn btn--brand btn--lg" type="submit">Nachricht senden</button>
+            </div>
+            <p class="field__hint">* Pflichtfelder. Ihre Daten werden ausschließlich zur
+               Bearbeitung Ihrer Anfrage verwendet und nicht an Dritte weitergegeben.</p>
+          </form>
+        </div>
+
+        <!-- INFO -->
+        <aside>
+          <div class="card" style="background:var(--c-surface)">
+            <h3 style="margin-bottom:1.5rem">Direkter Draht</h3>
+
+            <div class="stack" style="--stack-gap:1.5rem">
+              <div class="contact-item">
+                <div class="icon-box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4>Telefon</h4>
+                  <a href="tel:+4900000000">+49 000 0000000</a>
+                </div>
+              </div>
+
+              <div class="contact-item" style="margin-top:1.5rem">
+                <div class="icon-box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4>E-Mail</h4>
+                  <a href="mailto:info@ake-personal.de">info@ake-personal.de</a><br>
+                  <a href="mailto:bewerbung@ake-personal.de">bewerbung@ake-personal.de</a>
+                </div>
+              </div>
+
+              <div class="contact-item" style="margin-top:1.5rem">
+                <div class="icon-box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4>Adresse</h4>
+                  <p>Musterstraße 1<br>00000 Musterstadt</p>
+                </div>
+              </div>
+
+              <div class="contact-item" style="margin-top:1.5rem">
+                <div class="icon-box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4>Öffnungszeiten</h4>
+                  <p>Mo–Do 08:00–17:00 Uhr<br>Fr 08:00–15:00 Uhr<br>
+                     Termine außerhalb nach Vereinbarung</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:1.5rem">
+            <h3>Anfahrt</h3>
+            <p style="margin:.75rem 0 1.25rem">
+              Aus Datenschutzgründen laden wir keine Karte automatisch nach.
+            </p>
+            <a class="btn btn--ghost btn--block" target="_blank" rel="noopener noreferrer"
+               href="https://www.openstreetmap.org/search?query=Musterstra%C3%9Fe%201%2C%2000000%20Musterstadt">
+              Route in OpenStreetMap öffnen
+            </a>
+            <p class="field__hint" style="margin-top:1rem">
+              <span class="todo">Zëvendëso adresën reale në këtë link.</span>
+            </p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <a class="logo" href="index.html">
+          <span class="logo__mark" aria-hidden="true">AKE</span>
+          <span class="logo__text">AKE Personal<small>Personaldienstleistung</small></span>
+        </a>
+        <p>Ihr regionaler Partner für Zeitarbeit, Personalvermittlung und
+           Direktvermittlung – seit über 15 Jahren.</p>
+      </div>
+      <div>
+        <h4>Leistungen</h4>
+        <ul>
+          <li><a href="leistungen.html#ueberlassung">Arbeitnehmerüberlassung</a></li>
+          <li><a href="leistungen.html#vermittlung">Personalvermittlung</a></li>
+          <li><a href="leistungen.html#direkt">Direktvermittlung</a></li>
+          <li><a href="leistungen.html#onsite">On-Site-Management</a></li>
+          <li><a href="leistungen.html#tryhire">Try &amp; Hire</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Startseite</a></li>
+          <li><a href="fuer-unternehmen.html">Für Unternehmen</a></li>
+          <li><a href="stellenangebote.html">Stellenangebote</a></li>
+          <li><a href="ueber-uns.html">Über uns</a></li>
+          <li><a href="kontakt.html">Kontakt</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Kontakt</h4>
+        <ul>
+          <li>Musterstraße 1<br>00000 Musterstadt</li>
+          <li><a href="tel:+4900000000">+49 000 0000000</a></li>
+          <li><a href="mailto:info@ake-personal.de">info@ake-personal.de</a></li>
+          <li>Mo–Fr 08:00–17:00 Uhr</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; <span data-year>2026</span> AKE Personal. Alle Rechte vorbehalten.</p>
+      <ul class="footer__legal">
+        <li><a href="impressum.html">Impressum</a></li>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>

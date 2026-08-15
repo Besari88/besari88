@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AKE Personal – Personaldienstleistung &amp; Zeitarbeit</title>
+<meta name="description" content="AKE Personal vermittelt qualifizierte Fachkräfte und Helfer in Produktion, Logistik, Technik und Pflege. Arbeitnehmerüberlassung, Personalvermittlung und Direktvermittlung aus einer Hand.">
+<link rel="canonical" href="https://www.ake-personal.de/">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph / Social -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta property="og:site_name" content="AKE Personal">
+<meta property="og:title" content="AKE Personal – Personaldienstleistung &amp; Zeitarbeit">
+<meta property="og:description" content="Qualifizierte Fachkräfte und Helfer – schnell, zuverlässig und regional.">
+<meta property="og:url" content="https://www.ake-personal.de/">
+<meta property="og:image" content="https://www.ake-personal.de/assets/img/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<meta name="theme-color" content="#103d68">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<!-- PLOTËSO: shto apple-touch-icon.png (180x180) dhe og-image.jpg (1200x630) te assets/img/
+     dhe hiq komentin nga rreshti më poshtë.
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png"> -->
+<link rel="stylesheet" href="assets/css/style.css">
+
+<!-- Structured data: ndihmon Google te tregoje adresen/telefonin ne rezultate -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "EmploymentAgency",
+  "name": "AKE Personal",
+  "url": "https://www.ake-personal.de/",
+  "logo": "https://www.ake-personal.de/assets/img/logo.png",
+  "image": "https://www.ake-personal.de/assets/img/og-image.jpg",
+  "description": "Personaldienstleistung, Arbeitnehmerüberlassung und Personalvermittlung.",
+  "telephone": "+49 000 0000000",
+  "email": "info@ake-personal.de",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Musterstraße 1",
+    "postalCode": "00000",
+    "addressLocality": "Musterstadt",
+    "addressCountry": "DE"
+  },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+    "opens": "08:00", "closes": "17:00"
+  }]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+  <div class="container">
+    <nav class="nav" aria-label="Hauptnavigation">
+      <a class="logo" href="index.html">
+        <span class="logo__mark" aria-hidden="true">AKE</span>
+        <span class="logo__text">AKE Personal<small>Personaldienstleistung</small></span>
+      </a>
+
+      <ul class="nav__menu" id="nav-menu">
+        <li><a class="nav__link" href="index.html">Startseite</a></li>
+        <li><a class="nav__link" href="leistungen.html">Leistungen</a></li>
+        <li><a class="nav__link" href="fuer-unternehmen.html">Für Unternehmen</a></li>
+        <li><a class="nav__link" href="stellenangebote.html">Stellenangebote</a></li>
+        <li><a class="nav__link" href="ueber-uns.html">Über uns</a></li>
+        <li><a class="nav__link" href="kontakt.html">Kontakt</a></li>
+      </ul>
+
+      <div class="nav__actions">
+        <a class="btn btn--brand" href="kontakt.html">Jetzt anfragen</a>
+        <button class="nav__toggle" type="button" aria-expanded="false"
+                aria-controls="nav-menu" aria-label="Menü öffnen"><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <div>
+        <span class="hero__badge"><span class="dot"></span> Aktuell über 40 offene Stellen</span>
+        <h1>Die richtigen Menschen für Ihr Unternehmen.</h1>
+        <p class="hero__lead">
+          AKE Personal bringt qualifizierte Fachkräfte und Helfer mit Betrieben zusammen –
+          persönlich, zuverlässig und regional verwurzelt. Von der kurzfristigen
+          Personalüberlassung bis zur festen Direktvermittlung.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--primary btn--lg" href="fuer-unternehmen.html">Personal anfragen</a>
+          <a class="btn btn--outline-light btn--lg" href="stellenangebote.html">Jobs ansehen</a>
+        </div>
+
+        <div class="hero__stats">
+          <div class="hero__stat"><b>15+</b><span>Jahre Erfahrung</span></div>
+          <div class="hero__stat"><b>500+</b><span>Vermittelte Mitarbeiter</span></div>
+          <div class="hero__stat"><b>24 h</b><span>Reaktionszeit</span></div>
+          <div class="hero__stat"><b>98 %</b><span>Kundenzufriedenheit</span></div>
+        </div>
+      </div>
+
+      <!-- Formular i shpejte -->
+      <div class="hero__card">
+        <h2>Personalbedarf melden</h2>
+        <p>In 30 Sekunden ausgefüllt – wir rufen Sie zurück.</p>
+        <form class="form" action="kontakt.html" method="get">
+          <div class="field">
+            <label for="q-branche">Welche Branche?</label>
+            <select id="q-branche" name="branche">
+              <option value="">Bitte wählen …</option>
+              <option>Produktion</option>
+              <option>Logistik</option>
+              <option>Metall &amp; Industrie</option>
+              <option>Handwerk &amp; Technik</option>
+              <option>Büro &amp; Verwaltung</option>
+              <option>Pflege &amp; Gesundheit</option>
+              <option>Gastronomie</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="q-anzahl">Wie viele Mitarbeiter?</label>
+            <select id="q-anzahl" name="anzahl">
+              <option value="">Bitte wählen …</option>
+              <option>1–2</option>
+              <option>3–5</option>
+              <option>6–10</option>
+              <option>Mehr als 10</option>
+            </select>
+          </div>
+          <button class="btn btn--primary btn--block" type="submit">Weiter zur Anfrage</button>
+          <p class="field__hint">Unverbindlich &amp; kostenlos. Antwort innerhalb von 24 Stunden.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LEISTUNGEN ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Unsere Leistungen</span>
+        <h2>Personallösungen, die zu Ihnen passen</h2>
+        <p class="lead">Ob Auftragsspitze, Krankheitsvertretung oder langfristige Verstärkung –
+           wir finden das passende Modell für Ihren Bedarf.</p>
+      </div>
+
+      <div class="grid grid--3">
+        <article class="card card--hover reveal">
+          <div class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h3>Arbeitnehmerüberlassung</h3>
+          <p>Flexibles Personal genau dann, wenn Sie es brauchen. Wir bleiben der Arbeitgeber –
+             Sie tragen kein Beschäftigungsrisiko und sparen sich den Verwaltungsaufwand.</p>
+          <a class="card__link" href="leistungen.html#ueberlassung">Mehr erfahren</a>
+        </article>
+
+        <article class="card card--hover reveal">
+          <div class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/>
+            </svg>
+          </div>
+          <h3>Personalvermittlung</h3>
+          <p>Wir suchen, prüfen und präsentieren – Sie entscheiden. Sie zahlen erst,
+             wenn die Einstellung erfolgt ist. Kein Erfolg, keine Kosten.</p>
+          <a class="card__link" href="leistungen.html#vermittlung">Mehr erfahren</a>
+        </article>
+
+        <article class="card card--hover reveal">
+          <div class="icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/>
+            </svg>
+          </div>
+          <h3>Direktvermittlung</h3>
+          <p>Der direkte Weg zur Festanstellung: Wir übernehmen die komplette Vorauswahl,
+             Sie führen nur noch die Gespräche, die sich wirklich lohnen.</p>
+          <a class="card__link" href="leistungen.html#direkt">Mehr erfahren</a>
+        </article>
+
+        <article class="card card--hover reveal">
+          <div class="icon-box icon-box--accent" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>
+            </svg>
+          </div>
+          <h3>On-Site-Management</h3>
+          <p>Bei größeren Einsätzen betreuen wir Ihr Personal direkt vor Ort –
+             ein Ansprechpartner für Einsatzplanung, Zeiterfassung und Qualität.</p>
+          <a class="card__link" href="leistungen.html#onsite">Mehr erfahren</a>
+        </article>
+
+        <article class="card card--hover reveal">
+          <div class="icon-box icon-box--accent" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/>
+            </svg>
+          </div>
+          <h3>Try &amp; Hire</h3>
+          <p>Erst kennenlernen, dann übernehmen. Nach der Überlassungszeit können Sie
+             Ihre Mitarbeiter unkompliziert fest anstellen.</p>
+          <a class="card__link" href="leistungen.html#tryhire">Mehr erfahren</a>
+        </article>
+
+        <article class="card card--hover reveal">
+          <div class="icon-box icon-box--accent" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+            </svg>
+          </div>
+          <h3>Beratung &amp; Compliance</h3>
+          <p>AÜG, Tarifbindung, Equal Pay, Höchstüberlassungsdauer – wir kennen die
+             Regeln und halten Ihnen den Rücken frei.</p>
+          <a class="card__link" href="leistungen.html#beratung">Mehr erfahren</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BRANCHEN ============ -->
+  <section class="section section--surface">
+    <div class="container">
+      <div class="grid grid--2" style="align-items:center;gap:3rem">
+        <div class="reveal">
+          <span class="eyebrow">Branchen</span>
+          <h2>Zuhause in vielen Bereichen</h2>
+          <p class="lead" style="margin-bottom:1.5rem">
+            Über die Jahre haben wir ein belastbares Netzwerk aufgebaut – quer durch
+            Industrie, Logistik, Handwerk und Dienstleistung.
+          </p>
+          <div class="chips">
+            <span class="chip">Produktion &amp; Fertigung</span>
+            <span class="chip">Lager &amp; Logistik</span>
+            <span class="chip">Metall &amp; Industrie</span>
+            <span class="chip">Elektro &amp; Technik</span>
+            <span class="chip">Bau &amp; Handwerk</span>
+            <span class="chip">Büro &amp; Verwaltung</span>
+            <span class="chip">Pflege &amp; Gesundheit</span>
+            <span class="chip">Hotel &amp; Gastronomie</span>
+            <span class="chip">Reinigung</span>
+          </div>
+        </div>
+
+        <div class="reveal">
+          <div class="card">
+            <h3>Warum AKE Personal?</h3>
+            <ul class="checklist" style="margin-top:1.25rem">
+              <li>Persönlicher Ansprechpartner – kein Callcenter, keine Warteschleife</li>
+              <li>Vorgeprüfte Kandidaten mit dokumentierten Qualifikationen</li>
+              <li>Rückmeldung auf Anfragen innerhalb von 24 Stunden</li>
+              <li>Transparente Konditionen ohne versteckte Kosten</li>
+              <li>Erlaubnis zur Arbeitnehmerüberlassung gemäß AÜG</li>
+              <li>Regionale Nähe – wir kennen den Arbeitsmarkt vor Ort</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABLAUF ============ -->
+  <section class="section section--brand">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">So arbeiten wir</span>
+        <h2>In vier Schritten zum passenden Personal</h2>
+      </div>
+
+      <div class="steps grid grid--4">
+        <div class="step reveal">
+          <h3>Anfrage</h3>
+          <p>Sie schildern uns Ihren Bedarf – telefonisch, per E-Mail oder über das Formular.</p>
+        </div>
+        <div class="step reveal">
+          <h3>Analyse</h3>
+          <p>Wir klären Anforderungen, Zeitraum und Rahmenbedingungen und erstellen ein Angebot.</p>
+        </div>
+        <div class="step reveal">
+          <h3>Auswahl</h3>
+          <p>Wir schlagen geprüfte Kandidaten vor – meist innerhalb von 48 Stunden.</p>
+        </div>
+        <div class="step reveal">
+          <h3>Einsatz</h3>
+          <p>Ihr neuer Mitarbeiter startet. Wir bleiben Ansprechpartner während des gesamten Einsatzes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FÜR BEWERBER ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="grid grid--2" style="align-items:center;gap:3rem">
+        <div class="reveal">
+          <span class="eyebrow">Für Bewerber</span>
+          <h2>Ihr nächster Job wartet schon</h2>
+          <p class="lead" style="margin-bottom:1.5rem">
+            Bei uns sind Sie kein Datensatz. Wir hören zu, beraten ehrlich und
+            begleiten Sie – vom ersten Gespräch bis zur Übernahme.
+          </p>
+          <ul class="checklist" style="margin-bottom:2rem">
+            <li>Übertarifliche Bezahlung nach GVP-Tarifvertrag</li>
+            <li>Unbefristete Arbeitsverträge und pünktliche Löhne</li>
+            <li>Urlaubs- und Weihnachtsgeld sowie Zuschläge</li>
+            <li>Sehr gute Chancen auf Übernahme durch den Kundenbetrieb</li>
+            <li>Persönliche Betreuung während des gesamten Einsatzes</li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn btn--brand btn--lg" href="stellenangebote.html">Offene Stellen ansehen</a>
+            <a class="btn btn--ghost btn--lg" href="kontakt.html">Initiativbewerbung</a>
+          </div>
+        </div>
+
+        <div class="reveal">
+          <div class="card" style="background:var(--c-surface)">
+            <span class="badge badge--accent">Neu diese Woche</span>
+            <h3 style="margin-top:1rem">Aktuell besonders gesucht</h3>
+            <ul class="checklist" style="margin-top:1.25rem">
+              <li>Produktionshelfer (m/w/d) – Vollzeit</li>
+              <li>Staplerfahrer (m/w/d) – 2-Schicht</li>
+              <li>Elektroniker für Betriebstechnik (m/w/d)</li>
+              <li>CNC-Fräser (m/w/d) – Direktvermittlung</li>
+              <li>Pflegehelfer (m/w/d) – Wunschdienstplan</li>
+            </ul>
+            <a class="card__link" href="stellenangebote.html">Alle Stellenangebote</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="section section--surface">
+    <div class="container container--narrow">
+      <div class="section-head center">
+        <span class="eyebrow">Häufige Fragen</span>
+        <h2>Gut zu wissen</h2>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion__item">
+          <h3><button class="accordion__btn" type="button" aria-expanded="false">
+            Wie schnell können Sie Personal bereitstellen?</button></h3>
+          <div class="accordion__panel"><div>
+            <p>In dringenden Fällen oft innerhalb von 24 bis 48 Stunden. Das hängt von
+               Qualifikation und Region ab – bei Helfertätigkeiten geht es in der Regel
+               schneller als bei Spezialisten. Rufen Sie uns an, wir sagen Ihnen realistisch,
+               was machbar ist.</p>
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <h3><button class="accordion__btn" type="button" aria-expanded="false">
+            Was kostet die Vermittlung?</button></h3>
+          <div class="accordion__panel"><div>
+            <p>Bei der Arbeitnehmerüberlassung rechnen wir einen vereinbarten Stundensatz ab –
+               ohne Grundgebühr. Bei der Personalvermittlung wird eine Provision erst
+               fällig, wenn tatsächlich eingestellt wird. Anfragen und Beratung sind immer
+               kostenlos.</p>
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <h3><button class="accordion__btn" type="button" aria-expanded="false">
+            Kann ich einen Mitarbeiter später fest übernehmen?</button></h3>
+          <div class="accordion__panel"><div>
+            <p>Ja. Das ist bei uns ausdrücklich erwünscht und in vielen Einsätzen sogar das
+               Ziel. Die Konditionen für eine Übernahme regeln wir vorab transparent im Vertrag.</p>
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <h3><button class="accordion__btn" type="button" aria-expanded="false">
+            Welche Unterlagen brauche ich als Bewerber?</button></h3>
+          <div class="accordion__panel"><div>
+            <p>Für ein erstes Gespräch genügt ein kurzer Lebenslauf. Für den Vertrag benötigen
+               wir Personalausweis oder Aufenthaltstitel mit Arbeitserlaubnis, Sozialversicherungs-
+               ausweis, Steuer-ID und Bankverbindung. Zeugnisse und Zertifikate sind hilfreich,
+               aber kein Muss.</p>
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <h3><button class="accordion__btn" type="button" aria-expanded="false">
+            Arbeiten Sie auch mit kleinen Betrieben?</button></h3>
+          <div class="accordion__panel"><div>
+            <p>Selbstverständlich. Ein Großteil unserer Kunden sind kleine und mittelständische
+               Unternehmen. Auch eine einzelne Aushilfe für zwei Wochen ist bei uns kein Problem.</p>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="section section--tight">
+    <div class="container">
+      <div class="cta-band reveal">
+        <h2>Sprechen wir über Ihren Personalbedarf</h2>
+        <p>Ein kurzes Telefonat reicht meistens, um zu klären, wie wir helfen können.
+           Unverbindlich und kostenlos.</p>
+        <div class="btn-row center">
+          <a class="btn btn--primary btn--lg" href="tel:+4900000000">Jetzt anrufen</a>
+          <a class="btn btn--outline-light btn--lg" href="kontakt.html">Nachricht schreiben</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <a class="logo" href="index.html">
+          <span class="logo__mark" aria-hidden="true">AKE</span>
+          <span class="logo__text">AKE Personal<small>Personaldienstleistung</small></span>
+        </a>
+        <p>Ihr regionaler Partner für Zeitarbeit, Personalvermittlung und
+           Direktvermittlung – seit über 15 Jahren.</p>
+      </div>
+
+      <div>
+        <h4>Leistungen</h4>
+        <ul>
+          <li><a href="leistungen.html#ueberlassung">Arbeitnehmerüberlassung</a></li>
+          <li><a href="leistungen.html#vermittlung">Personalvermittlung</a></li>
+          <li><a href="leistungen.html#direkt">Direktvermittlung</a></li>
+          <li><a href="leistungen.html#onsite">On-Site-Management</a></li>
+          <li><a href="leistungen.html#tryhire">Try &amp; Hire</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Startseite</a></li>
+          <li><a href="fuer-unternehmen.html">Für Unternehmen</a></li>
+          <li><a href="stellenangebote.html">Stellenangebote</a></li>
+          <li><a href="ueber-uns.html">Über uns</a></li>
+          <li><a href="kontakt.html">Kontakt</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Kontakt</h4>
+        <ul>
+          <li>Musterstraße 1<br>00000 Musterstadt</li>
+          <li><a href="tel:+4900000000">+49 000 0000000</a></li>
+          <li><a href="mailto:info@ake-personal.de">info@ake-personal.de</a></li>
+          <li>Mo–Fr 08:00–17:00 Uhr</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p>&copy; <span data-year>2026</span> AKE Personal. Alle Rechte vorbehalten.</p>
+      <ul class="footer__legal">
+        <li><a href="impressum.html">Impressum</a></li>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>

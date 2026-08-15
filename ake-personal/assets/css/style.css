@@ -281,10 +281,13 @@ a:hover { color: var(--c-brand-dark); }
 /* Nen breakpoint-in e sirtarit logoja mund te tkurret (me "…") sepse
    menuja nuk e ze me te njejtin rresht. */
 @media (max-width: 1150px) { .logo { flex-shrink: 1; } }
+/* Nen 600px nentitulli nuk hyn i plote dhe do te pritej ne mes te fjales
+   („… ENTWIC"), qe duket me keq se mungesa e tij. Logoja e mban emrin vete. */
+@media (max-width: 600px) {
+  .logo__text { display: none; }
+}
 @media (max-width: 400px) {
-  .logo { font-size: 1.05rem; gap: .45rem; }
-  .logo__mark { width: 32px; height: 32px; font-size: .72rem; }
-  .logo__text small { font-size: .5rem; letter-spacing: .1em; }
+  .logo__img { height: 36px; }
   .nav { gap: .5rem; }
 }
 

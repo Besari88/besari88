@@ -39,6 +39,11 @@
     "addressCountry": "DE"
   },
   "areaServed": "DE",
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+    "opens": "08:00", "closes": "16:00"
+  }],
   "availableLanguage": ["de", "en", "fr", "es", "it", "sq"]
 }
 </script>
@@ -51,8 +56,8 @@
   <div class="container">
     <nav class="nav" aria-label="Hauptnavigation">
       <a class="logo" href="index.html" aria-label="AKE – Agentur für Karriere und Entwicklung, zur Startseite">
-        <span class="logo__mark" aria-hidden="true">AKE</span>
-        <span class="logo__text">AKE<small>Agentur für Karriere und Entwicklung</small></span>
+        <img class="logo__img" src="assets/img/logo.svg" alt="AKE" width="250" height="82">
+        <span class="logo__text"><small>Agentur für Karriere und Entwicklung</small></span>
       </a>
 
       <ul class="nav__menu" id="nav-menu">
@@ -96,14 +101,12 @@
 
   <!-- ============ FOTO + TREGUES BESUESHMERIE ============ -->
   <section style="position:relative;background:var(--c-brand-dark)">
-    <!-- PLOTËSO: shto foton reale te assets/img/hero.webp (1600x900, WebP)
-         dhe pastaj shto url('assets/img/hero.webp') center/cover no-repeat
-         para var(--c-brand) në rreshtin `background` më poshtë.
-         Deri atëherë shfaqet gradienti i markës — pa kërkesa 404. -->
-    <div style="min-height:clamp(260px,42vw,460px);display:grid;align-items:end;
-                background:linear-gradient(180deg,rgba(19,52,48,.15),rgba(19,52,48,.75)),
-                           linear-gradient(120deg,var(--c-brand) 0%,var(--c-teal) 100%)">
-      <div class="container" style="padding-bottom:2.5rem">
+    <!-- Grafika e gjeneruar: assets/img/hero.svg (~4 KB, e pastër në çdo ekran).
+         Nëse më vonë doni një FOTO reale, ruajeni si assets/img/hero.webp dhe
+         ndryshoni vetëm emrin e file-it te .hero-band në style.css. -->
+    <div class="hero-band">
+      <div class="container" style="padding-block:2.5rem">
+       <div class="hero-band__content">
         <div class="trust-bar reveal">
           <div>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -128,6 +131,7 @@
           <li>Karriereförderung</li>
           <li>Unterstützung bei der Einwanderung</li>
         </ul>
+       </div>
       </div>
     </div>
   </section>
@@ -458,8 +462,8 @@
     <div class="footer__grid">
       <div>
         <a class="logo" href="index.html">
-          <span class="logo__mark" aria-hidden="true">AKE</span>
-          <span class="logo__text">AKE<small>Agentur für Karriere und Entwicklung</small></span>
+          <img class="logo__img" src="assets/img/logo.svg" alt="AKE" width="250" height="82">
+          <span class="logo__text"><small>Agentur für Karriere und Entwicklung</small></span>
         </a>
         <p>Anerkennung, Aufenthalt und Berufseinstieg in Deutschland –
            juristisch präzise und persönlich begleitet.</p>
@@ -493,6 +497,7 @@
           <li>Hegaustraße 23<br>78224 Singen (Hohentwiel)</li>
           <li><a href="tel:+491783486195">+49 178 3486195</a></li>
           <li><a href="mailto:info@ake-personal.de">info@ake-personal.de</a></li>
+          <li>Mo–Fr 08:00–16:00 Uhr</li>
         </ul>
       </div>
     </div>

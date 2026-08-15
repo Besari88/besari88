@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 560" role="img"
+     aria-label="Illustration: geprüfte Dokumente, Pass und beruflicher Aufstieg">
+  <title>Anerkennung, Aufenthalt, Ergebnisse</title>
+  <!--
+    Grafike e gjeneruar (SVG) per shiritin nen hero — format banner 1600x560.
+    Ilustrimi qendron ne GJYSMEN E DJATHTE me qellim: gjysma e majte mbetet e
+    lire per shiritin e besueshmerise dhe chips-at, qe te mos mbulohet asgje.
+
+    Nese me vone doni nje FOTO reale, ruajeni si assets/img/hero.webp dhe
+    ndryshoni emrin e file-it te .hero-band ne style.css. Zgjidhni nje foto me
+    hapesire te lire ne te majte, per te njejten arsye.
+  -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#16403a"/>
+      <stop offset="0.5" stop-color="#1d4b45"/>
+      <stop offset="1" stop-color="#2f8b8a"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e9f4f3"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="560" fill="url(#bg)"/>
+
+  <!-- Dekor i lehte -->
+  <g opacity="0.09" fill="#ffffff">
+    <circle cx="1180" cy="120" r="300"/>
+    <circle cx="180" cy="500" r="150"/>
+  </g>
+  <g opacity="0.16" fill="none" stroke="#4fbebf" stroke-width="2">
+    <circle cx="1180" cy="120" r="360"/>
+    <circle cx="1180" cy="120" r="430"/>
+  </g>
+
+  <!-- Shkallet e ngjitjes (djathtas fare) -->
+  <g>
+    <rect x="1330" y="400" width="58" height="160" rx="6" fill="#ffffff" opacity="0.14"/>
+    <rect x="1396" y="340" width="58" height="220" rx="6" fill="#ffffff" opacity="0.20"/>
+    <rect x="1462" y="280" width="58" height="280" rx="6" fill="#ffffff" opacity="0.26"/>
+    <rect x="1528" y="220" width="58" height="340" rx="6" fill="#e9973f" opacity="0.9"/>
+  </g>
+
+  <!-- Dokumenti i pasme -->
+  <g transform="rotate(-8 990 300)">
+    <rect x="900" y="120" width="230" height="310" rx="14" fill="#cfe6e4" opacity="0.55"/>
+    <g fill="#1d4b45" opacity="0.22">
+      <rect x="930" y="164" width="120" height="12" rx="6"/>
+      <rect x="930" y="194" width="168" height="9" rx="4.5"/>
+      <rect x="930" y="218" width="146" height="9" rx="4.5"/>
+    </g>
+  </g>
+
+  <!-- Diploma me vule -->
+  <g transform="rotate(3 1080 310)">
+    <rect x="960" y="110" width="268" height="360" rx="16" fill="url(#paper)"/>
+    <rect x="960" y="110" width="268" height="11" rx="5.5" fill="#e9973f"/>
+
+    <rect x="992" y="158" width="142" height="15" rx="7.5" fill="#1d4b45"/>
+    <rect x="992" y="190" width="204" height="9" rx="4.5" fill="#1d4b45" opacity="0.28"/>
+    <rect x="992" y="212" width="178" height="9" rx="4.5" fill="#1d4b45" opacity="0.28"/>
+    <rect x="992" y="234" width="196" height="9" rx="4.5" fill="#1d4b45" opacity="0.28"/>
+
+    <g>
+      <circle cx="1002" cy="286" r="10" fill="#4fbebf"/>
+      <path d="M997 286l4 4 7-8" fill="none" stroke="#fff" stroke-width="2.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="1022" y="280" width="140" height="9" rx="4.5" fill="#1d4b45" opacity="0.26"/>
+    </g>
+    <g>
+      <circle cx="1002" cy="320" r="10" fill="#4fbebf"/>
+      <path d="M997 320l4 4 7-8" fill="none" stroke="#fff" stroke-width="2.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="1022" y="314" width="118" height="9" rx="4.5" fill="#1d4b45" opacity="0.26"/>
+    </g>
+    <g>
+      <circle cx="1002" cy="354" r="10" fill="#4fbebf"/>
+      <path d="M997 354l4 4 7-8" fill="none" stroke="#fff" stroke-width="2.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="1022" y="348" width="132" height="9" rx="4.5" fill="#1d4b45" opacity="0.26"/>
+    </g>
+
+    <g transform="translate(1152 412)">
+      <circle r="40" fill="none" stroke="#e9973f" stroke-width="5"/>
+      <circle r="31" fill="none" stroke="#e9973f" stroke-width="1.6" opacity="0.7"/>
+      <path d="M-13 1l9 10 18-20" fill="none" stroke="#e9973f" stroke-width="6"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <!-- Pasaporta -->
+  <g transform="rotate(-13 1300 380)">
+    <rect x="1215" y="260" width="176" height="234" rx="14" fill="#16403a"/>
+    <rect x="1224" y="269" width="158" height="216" rx="9" fill="none"
+          stroke="#e9973f" stroke-width="1.6" opacity="0.7"/>
+    <circle cx="1303" cy="349" r="37" fill="none" stroke="#e9973f" stroke-width="3"/>
+    <path d="M1266 349h74M1303 312c16 16 16 58 0 74-16-16-16-58 0-74"
+          fill="none" stroke="#e9973f" stroke-width="3"/>
+    <rect x="1259" y="420" width="84" height="8" rx="4" fill="#ffffff" opacity="0.5"/>
+    <rect x="1272" y="440" width="58" height="8" rx="4" fill="#ffffff" opacity="0.3"/>
+  </g>
+</svg>

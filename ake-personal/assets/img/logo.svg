@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 206 92" role="img" aria-label="AKE">
+  <title>AKE</title>
+  <!--
+    ZEVENDESUES i pergjithshem i logos — nje wordmark i thjeshte "AKE"
+    ne ngjyrat e markes. NUK eshte logoja origjinale.
+
+    Per ta vendosur logon tuaj, thjesht mbishkruani kete file:
+      assets/img/logo.svg
+    Nese keni PNG ne vend te SVG-se, ruajeni si assets/img/logo.png dhe
+    ndryshoni src-in e <img class="logo__img"> ne te 6 faqet HTML.
+    Asgje tjeter nuk ndryshon — lartesia vjen nga .logo__img te style.css.
+
+    Kujdes per PNG: perdorni sfond transparent dhe te pakten 3x lartesine e
+    shfaqur (126px per shfaqje 42px), qe te duket e paster ne ekrane retina.
+  -->
+
+  <g fill="#1d4b45">
+    <!-- A -->
+    <path fill-rule="evenodd"
+          d="M0 80 L25 12 L44 12 L69 80 L52 80 L46 63 L23 63 L17 80 Z
+             M28 50 L41 50 L34.5 31 Z"/>
+    <!-- K -->
+    <rect x="82" y="12" width="17" height="68"/>
+    <path d="M99 44 L124 12 L145 12 L117 46 L146 80 L125 80 L99 49 Z"/>
+    <!-- E -->
+    <rect x="158" y="12" width="17" height="68"/>
+    <rect x="175" y="12" width="31" height="16"/>
+    <rect x="175" y="38" width="25" height="16"/>
+    <rect x="175" y="64" width="31" height="16"/>
+  </g>
+
+  <!-- Theks portokalli -->
+  <g fill="#e9973f">
+    <circle cx="176" cy="5" r="4"/>
+    <circle cx="190" cy="5" r="4"/>
+    <circle cx="204" cy="5" r="4"/>
+  </g>
+</svg>

@@ -261,13 +261,10 @@ a:hover { color: var(--c-brand-dark); }
    mbaron, nentitulli pritet me "…" ne vend qe logoja te shtypet ne 0. */
 .logo__text { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .logo__text small { white-space: nowrap; }
-.logo__mark {
-  width: 38px; height: 38px; border-radius: 10px;
-  background: linear-gradient(135deg, var(--c-brand) 0%, var(--c-brand-dark) 100%);
-  color: #fff; display: grid; place-items: center;
-  font-size: .85rem; font-weight: 800; letter-spacing: .02em;
-  flex-shrink: 0;
-}
+/* Logoja si figure. Per ta ndryshuar, mbishkruani assets/img/logo.svg —
+   nuk nevojitet asnje ndryshim ne HTML. */
+.logo__img { height: 42px; width: auto; flex-shrink: 0; display: block; }
+.site-footer .logo__img { filter: brightness(0) invert(1); opacity: .95; }
 .logo__text small {
   display: block; font-size: .625rem; font-weight: 600; letter-spacing: .18em;
   text-transform: uppercase; color: var(--c-muted); line-height: 1;
@@ -299,11 +296,13 @@ a:hover { color: var(--c-brand-dark); }
   text-decoration: none; transition: color .18s var(--ease), background-color .18s var(--ease);
 }
 /* Header-i lejohet me i gjere se permbajtja, qe menuja e plote te kete vend. */
-.site-header .container { max-width: 1340px; }
+.site-header .container { max-width: 1420px; }
 
-/* Menuja e plote ka nevoje per ~1260px. Nen kete gjeresi zvogelohet,
-   dhe nen 1150px kalon plotesisht ne meny me sirtar (shih me poshte). */
-@media (min-width: 1151px) and (max-width: 1420px) {
+/* Menuja e plote (logo si figure + 6 linqe + CTA) ka nevoje per ~1350px.
+   Nen kete gjeresi zvogelohet, dhe nen 1150px kalon plotesisht ne meny me
+   sirtar (shih me poshte). Nese e zgjeroni menune me nje link te ri, rrisni
+   edhe kufirin 1480 me poshte. */
+@media (min-width: 1151px) and (max-width: 1480px) {
   .nav { gap: .75rem; }
   .nav__link { padding-inline: .45rem; font-size: var(--fs-xs); }
   .nav__actions .btn { padding: .7rem 1rem; font-size: var(--fs-xs); }
@@ -493,6 +492,36 @@ a:hover { color: var(--c-brand-dark); }
 .lang-card:hover { border-color: var(--c-teal); transform: translateY(-2px); }
 .lang-card svg { width: 34px; height: 34px; margin: 0 auto .75rem; color: var(--c-brand); stroke-width: 1.5; }
 .lang-card span { font-family: var(--font-serif); font-size: var(--fs-lg); color: var(--c-brand); }
+
+/* ---------- 13c-bis. Shiriti grafik nen hero ----------
+   Ilustrimi eshte SVG i gjeneruar. Per ta zevendesuar me nje foto reale,
+   ndrysho vetem emrin e file-it me poshte (p.sh. hero.webp).
+   `contain` e mban ilustrimin te plote; me nje FOTO perdor `cover`. */
+.hero-band {
+  min-height: clamp(300px, 32vw, 440px);
+  display: grid;
+  align-items: center;
+  background:
+    /* Errësim vetëm nga e majta, që ilustrimi djathtas të mbetet i qartë */
+    linear-gradient(90deg, rgba(19,52,48,.80) 0%, rgba(19,52,48,.55) 42%, rgba(19,52,48,0) 68%),
+    url("../img/hero.svg") center center / cover no-repeat,
+    var(--c-brand);
+}
+/* Permbajtja rri ne kolonen e majte — ilustrimi djathtas nuk mbulohet kurre. */
+.hero-band__content { max-width: 560px; }
+
+@media (max-width: 900px) {
+  .hero-band { align-items: end; }
+  .hero-band__content { max-width: none; }
+  /* Ne ekrane te ngushta ilustrimi shkon prapa: shtresa e erret e plote
+     e ben tekstin te lexueshem pa e prere ilustrimin ne menyre te cuditshme. */
+  .hero-band {
+    background:
+      linear-gradient(180deg, rgba(19,52,48,.35) 0%, rgba(19,52,48,.80) 60%, rgba(19,52,48,.94) 100%),
+      url("../img/hero.svg") right center / cover no-repeat,
+      var(--c-brand);
+  }
+}
 
 /* ---------- 13d. Shiriti me tregues besueshmerie mbi foto ---------- */
 .trust-bar {

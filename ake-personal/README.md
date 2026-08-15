@@ -89,20 +89,43 @@ me një faqe të dedikuar sesa me një ankor brenda një faqeje të gjatë.
    grep -rn "Hegaustra\|3486195\|info@ake-personal" *.html
    ```
 
-6. **Fotoja e madhe nën hero:** vendoseni si `assets/img/hero.webp` (1600×900) dhe
-   te `index.html` shtoni `url('assets/img/hero.webp') center/cover no-repeat,`
-   para `var(--c-brand)` në rreshtin `background` — komenti aty e shpjegon.
-   Konvertojini fotot në WebP te [squoosh.app](https://squoosh.app) — kursen 60–80 %.
+6. **Logoja.** Faqja e lexon nga një file i vetëm. Për ta vendosur tuajën:
 
-7. **Ngjyrat janë tashmë ato të markës suaj** (`style.css`, rreshtat 8–17):
+   - **SVG (më e mira):** mbishkruani `assets/img/logo.svg`. Asgjë tjetër nuk preket.
+   - **PNG:** ruajeni si `assets/img/logo.png` dhe ndryshoni `src` te
+     `<img class="logo__img">` në të 6 faqet HTML:
+     ```bash
+     sed -i 's|img/logo\.svg|img/logo.png|g' *.html
+     ```
+     Përdorni sfond transparent dhe lartësi ≥126px (shfaqet në 42px, pra 3× për retina).
+
+   Ajo që është aty tani është vetëm një wordmark „AKE" i thjeshtë në ngjyrat
+   tuaja — **nuk është logoja juaj origjinale**, sepse figura e ngjitur në bisedë
+   nuk mund të nxirrej si file.
+
+   Lartësia e logos rregullohet në një vend: `.logo__img { height: 42px }` te
+   `style.css`. Në footer aplikohet automatikisht një filtër që e bën të bardhë.
+
+7. **Grafika nën hero** është `assets/img/hero.svg` — e gjeneruar, ~4 KB, e pastër
+   në çdo ekran. Ilustrimi qëndron **në të djathtë** me qëllim, që shiriti i
+   besueshmërisë majtas të mos e mbulojë.
+
+   Nëse doni një foto reale: ruajeni si `assets/img/hero.webp`, ndryshoni emrin
+   te `.hero-band` në `style.css`, dhe zgjidhni një foto me hapësirë të lirë majtas.
+   Konvertojeni në WebP te [squoosh.app](https://squoosh.app) — kursen 60–80 %.
+
+8. **Ngjyrat janë tashmë ato të markës suaj** (`style.css`, rreshtat 8–17):
    `--c-brand` petrol `#1d4b45`, `--c-accent` portokalli `#e9973f`,
    `--c-teal` `#4fbebf`, `--c-mint` `#ddf3f3`. Nëse keni kodet e sakta nga
    manuali i markës, zëvendësojini aty — e gjithë faqja përshtatet vetë.
 
-8. **Impressum + Datenschutz:** kopjoni tekstin real. Nëse s'jeni i sigurt,
-   gjenerojeni te [e-recht24.de](https://www.e-recht24.de/impressum-generator.html).
-   Në Gjermani një Impressum i gabuar sjell *Abmahnung* me kosto reale — mos e lini
-   për në fund.
+9. **Impressum + Datenschutz.** Impressum-i tani ka vetëm bazat (emri, adresa,
+   telefoni, email-i). Në fund të tij ka një kuti me listën e saktë të asaj që
+   mbetet: emri ligjor + forma juridike, personi përgjegjës, Handelsregister,
+   USt-IdNr., Aufsichtsbehörde dhe pyetja për RDG.
+   Nëse s'jeni i sigurt, gjenerojeni te
+   [e-recht24.de](https://www.e-recht24.de/impressum-generator.html).
+   Në Gjermani një Impressum i gabuar sjell *Abmahnung* me kosto reale.
 
 ### Faza 3 — Tekstet që mungojnë
 
@@ -409,14 +432,13 @@ file statikë, pa databazë, falas.
 
 Dërgomëni:
 
-1. **Logon origjinale** si SVG ose PNG me sfond transparent (tani përdoret një
-   version i thjeshtë me tekst)
-2. **Fotot** nga faqja aktuale — sidomos fotoja e madhe nën hero
+1. **Logon origjinale** si file SVG ose PNG me sfond transparent — figura e ngjitur
+   në bisedë nuk mund të ruhej si file, prandaj aty është një zëvendësues
+2. **Fotot reale** nëse i doni në vend të grafikave të gjeneruara
 3. **Impressum-in** ekzistues fjalë për fjalë (emri ligjor i firmës, HRB, USt-IdNr.,
    Geschäftsführer)
-4. **Orarin e punës**
-5. **Listën e URL-ve të vjetra** për redirects
-6. Përgjigje për **dyqanin** (shih më poshtë)
+4. **Listën e URL-ve të vjetra** për redirects — kur t'ju vijë radha
+5. Përgjigje për **dyqanin** (shih më poshtë)
 
 ## Dyqani (ikona e shportës)
 

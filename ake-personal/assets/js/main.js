@@ -133,20 +133,6 @@
     const note   = $('#form-note');
     const submit = form.querySelector('[type="submit"]');
 
-    // Parazgjedh sherbimin nga ?leistung=… (butonat CTA te faqes kryesore
-    // e cojne perdoruesin ketu me sherbimin e duhur te zgjedhur paraprakisht)
-    const leistung = new URLSearchParams(location.search).get('leistung');
-    const field = form.querySelector('[name="leistung"]');
-    if (leistung && field) {
-      const match = [...field.options || []].find((o) => o.value === leistung);
-      if (field.options && !match) {
-        const o = document.createElement('option');
-        o.value = o.textContent = leistung;
-        field.appendChild(o);
-      }
-      field.value = leistung;
-    }
-
     const showNote = (type, msg) => {
       if (!note) return;
       note.className = 'form-note is-visible form-note--' + type;

@@ -6,12 +6,14 @@
 
 /* ---------- 1. Tokens ---------- */
 :root {
-  /* Ngjyrat e markes AKE — marre nga faqja aktuale */
-  --c-brand:        #1d4b45;   /* jeshile petrol e erret — logo, butona */
-  --c-brand-dark:   #133430;
-  --c-brand-light:  #e4eeec;
-  --c-accent:       #e9973f;   /* portokalli — theks, chips */
-  --c-accent-dark:  #c97a24;
+  /* Ngjyrat e markes AKE — nxjerre drejtperdrejt nga AKE_Logo_Final.ai */
+  --c-brand:        #034c4d;   /* petrol — ngjyra e shkronjave te logos */
+  --c-brand-dark:   #023335;
+  --c-brand-light:  #e0eded;
+  --c-accent:       #f6921e;   /* portokalli — nentitulli i logos, chips */
+  --c-accent-dark:  #cf7610;
+  --c-flag-red:     #eb2027;   /* figurat mbi shkronjen E */
+  --c-flag-yellow:  #f7e738;
   --c-teal:         #4fbebf;   /* turkez — shirita seksionesh */
   --c-teal-dark:    #3aa3a4;
   --c-mint:         #ddf3f3;   /* mente e celet — sfond seksioni */
@@ -259,15 +261,16 @@ a:hover { color: var(--c-brand-dark); }
 }
 /* Emri i markes nuk thyhet kurre shkronje per shkronje; nese hapesira
    mbaron, nentitulli pritet me "…" ne vend qe logoja te shtypet ne 0. */
-.logo__text { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.logo__text { min-width: 0; }
 .logo__text small { white-space: nowrap; }
 /* Logoja si figure. Per ta ndryshuar, mbishkruani assets/img/logo.svg —
    nuk nevojitet asnje ndryshim ne HTML. */
 .logo__img { height: 42px; width: auto; flex-shrink: 0; display: block; }
-.site-footer .logo__img { filter: brightness(0) invert(1); opacity: .95; }
+
 .logo__text small {
-  display: block; font-size: .625rem; font-weight: 600; letter-spacing: .18em;
-  text-transform: uppercase; color: var(--c-muted); line-height: 1;
+  display: block; font-size: .8rem; font-weight: 700; letter-spacing: 0;
+  color: var(--c-accent); line-height: 1.15; white-space: normal;
+  max-width: 11em;
 }
 
 /* KUJDES: keto media-query duhet te qendrojne PAS rregullave baze me siper —
@@ -281,13 +284,14 @@ a:hover { color: var(--c-brand-dark); }
 /* Nen breakpoint-in e sirtarit logoja mund te tkurret (me "…") sepse
    menuja nuk e ze me te njejtin rresht. */
 @media (max-width: 1150px) { .logo { flex-shrink: 1; } }
-/* Nen 600px nentitulli nuk hyn i plote dhe do te pritej ne mes te fjales
-   („… ENTWIC"), qe duket me keq se mungesa e tij. Logoja e mban emrin vete. */
+/* Ne telefon nentitulli mbetet i dukshem (si te faqja aktuale) sepse tani
+   thyhet ne dy rreshta ne vend qe te pritet ne mes te fjales. */
 @media (max-width: 600px) {
-  .logo__text { display: none; }
+  .logo__text small { font-size: .7rem; max-width: 9em; }
 }
 @media (max-width: 400px) {
-  .logo__img { height: 36px; }
+  .logo__img { height: 34px; }
+  .logo__text small { font-size: .625rem; max-width: 8em; }
   .nav { gap: .5rem; }
 }
 
@@ -616,6 +620,43 @@ a:hover { color: var(--c-brand-dark); }
   border-radius: var(--radius); display: block; background: var(--c-surface-2);
 }
 
+
+/* ---------- 16b. Seksioni i kontaktit mbi turkez ----------
+   Perputhet me pamjen e faqes aktuale: titull i madh i zi, fusha te bardha
+   me qoshe te rrumbullakosura dhe buton petrol i plote. */
+.kontakt__title {
+  font-family: var(--font-sans);
+  font-size: clamp(2.4rem, 7vw, 4rem);
+  color: #000;
+  letter-spacing: -.03em;
+  margin-bottom: 2rem;
+}
+.form--teal .field label { color: #0d1a1a; font-weight: 500; font-size: var(--fs-base); }
+.form--teal .field input,
+.form--teal .field textarea {
+  background: #fff;
+  border: 2px solid #0d1a1a;
+  border-radius: 999px;
+  padding: .95rem 1.35rem;
+  font-size: var(--fs-base);
+}
+.form--teal .field textarea { border-radius: var(--radius); min-height: 170px; }
+.form--teal .field input:focus,
+.form--teal .field textarea:focus {
+  border-color: var(--c-brand);
+  box-shadow: 0 0 0 3px rgba(3, 76, 77, .25);
+}
+.form--teal .field__error { color: #6b0f0a; font-weight: 600; }
+.form--teal .field input[aria-invalid="true"],
+.form--teal .field textarea[aria-invalid="true"] { border-color: #6b0f0a; }
+
+.kontakt__hint { font-size: var(--fs-sm); color: #0d1a1a; }
+.kontakt__hint a { color: var(--c-brand-dark); font-weight: 600; }
+
+.kontakt__info { font-size: var(--fs-lg); color: #0d1a1a; display: grid; gap: 1.1rem; }
+.kontakt__info a { color: #0d1a1a; text-decoration: underline; text-underline-offset: 3px; }
+.kontakt__info a:hover { color: var(--c-brand-dark); }
+
 /* ---------- 17. CTA band ---------- */
 .cta-band {
   background: linear-gradient(135deg, var(--c-brand) 0%, var(--c-brand-dark) 100%);
@@ -626,15 +667,15 @@ a:hover { color: var(--c-brand-dark); }
 .cta-band p { max-width: 52ch; margin: 0 auto 2rem; color: #b9cbdd; }
 
 /* ---------- 18. Footer ---------- */
-.site-footer { background: #0a1a2b; color: #94a8bd; font-size: var(--fs-sm); padding-top: 4rem; }
+.site-footer { background: var(--c-brand-dark); color: #a8c2c1; font-size: var(--fs-sm); padding-top: 4rem; }
 .site-footer h4 { color: #fff; font-size: var(--fs-sm); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 1.15rem; }
-.site-footer a { color: #94a8bd; text-decoration: none; }
+.site-footer a { color: #a8c2c1; text-decoration: none; }
 .site-footer a:hover { color: var(--c-accent); }
 .footer__grid { display: grid; gap: 2.5rem; grid-template-columns: 1.6fr 1fr 1fr 1.4fr; }
 @media (max-width: 860px) { .footer__grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); } }
 .footer__grid ul { display: grid; gap: .6rem; }
 .site-footer .logo { color: #fff; margin-bottom: 1rem; }
-.site-footer .logo__text small { color: #6d829a; }
+.site-footer .logo__text small { color: var(--c-accent); }
 .footer__bottom {
   margin-top: 3rem; padding-block: 1.5rem;
   border-top: 1px solid rgba(255,255,255,.1);

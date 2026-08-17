@@ -18,8 +18,7 @@ ngarkoni me FTP.
 ake-personal/
 ├── index.html          Faqja kryesore — një faqe e vetme me seksione:
 │                       hero, Leistungen, Anerkennung, Jobs & Bewerbungen,
-│                       Behörden & Visa, Übersetzungen
-├── kontakt.html        Formular + të dhëna kontakti
+│                       Behörden & Visa, Übersetzungen, Kontakt
 ├── danke.html          Faqja pas dërgimit të formularit
 ├── impressum.html      Impressum (§ 5 DDG)
 ├── datenschutz.html    Datenschutzerklärung (DSGVO)
@@ -31,7 +30,8 @@ ake-personal/
 └── assets/
     ├── css/style.css   I gjithë stili (design tokens në krye)
     ├── js/main.js      Nav, scroll-spy, akordeon, validim formulari
-    └── img/            Fotot dhe favicon
+    └── img/            logo.svg, logo-invers.svg, logo-full.svg,
+                         hero.svg, favicon.svg
 ```
 
 **Madhësia totale:** rreth 80 KB pa foto. Për krahasim, një faqe Wix ngarkon
@@ -89,22 +89,19 @@ me një faqe të dedikuar sesa me një ankor brenda një faqeje të gjatë.
    grep -rn "Hegaustra\|3486195\|info@ake-personal" *.html
    ```
 
-6. **Logoja.** Faqja e lexon nga një file i vetëm. Për ta vendosur tuajën:
+6. **Logoja — e vendosur.** Është konvertuar nga `AKE_Logo_Final.ai` (i cili
+   është PDF brenda) në SVG vektorial. Tri variante:
 
-   - **SVG (më e mira):** mbishkruani `assets/img/logo.svg`. Asgjë tjetër nuk preket.
-   - **PNG:** ruajeni si `assets/img/logo.png` dhe ndryshoni `src` te
-     `<img class="logo__img">` në të 6 faqet HTML:
-     ```bash
-     sed -i 's|img/logo\.svg|img/logo.png|g' *.html
-     ```
-     Përdorni sfond transparent dhe lartësi ≥126px (shfaqet në 42px, pra 3× për retina).
+   | File | Përdorimi |
+   |---|---|
+   | `logo.svg` | header — vetëm shenja AKE, pa nëntitull |
+   | `logo-invers.svg` | footer — petroli i kthyer në të bardhë |
+   | `logo-full.svg` | lockup i plotë me nëntitullin, për print/OG |
 
-   Ajo që është aty tani është vetëm një wordmark „AKE" i thjeshtë në ngjyrat
-   tuaja — **nuk është logoja juaj origjinale**, sepse figura e ngjitur në bisedë
-   nuk mund të nxirrej si file.
+   Nëntitulli „Agentur für Karriere und Entwicklung" në header është **tekst**,
+   jo pjesë e figurës — kështu mbetet i lexueshëm dhe i kërkueshëm.
 
-   Lartësia e logos rregullohet në një vend: `.logo__img { height: 42px }` te
-   `style.css`. Në footer aplikohet automatikisht një filtër që e bën të bardhë.
+   Lartësia rregullohet në një vend: `.logo__img { height: 42px }` te `style.css`.
 
 7. **Grafika nën hero** është `assets/img/hero.svg` — e gjeneruar, ~4 KB, e pastër
    në çdo ekran. Ilustrimi qëndron **në të djathtë** me qëllim, që shiriti i
@@ -114,10 +111,16 @@ me një faqe të dedikuar sesa me një ankor brenda një faqeje të gjatë.
    te `.hero-band` në `style.css`, dhe zgjidhni një foto me hapësirë të lirë majtas.
    Konvertojeni në WebP te [squoosh.app](https://squoosh.app) — kursen 60–80 %.
 
-8. **Ngjyrat janë tashmë ato të markës suaj** (`style.css`, rreshtat 8–17):
-   `--c-brand` petrol `#1d4b45`, `--c-accent` portokalli `#e9973f`,
-   `--c-teal` `#4fbebf`, `--c-mint` `#ddf3f3`. Nëse keni kodet e sakta nga
-   manuali i markës, zëvendësojini aty — e gjithë faqja përshtatet vetë.
+8. **Ngjyrat janë marrë drejtpërdrejt nga file-i i logos** (`style.css`, krye):
+
+   | Token | Vlera | Nga |
+   |---|---|---|
+   | `--c-brand` | `#034c4d` | petroli i shkronjave |
+   | `--c-accent` | `#f6921e` | portokallia e nëntitullit |
+   | `--c-flag-red` | `#eb2027` | figura e mesit |
+   | `--c-flag-yellow` | `#f7e738` | figura e djathtë |
+   | `--c-teal` | `#4fbebf` | shiritat turkez të faqes |
+   | `--c-mint` | `#ddf3f3` | sfondi i seksionit të shërbimeve |
 
 9. **Impressum + Datenschutz.** Impressum-i tani ka vetëm bazat (emri, adresa,
    telefoni, email-i). Në fund të tij ka një kuti me listën e saktë të asaj që
@@ -127,20 +130,34 @@ me një faqe të dedikuar sesa me një ankor brenda një faqeje të gjatë.
    [e-recht24.de](https://www.e-recht24.de/impressum-generator.html).
    Në Gjermani një Impressum i gabuar sjell *Abmahnung* me kosto reale.
 
-### Faza 3 — Tekstet që mungojnë
+### Faza 3 — Tri vende për t'u kontrolluar
 
-9. Në faqen origjinale ka tri vende ku teksti është kopjuar gabimisht.
-   Janë shënuar me `class="todo"` dhe duhen plotësuar:
+Tekstet janë kopjuar **fjalë për fjalë** nga faqja aktuale, përfshirë tri vende
+ku origjinali duket se ka gabime. Nuk i ndryshova vetë — vendosni ju:
 
-   | Vendi | Problemi në faqen aktuale |
-   |---|---|
-   | Anerkennung, hapi 4 „Maßnahmen zur Schließung der Lücke" | përsërit fjalë për fjalë hapin 3 |
-   | Jobs & Bewerbungen, karta e 4-t | përsërit „Familie & Sozialdienste" nga seksioni i mësipërm |
-   | Jobs & Bewerbungen, teksti hyrës | përmend markën **„AnerkennungPlus"**, jo AKE — kontrollo nëse është gabim |
+| Vendi | Çfarë ndodh te faqja aktuale |
+|---|---|
+| Anerkennung, hapi 4 „Maßnahmen zur Schließung der Lücke und zur Anpassung" | teksti është identik me hapin 3 |
+| Jobs & Bewerbungen, karta e 4-t | „Familie & Sozialdienste" përsëritet nga seksioni i shërbimeve |
+| Jobs & Bewerbungen, teksti hyrës | thotë **„AnerkennungPlus"**, jo AKE |
+| Anerkannte Berufe | „Academic Qualifications" në anglisht, mes dy të tjerave në gjermanisht |
 
-10. Seksioni i përkthimeve: shtoni gjuhët që mungojnë (në screenshot dukeshin
-    Deutsch, Englisch, Französisch, Spanisch, Italienisch, Albanisch — kishte
-    edhe një rresht më poshtë). Kopjoni bllokun `<div class="lang-card">`.
+9. Seksioni i përkthimeve: në screenshot dukeshin Deutsch, Englisch, Französisch,
+   Spanisch, Italienisch, Albanisch — kishte edhe një rresht më poshtë që nuk
+   dukej i plotë. Kopjoni bllokun `<div class="lang-card">` për secilën që mungon.
+
+10. **Formulari** është kopjuar saktësisht si i juaji: Vorname\*, Nachname\*,
+    Email\*, Phone, Ihre Nachricht. Faqja juaj nuk ka checkbox pëlqimi për
+    Datenschutz; unë vendosa vetëm një rresht teksti me link. Në Gjermani
+    checkbox-i është varianti më i sigurt — nëse e doni, shtoni:
+    ```html
+    <div class="check">
+      <input type="checkbox" id="datenschutz" name="datenschutz" required>
+      <label for="datenschutz">Ich habe die
+        <a href="datenschutz.html">Datenschutzerklärung</a> gelesen und stimme zu.</label>
+    </div>
+    ```
+    dhe te `kontakt.php` shtoni `if (!isset($_POST['datenschutz'])) $errors[] = '…';`
 
 ### Faza 4 — Formulari i kontaktit
 

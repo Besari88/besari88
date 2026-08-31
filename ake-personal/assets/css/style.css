@@ -759,6 +759,16 @@ a.kontakt-row__value:hover { color: var(--c-accent); text-decoration: underline;
 .kontakt-map:hover::after { transform: translateX(4px); }
 
 .kontakt__hint { font-size: var(--fs-xs); color: var(--c-muted); margin-top: 1rem; }
+
+/* Rezerva kur dergimi deshton — shfaqet vetem atehere, nga main.js. */
+.mail-fallback {
+  margin-top: 1rem; padding: 1.15rem 1.35rem;
+  background: var(--c-mint); border-radius: var(--radius);
+  display: grid; gap: .85rem; justify-items: start;
+}
+.mail-fallback p { font-size: var(--fs-sm); color: var(--c-ink); margin: 0; }
+.mail-fallback__alt { color: var(--c-body) !important; }
+.mail-fallback__alt a { color: var(--c-brand); font-weight: 600; }
 .kontakt__hint a { color: var(--c-brand); font-weight: 600; }
 
 /* ---------- 17. CTA band ---------- */

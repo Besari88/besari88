@@ -171,6 +171,39 @@
       if (e.target.getAttribute('aria-invalid') === 'true') setError(e.target, '');
     });
 
+    /* Rezerve: nese dergimi deshton (celes i gabuar, ofrues i rene, rrjet),
+       vizitori nuk mbetet ne rruge te mbyllur — i ofrohet i njejti mesazh
+       i gatshem ne programin e tij te email-it. Pa kete, nje gabim serveri
+       do te thoshte thjesht nje klient i humbur. */
+    const offerMailFallback = () => {
+      if (document.getElementById('mail-fallback')) return;
+
+      const v = (n) => (form.querySelector('[name="' + n + '"]')?.value || '').trim();
+      const body = [
+        'Name:    ' + v('vorname') + ' ' + v('nachname'),
+        'E-Mail:  ' + v('email'),
+        'Telefon: ' + (v('telefon') || '-'),
+        '',
+        v('nachricht') || '',
+      ].join('\n');
+
+      const href = 'mailto:info@ake-personal.de'
+        + '?subject=' + encodeURIComponent('Anfrage über ake-personal.de')
+        + '&body=' + encodeURIComponent(body);
+
+      const box = document.createElement('div');
+      box.id = 'mail-fallback';
+      box.className = 'mail-fallback';
+      box.innerHTML =
+        '<p>Sie können uns Ihre Anfrage direkt senden — Ihre Angaben sind bereits eingetragen:</p>'
+        + '<a class="btn btn--brand btn--pill" href="' + href + '">E-Mail-Programm öffnen</a>'
+        + '<p class="mail-fallback__alt">Oder rufen Sie an: '
+        + '<a href="tel:+491783486195">+49 178 3486195</a></p>';
+
+      note.insertAdjacentElement('afterend', box);
+      box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!validate()) {
@@ -193,7 +226,8 @@
         form.reset();
         showNote('ok', 'Vielen Dank! Ihre Nachricht ist bei uns eingegangen. Wir melden uns in der Regel innerhalb von 24 Stunden.');
       } catch (err) {
-        showNote('err', 'Die Nachricht konnte nicht gesendet werden. Bitte rufen Sie uns an oder schreiben Sie an info@ake-personal.de.');
+        showNote('err', 'Die Nachricht konnte nicht gesendet werden.');
+        offerMailFallback();
       } finally {
         submit.disabled = false;
         submit.textContent = original;

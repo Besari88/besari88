@@ -51,8 +51,12 @@ async function sendMail(env, { vorname, nachname, email, telefon, nachricht }) {
       accept: 'application/json',
     },
     body: JSON.stringify({
-      sender: { email: env.MAIL_FROM, name: 'AKE Website' },
-      to: [{ email: env.MAIL_TO }],
+      // .trim(): nje hapesire e mbetur kur vendoset sekreti do ta bente
+      // Brevo-n ta refuzonte adresen si te pavlefshme, pa asnje shenje se
+      // ku eshte problemi. Sekretet nuk lexohen dot pas ruajtjes, ndaj nje
+      // gabim i tille do te ishte i veshtire per t'u gjetur.
+      sender: { email: env.MAIL_FROM.trim(), name: 'AKE Website' },
+      to: [{ email: env.MAIL_TO.trim() }],
       replyTo: { email, name: `${vorname} ${nachname}`.trim() },
       subject: 'Neue Anfrage über ake-personal.de',
       textContent: body,
@@ -65,7 +69,7 @@ async function sendMail(env, { vorname, nachname, email, telefon, nachricht }) {
 export async function handleContact(request, env) {
   const origin = new URL(request.url).origin;
 
-  if (!env.BREVO_API_KEY || !env.MAIL_TO || !env.MAIL_FROM) {
+  if (!env.BREVO_API_KEY?.trim() || !env.MAIL_TO?.trim() || !env.MAIL_FROM?.trim()) {
     console.error('Mungojne variablat: BREVO_API_KEY / MAIL_TO / MAIL_FROM');
     return reply(request, 500, 'Der Versand ist derzeit nicht konfiguriert. Bitte rufen Sie uns an.');
   }

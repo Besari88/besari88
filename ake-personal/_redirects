@@ -1,0 +1,11 @@
+# Cloudflare Pages — ridrejtimet (zëvendëson Redirect 301 të .htaccess).
+# Formati:  /rruga-e-vjeter  /rruga-e-re  301
+#
+# PLOTËSO këtu çdo URL të vjetër të Wix-it që Google e ka të indeksuar.
+# Merrni listën nga Google Search Console → Pages, ose kërkoni site:ake-personal.de
+#
+# Shembuj tipikë për Wix:
+# /home            /              301
+# /ueber-uns-1     /#leistungen   301
+# /kontakt-1       /#kontakt      301
+# /jobs            /#bewerbungen  301

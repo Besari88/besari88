@@ -284,6 +284,81 @@ TXT   @   v=spf1 include:_spf.ihr-hoster.de ~all
 
 ---
 
+## 6b. Varianti Cloudflare Pages (pa PHP)
+
+Cloudflare Pages e pret faqen falas dhe, ndryshe nga GitHub Pages, mund të
+ekzekutojë kod në server. Prandaj formulari punon pa hosting me PHP.
+
+**Kujdes:** Cloudflare **nuk dërgon vetë email** — Workers nuk kanë SMTP.
+Duhet një API email-i. Këtu përdoret **Brevo**: kompani franceze, serverë në BE,
+jep Auftragsverarbeitungsvertrag sipas Art. 28 DSGVO, falas deri në 300 email/ditë.
+Një ofrues amerikan (Resend, SendGrid) do të kërkonte klauzola standarde
+kontraktuale dhe një seksion më shumë te Datenschutzerklärung.
+
+### Çfarë ka në projekt
+
+| File | Roli |
+|---|---|
+| `functions/api/kontakt.js` | pranon POST-in te `/api/kontakt` dhe dërgon email-in |
+| `_headers` | header-at e sigurisë dhe cache-i (zëvendëson `.htaccess`) |
+| `_redirects` | ridrejtimet 301 nga URL-të e vjetra të Wix-it |
+
+`.htaccess` dhe `kontakt.php` mbeten në projekt për rastin e hosting-ut me PHP —
+Cloudflare i injoron.
+
+### Hapat
+
+1. **Brevo** → llogari falas → *Settings → SMTP & API → API keys* → krijo çelës.
+   Verifiko domain-in `ake-personal.de` te *Senders & Domains* (shtohen dy-tri
+   record-e DNS). Pa këtë verifikim email-et bien në spam.
+
+2. **Cloudflare** → *Workers & Pages* → *Create* → *Pages* → lidh repo-n e GitHub-it.
+   Build command: bosh. Output directory: `/` (ose emri i folderit).
+
+3. **Settings → Environment variables** (të tria si *Secret*, jo tekst i thjeshtë):
+
+   | Emri | Vlera |
+   |---|---|
+   | `BREVO_API_KEY` | çelësi nga hapi 1 |
+   | `MAIL_TO` | `info@ake-personal.de` |
+   | `MAIL_FROM` | `noreply@ake-personal.de` |
+
+   Pa këto, funksioni kthen 500 dhe e shkruan shkakun te *Functions → Real-time logs*.
+
+4. **Custom domain** → shtoni `ake-personal.de`. Nëse DNS-i është te Cloudflare,
+   record-et shtohen vetë dhe SSL vjen falas.
+
+5. **Marrja e email-it.** Nëse `info@ake-personal.de` s'ka ende kuti postare,
+   aktivizoni **Cloudflare Email Routing** (falas): e përcjell te Gmail-i juaj.
+   Kjo është vetëm për *marrje* — dërgimin e bën Brevo.
+
+### Testimi lokal
+
+```bash
+npx wrangler pages dev .
+```
+
+Hap `http://localhost:8788`. Për të testuar dërgimin realisht, vendosni çelësat
+te një file `.dev.vars` (mos e futni në Git).
+
+### Nëse doni PHP në vend të kësaj
+
+Te `index.html` ndryshoni një rresht:
+
+```html
+<form ... action="kontakt.php" ...>
+```
+
+Të dyja anët presin të njëjtat fusha, ndaj asgjë tjetër nuk ndryshon.
+
+### Mbrojtja nga spam-i
+
+Formulari ka honeypot (fushë e fshehur që e mbushin vetëm botet) dhe validim
+në server. Nëse spam-i bëhet problem, shtoni **Cloudflare Turnstile** — captcha
+falas, pa cookies, e pranueshme nga pikëpamja e DSGVO-së.
+
+---
+
 ## 7. Nëse serveri është nginx
 
 `.htaccess` nuk lexohet. Vendosni këtë te konfigurimi i site-it:

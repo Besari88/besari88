@@ -462,10 +462,11 @@
 
         <div class="kontakt-panel__form">
           <!--
-            action="kontakt.php"  -> varianti me PHP (README, seksioni 6)
-            Pa PHP:               action="https://formspree.io/f/KODI_JUAJ"
+            action="/api/kontakt" -> Cloudflare Pages Function (functions/api/kontakt.js)
+            Ne hosting me PHP:       action="kontakt.php"
+            Te dyja i pranojne te njejtat fusha; nderrohet vetem kjo rreshte.
           -->
-          <form class="form" id="contact-form" action="kontakt.php" method="post" novalidate>
+          <form class="form" id="contact-form" action="/api/kontakt" method="post" novalidate>
 
             <div id="form-note" class="form-note" aria-live="polite"></div>
 

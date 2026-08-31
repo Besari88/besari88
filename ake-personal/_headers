@@ -1,0 +1,21 @@
+# Cloudflare Pages — header-at (zëvendëson pjesën përkatëse të .htaccess).
+# Apache-ja nuk lexohet te Pages; ky file po.
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  # Faqja nuk ngarkon asgjë nga jashtë. Nëse shtoni Google Maps ose Analytics,
+  # kjo rresht duhet zgjeruar, përndryshe do të bllokohen pa asnjë mesazh.
+  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'
+
+# Asetet kanë emra fiksë, ndaj cache-i i gjatë kërkon kujdes:
+# kur ndryshoni CSS-në, shtoni një version te linku (style.css?v=2),
+# përndryshe vizitorët e vjetër shohin versionin e vjetër deri në një vit.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.html
+  Cache-Control: no-cache, must-revalidate

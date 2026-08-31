@@ -312,6 +312,32 @@ jeni në rrugën e Workers-it — dhe `wrangler.jsonc` është aty për këtë.
 `Path` duhet të tregojë te folderi ku ndodhet `wrangler.jsonc`. Me `/` komanda
 dështon me „no config file found".
 
+### Kodi burimor jashtë publikut — dy mekanizma të ndryshëm
+
+Kjo është një kurth: **Workers** dhe **Pages** i fshehin file-t në mënyra
+krejt të ndryshme, dhe secili e injoron mekanizmin e tjetrit.
+
+| | Workers | Pages |
+|---|---|---|
+| Mekanizmi | `.assetsignore` | rregullat `404` te `_redirects` |
+| Çfarë ndodh pa të | file-t nuk ngarkohen fare | file-t ngarkohen **dhe shërbehen** |
+
+Pages i ngarkon të gjithë file-t si asete statike dhe nuk e lexon fare
+`.assetsignore`. Prandaj te `_redirects` janë rregullat që kthejnë 404 për
+`/src/*`, `/wrangler.jsonc`, `/kontakt.php`, `/.htaccess` dhe `/README.md`.
+
+Pas çdo deploy-i te Pages, kontrollojini një herë në shfletues — duhet të
+kthejnë faqen 404:
+
+```
+https://<faqja>/src/contact.js
+https://<faqja>/kontakt.php
+https://<faqja>/wrangler.jsonc
+```
+
+Sekrete në to nuk ka (ato janë variabla mjedisi), por kodi burimor nuk ka pse
+të jetë i lexueshëm.
+
 ### `.assetsignore`
 
 Kodi burimor nuk duhet të dalë publik. Ky file mban jashtë `src/`, `functions/`,

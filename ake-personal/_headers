@@ -19,3 +19,14 @@
 
 /*.html
   Cache-Control: no-cache, must-revalidate
+
+# Rrjeta e sigurise: nese ndonje nga rregullat e mesiperme nuk zbatohet,
+# te pakten keto adresa nuk duhet te dalin ne Google.
+/src/*
+  X-Robots-Tag: noindex, nofollow
+
+/kontakt.php
+  X-Robots-Tag: noindex, nofollow
+
+/README.md
+  X-Robots-Tag: noindex, nofollow

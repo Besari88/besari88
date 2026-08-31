@@ -1,0 +1,9 @@
+# Cfare nuk duhet publikuar si file statik (Cloudflare Workers assets).
+# Pa kete, kodi burimor dhe konfigurimi do te ishin te hapur ne internet.
+wrangler.jsonc
+.assetsignore
+src/
+functions/
+kontakt.php
+.htaccess
+README.md

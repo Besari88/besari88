@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ake-personal",
+  "main": "src/index.js",
+  "compatibility_date": "2025-01-01",
+
+  // File-t statike. `.assetsignore` percakton se cfare NUK ngarkohet.
+  "assets": {
+    "directory": "./",
+    "binding": "ASSETS",
+    // Nje URL e panjohur kthen 404.html me statusin e duhur.
+    "not_found_handling": "404-page"
+  }
+}

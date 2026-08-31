@@ -284,7 +284,43 @@ TXT   @   v=spf1 include:_spf.ihr-hoster.de ~all
 
 ---
 
-## 6b. Varianti Cloudflare Pages (pa PHP)
+## 6b. Cloudflare (pa PHP)
+
+Cloudflare i pret të dyja format. Projekti i mbulon të dyja, me **të njëjtën
+logjikë** te `src/contact.js` — ndryshon vetëm mbështjellësi:
+
+| | Workers | Pages |
+|---|---|---|
+| Hyrja | `src/index.js` | `functions/api/kontakt.js` |
+| Konfigurimi | `wrangler.jsonc` | — |
+| Deploy | `npx wrangler deploy` | `npx wrangler pages deploy .` |
+| Header-at | në kod (`src/index.js`) | `_headers` |
+
+**Cloudflare tani i drejton projektet e reja te Workers.** Nëse te dashboard-i
+shihni „Configure your Worker project" dhe komandën `npx wrangler deploy`,
+jeni në rrugën e Workers-it — dhe `wrangler.jsonc` është aty për këtë.
+
+### Workers — konfigurimi te dashboard-i
+
+| Fusha | Vlera |
+|---|---|
+| Project name | `ake-personal` |
+| Build command | bosh |
+| Deploy command | `npx wrangler deploy` |
+| **Path** | **`ake-personal`** ← jo `/` |
+
+`Path` duhet të tregojë te folderi ku ndodhet `wrangler.jsonc`. Me `/` komanda
+dështon me „no config file found".
+
+### `.assetsignore`
+
+Kodi burimor nuk duhet të dalë publik. Ky file mban jashtë `src/`, `functions/`,
+`wrangler.jsonc`, `kontakt.php`, `.htaccess` dhe `README.md`. Pa të, çdo vizitor
+do të mund të hapte `/src/contact.js`.
+
+---
+
+## 6c. Email-i
 
 Cloudflare Pages e pret faqen falas dhe, ndryshe nga GitHub Pages, mund të
 ekzekutojë kod në server. Prandaj formulari punon pa hosting me PHP.

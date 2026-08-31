@@ -152,10 +152,6 @@ a:hover { color: var(--c-brand-dark); }
 .grid--sidebar { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: start; gap: 3rem; }
 @media (max-width: 900px) { .grid--sidebar { grid-template-columns: 1fr; } }
 
-/* Tri kolona te pabarabarta (seksioni i perkthimeve) → 1 kolone ne telefon */
-.grid--split3 { grid-template-columns: minmax(0,1fr) minmax(0,1.5fr) minmax(0,1fr); gap: 2.5rem; align-items: start; }
-@media (max-width: 1024px) { .grid--split3 { grid-template-columns: minmax(0,1fr) minmax(0,1fr); } }
-@media (max-width: 700px)  { .grid--split3 { grid-template-columns: 1fr; } }
 
 .stack > * + * { margin-top: 1rem; }
 .center { text-align: center; }
@@ -489,27 +485,15 @@ a:hover { color: var(--c-brand-dark); }
   font-family: var(--font-serif); font-size: var(--fs-lg); color: var(--c-brand);
 }
 
-/* ---------- 13c. Gjuhet e perkthimit ---------- */
-.lang-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(140px,100%), 1fr)); gap: 1rem; }
-.lang-card {
-  background: #fff; border: 1px solid var(--c-line); border-radius: var(--radius-sm);
-  padding: 1.35rem 1rem; text-align: center;
-  transition: border-color .2s var(--ease), transform .2s var(--ease);
-}
-.lang-card:hover { border-color: var(--c-teal); transform: translateY(-2px); }
-.lang-card svg { width: 34px; height: 34px; margin: 0 auto .75rem; color: var(--c-brand); stroke-width: 1.5; }
-.lang-card span { font-family: var(--font-serif); font-size: var(--fs-lg); color: var(--c-brand); }
-
 /* ---------- 13c-bis. Shiriti grafik nen hero ----------
    Ilustrimi eshte SVG i gjeneruar. Per ta zevendesuar me nje foto reale,
-   ndrysho vetem emrin e file-it me poshte (p.sh. hero.webp).
-   `contain` e mban ilustrimin te plote; me nje FOTO perdor `cover`. */
+   ndrysho vetem emrin e file-it me poshte (p.sh. hero.webp). */
 .hero-band {
   min-height: clamp(300px, 32vw, 440px);
   display: grid;
   align-items: center;
   background:
-    /* Errësim vetëm nga e majta, që ilustrimi djathtas të mbetet i qartë */
+    /* Erresim vetem nga e majta, qe ilustrimi djathtas te mbetet i qarte */
     linear-gradient(90deg, rgba(19,52,48,.80) 0%, rgba(19,52,48,.55) 42%, rgba(19,52,48,0) 68%),
     url("../img/hero.svg") center center / cover no-repeat,
     var(--c-brand);
@@ -520,14 +504,62 @@ a:hover { color: var(--c-brand-dark); }
 @media (max-width: 900px) {
   .hero-band { align-items: end; }
   .hero-band__content { max-width: none; }
-  /* Ne ekrane te ngushta ilustrimi shkon prapa: shtresa e erret e plote
-     e ben tekstin te lexueshem pa e prere ilustrimin ne menyre te cuditshme. */
   .hero-band {
     background:
       linear-gradient(180deg, rgba(19,52,48,.35) 0%, rgba(19,52,48,.80) 60%, rgba(19,52,48,.94) 100%),
       url("../img/hero.svg") right center / cover no-repeat,
       var(--c-brand);
   }
+}
+
+/* ---------- 13c. Gjuhet e perkthimit ----------
+   Nente kartela me te njejten ikone dukeshin te pershkueshme dhe pa kuptim.
+   Tani cdo gjuhe eshte nje chip me kodin ISO ne nje disk petrol — element
+   dallues qe lexohet shpejt dhe nuk perserit te njejten figure nente here. */
+.lang-panel {
+  background: var(--c-mint);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+.lang-panel__head { margin-bottom: 1.5rem; }
+.lang-panel__head h3 { font-size: var(--fs-xl); margin-bottom: .35rem; }
+.lang-panel__head p  { font-size: var(--fs-sm); color: var(--c-body); }
+
+/* Flex-wrap, jo grid: me 9 gjuhe cdo numer fiks kolonash le nje rresht jetim
+   (7+2). Keshtu cdo chip merr gjeresine e emrit dhe rreshtat mbushen vete. */
+.lang-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+}
+.lang-chips li {
+  display: inline-flex; align-items: center; gap: .75rem; flex: 0 0 auto;
+  background: #fff;
+  border: 1px solid rgba(3, 76, 77, .12);
+  border-radius: 999px;
+  padding: .45rem 1.1rem .45rem .45rem;
+  transition: border-color .2s var(--ease), transform .2s var(--ease);
+}
+.lang-chips li:hover { border-color: var(--c-brand); transform: translateY(-2px); }
+
+.lang-chip__code {
+  width: 38px; height: 38px; flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--c-brand); color: #fff;
+  display: grid; place-items: center;
+  font-size: .78rem; font-weight: 700; letter-spacing: .04em;
+}
+.lang-chip__name { font-size: var(--fs-sm); font-weight: 600; color: var(--c-ink); }
+
+/* Ne ekrane te ngushta gjeresite e ndryshme te emrave e bejne flex-wrap-in te
+   parregullt ([2,1,1,2,…]); nje rrjet me kolona te barabarta rri me paster. */
+@media (max-width: 640px) {
+  .lang-chips {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(140px, 100%), 1fr));
+  }
+  .lang-chips li { flex: initial; }
 }
 
 /* ---------- 13d. Shiriti me tregues besueshmerie mbi foto ---------- */
@@ -567,7 +599,10 @@ a:hover { color: var(--c-brand-dark); }
 /* ---------- 15. Formulare ---------- */
 .form { display: grid; gap: 1.1rem; }
 .form__row { display: grid; gap: 1.1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-.field { display: grid; gap: .4rem; }
+/* align-content:start eshte thelbesor: kur dy fusha rrine ne te njejtin rresht
+   dhe njera ka rresht gabimi e tjetra jo, pa te rreshtat e grid-it zgjaten dhe
+   inputi i fushes me te shkurter behet me i larte e zbret poshte. */
+.field { display: grid; gap: .4rem; align-content: start; }
 .field label { font-size: var(--fs-sm); font-weight: 600; color: var(--c-ink); }
 .field .req { color: var(--c-err); }
 

@@ -621,41 +621,110 @@ a:hover { color: var(--c-brand-dark); }
 }
 
 
-/* ---------- 16b. Seksioni i kontaktit mbi turkez ----------
-   Perputhet me pamjen e faqes aktuale: titull i madh i zi, fusha te bardha
-   me qoshe te rrumbullakosura dhe buton petrol i plote. */
-.kontakt__title {
+/* ---------- 16b. Seksioni i kontaktit ----------
+   Nje panel i vetem i ngritur mbi sfondin turkez: formulari ne te bardhe,
+   te dhenat e kontaktit ne petrol te erret. Kjo e mban tekstin te lexueshem
+   dhe e ndan qarte "shkruani" nga "na gjeni". */
+
+/* h2.… sepse `.section--teal h2` ka specificitet me te larte se nje klase e vetme
+   dhe do ta kthente titullin ne serif. */
+h2.kontakt__title {
   font-family: var(--font-sans);
-  font-size: clamp(2.4rem, 7vw, 4rem);
-  color: #000;
-  letter-spacing: -.03em;
-  margin-bottom: 2rem;
+  font-size: clamp(1.9rem, 4vw, 2.75rem);
+  color: #06231f;
+  letter-spacing: -.02em;
+  margin-bottom: .75rem;
 }
-.form--teal .field label { color: #0d1a1a; font-weight: 500; font-size: var(--fs-base); }
-.form--teal .field input,
-.form--teal .field textarea {
-  background: #fff;
-  border: 2px solid #0d1a1a;
-  border-radius: 999px;
-  padding: .95rem 1.35rem;
+.kontakt__sub {
   font-size: var(--fs-base);
+  color: #0d3b38;
+  max-width: 54ch;
+  margin-inline: auto;
 }
-.form--teal .field textarea { border-radius: var(--radius); min-height: 170px; }
-.form--teal .field input:focus,
-.form--teal .field textarea:focus {
-  border-color: var(--c-brand);
-  box-shadow: 0 0 0 3px rgba(3, 76, 77, .25);
+
+.kontakt-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, .85fr);
+  background: #fff;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(2, 51, 53, .18), 0 4px 12px rgba(2, 51, 53, .10);
 }
-.form--teal .field__error { color: #6b0f0a; font-weight: 600; }
-.form--teal .field input[aria-invalid="true"],
-.form--teal .field textarea[aria-invalid="true"] { border-color: #6b0f0a; }
+@media (max-width: 900px) { .kontakt-panel { grid-template-columns: 1fr; } }
 
-.kontakt__hint { font-size: var(--fs-sm); color: #0d1a1a; }
-.kontakt__hint a { color: var(--c-brand-dark); font-weight: 600; }
+.kontakt-panel__form { padding: clamp(1.5rem, 3.5vw, 2.75rem); }
 
-.kontakt__info { font-size: var(--fs-lg); color: #0d1a1a; display: grid; gap: 1.1rem; }
-.kontakt__info a { color: #0d1a1a; text-decoration: underline; text-underline-offset: 3px; }
-.kontakt__info a:hover { color: var(--c-brand-dark); }
+.kontakt-panel__info {
+  background: linear-gradient(165deg, var(--c-brand) 0%, var(--c-brand-dark) 100%);
+  color: #b9d2d0;
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+.kontakt-panel__heading {
+  font-family: var(--font-serif);
+  color: #fff;
+  font-size: var(--fs-xl);
+  letter-spacing: 0;
+}
+
+/* Rreshtat e kontaktit */
+.kontakt-rows { display: grid; }
+.kontakt-row {
+  display: flex; gap: 1rem; align-items: flex-start;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
+}
+.kontakt-row:first-child { padding-top: 0; }
+.kontakt-row:last-child { border-bottom: 0; padding-bottom: 0; }
+
+.kontakt-row__icon {
+  width: 42px; height: 42px; flex-shrink: 0;
+  border-radius: 12px;
+  background: rgba(246, 146, 30, .16);
+  color: var(--c-accent);
+  display: grid; place-items: center;
+}
+.kontakt-row__icon svg { width: 20px; height: 20px; stroke-width: 1.8; }
+
+.kontakt-row__body { display: grid; gap: .15rem; min-width: 0; }
+.kontakt-row__label {
+  font-size: .7rem; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--c-accent);
+}
+.kontakt-row__value {
+  color: #fff; font-weight: 600; font-size: var(--fs-sm);
+  line-height: 1.5; text-decoration: none;
+}
+a.kontakt-row__value:hover { color: var(--c-accent); text-decoration: underline; }
+
+/* Gjuhet e keshillimit */
+.kontakt-langs { display: grid; gap: .6rem; }
+.kontakt-langs__list { display: flex; flex-wrap: wrap; gap: .4rem; }
+.kontakt-langs__list li {
+  background: rgba(255, 255, 255, .10);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 999px;
+  padding: .3rem .8rem;
+  font-size: var(--fs-xs);
+  color: #e4f0ef;
+}
+
+.kontakt-map {
+  margin-top: auto;
+  display: inline-flex; align-items: center; gap: .45rem;
+  color: #fff; font-size: var(--fs-sm); font-weight: 600;
+  text-decoration: none;
+  border-top: 1px solid rgba(255, 255, 255, .12);
+  padding-top: 1.25rem;
+}
+.kontakt-map::after { content: "\002192"; transition: transform .2s var(--ease); }
+.kontakt-map:hover { color: var(--c-accent); }
+.kontakt-map:hover::after { transform: translateX(4px); }
+
+.kontakt__hint { font-size: var(--fs-xs); color: var(--c-muted); margin-top: 1rem; }
+.kontakt__hint a { color: var(--c-brand); font-weight: 600; }
 
 /* ---------- 17. CTA band ---------- */
 .cta-band {

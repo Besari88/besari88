@@ -44,7 +44,7 @@
     "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
     "opens": "08:00", "closes": "16:00"
   }],
-  "availableLanguage": ["de", "en", "fr", "es", "it", "sq"]
+  "availableLanguage": ["de", "en", "fr", "es", "it", "sq", "tr", "el", "ar"]
 }
 </script>
 </head>
@@ -396,8 +396,18 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 8h3M8 12h5M8 16h8"/></svg>
             <span>Albanisch</span>
           </div>
-          <!-- Në faqen aktuale kishte edhe një rresht gjuhësh që nuk dukej i plotë në
-               screenshot. Kopjo bllokun .lang-card për secilën gjuhë që mungon. -->
+          <div class="lang-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 8h3M8 12h5M8 16h8"/></svg>
+            <span>Türkisch</span>
+          </div>
+          <div class="lang-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 8h3M8 12h5M8 16h8"/></svg>
+            <span>Griechisch</span>
+          </div>
+          <div class="lang-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 8h3M8 12h5M8 16h8"/></svg>
+            <span>Arabisch</span>
+          </div>
         </div>
 
         <div class="stack" style="display:grid;gap:1.5rem">
@@ -452,45 +462,53 @@
   <!-- ============ KONTAKT ============ -->
   <section class="section section--teal" id="kontakt">
     <div class="container">
-      <div class="grid grid--2" style="gap:3rem;align-items:start">
 
-        <div>
-          <h2 class="kontakt__title">Kontaktieren Sie uns.</h2>
+      <div class="section-head center" style="margin-bottom:clamp(2rem,4vw,3rem)">
+        <h2 class="kontakt__title">Kontaktieren Sie uns.</h2>
+        <p class="kontakt__sub">Schildern Sie uns kurz Ihre Situation &ndash; wir melden uns
+           mit einer ersten Einsch&auml;tzung. Vertraulich und unverbindlich.</p>
+      </div>
 
+      <div class="kontakt-panel">
+
+        <div class="kontakt-panel__form">
           <!--
             action="kontakt.php"  -> varianti me PHP (README, seksioni 6)
             Pa PHP:               action="https://formspree.io/f/KODI_JUAJ"
           -->
-          <form class="form form--teal" id="contact-form" action="kontakt.php" method="post" novalidate>
+          <form class="form" id="contact-form" action="kontakt.php" method="post" novalidate>
 
             <div id="form-note" class="form-note" aria-live="polite"></div>
 
-            <div class="field">
-              <label for="vorname">Vorname <span class="req" aria-hidden="true">*</span></label>
-              <input type="text" id="vorname" name="vorname" autocomplete="given-name" required>
-              <p class="field__error"></p>
+            <div class="form__row">
+              <div class="field">
+                <label for="vorname">Vorname <span class="req" aria-hidden="true">*</span></label>
+                <input type="text" id="vorname" name="vorname" autocomplete="given-name" required>
+                <p class="field__error"></p>
+              </div>
+              <div class="field">
+                <label for="nachname">Nachname <span class="req" aria-hidden="true">*</span></label>
+                <input type="text" id="nachname" name="nachname" autocomplete="family-name" required>
+                <p class="field__error"></p>
+              </div>
             </div>
 
-            <div class="field">
-              <label for="nachname">Nachname <span class="req" aria-hidden="true">*</span></label>
-              <input type="text" id="nachname" name="nachname" autocomplete="family-name" required>
-              <p class="field__error"></p>
-            </div>
-
-            <div class="field">
-              <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
-              <input type="email" id="email" name="email" autocomplete="email" required>
-              <p class="field__error"></p>
-            </div>
-
-            <div class="field">
-              <label for="telefon">Phone</label>
-              <input type="tel" id="telefon" name="telefon" autocomplete="tel" placeholder="+49 ...">
+            <div class="form__row">
+              <div class="field">
+                <label for="email">E-Mail <span class="req" aria-hidden="true">*</span></label>
+                <input type="email" id="email" name="email" autocomplete="email" required>
+                <p class="field__error"></p>
+              </div>
+              <div class="field">
+                <label for="telefon">Telefon</label>
+                <input type="tel" id="telefon" name="telefon" autocomplete="tel" placeholder="+49 ...">
+              </div>
             </div>
 
             <div class="field">
               <label for="nachricht">Ihre Nachricht</label>
-              <textarea id="nachricht" name="nachricht"></textarea>
+              <textarea id="nachricht" name="nachricht"
+                        placeholder="Worum geht es? Ein paar S&auml;tze gen&uuml;gen."></textarea>
             </div>
 
             <!-- Honeypot kunder spam-it: perdoruesit nuk e shohin -->
@@ -508,12 +526,61 @@
           </form>
         </div>
 
-        <div class="kontakt__info">
-          <p>Email: <a href="mailto:info@ake-personal.de">info@ake-personal.de</a></p>
-          <p>Phone: <a href="tel:+491783486195">+491783486195</a></p>
-          <p>Adresse: Hegaustra&szlig;e 23, 78224 Singen (Hohentwiel)</p>
-          <p>&Ouml;ffnungszeiten: Montag bis Freitag, 08:00&ndash;16:00 Uhr</p>
-        </div>
+        <aside class="kontakt-panel__info">
+          <h3 class="kontakt-panel__heading">Direkter Kontakt</h3>
+
+          <ul class="kontakt-rows">
+        <li class="kontakt-row">
+          <span class="kontakt-row__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+          </span>
+          <span class="kontakt-row__body">
+            <span class="kontakt-row__label">E-Mail</span>
+            <a class="kontakt-row__value" href="mailto:info@ake-personal.de">info@ake-personal.de</a>
+          </span>
+        </li>
+        <li class="kontakt-row">
+          <span class="kontakt-row__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </span>
+          <span class="kontakt-row__body">
+            <span class="kontakt-row__label">Telefon</span>
+            <a class="kontakt-row__value" href="tel:+491783486195">+49 178 3486195</a>
+          </span>
+        </li>
+        <li class="kontakt-row">
+          <span class="kontakt-row__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </span>
+          <span class="kontakt-row__body">
+            <span class="kontakt-row__label">Adresse</span>
+            <span class="kontakt-row__value">Hegaustra&szlig;e 23<br>78224 Singen (Hohentwiel)</span>
+          </span>
+        </li>
+        <li class="kontakt-row">
+          <span class="kontakt-row__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </span>
+          <span class="kontakt-row__body">
+            <span class="kontakt-row__label">&Ouml;ffnungszeiten</span>
+            <span class="kontakt-row__value">Mo&ndash;Fr 08:00&ndash;16:00 Uhr</span>
+          </span>
+        </li>
+          </ul>
+
+          <div class="kontakt-langs">
+            <p class="kontakt-row__label">Beratungssprachen</p>
+            <ul class="kontakt-langs__list">
+              <li>Deutsch</li><li>Englisch</li><li>Albanisch</li>
+              <li>T&uuml;rkisch</li><li>Arabisch</li><li>Griechisch</li>
+            </ul>
+          </div>
+
+          <a class="kontakt-map" target="_blank" rel="noopener noreferrer"
+             href="https://www.openstreetmap.org/search?query=Hegaustra%C3%9Fe%2023%2C%2078224%20Singen">
+            Route in OpenStreetMap &ouml;ffnen
+          </a>
+        </aside>
 
       </div>
     </div>

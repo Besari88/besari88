@@ -4,6 +4,7 @@
 # /src/contact.js ose /kontakt.php do te kthenin kodin burimor.
 /src/*           /404.html   404
 /wrangler.jsonc  /404.html   404
+/.gitignore      /404.html   404
 /.assetsignore   /404.html   404
 /kontakt.php     /404.html   404
 /.htaccess       /404.html   404

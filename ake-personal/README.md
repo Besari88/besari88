@@ -300,6 +300,16 @@ logjikë** te `src/contact.js` — ndryshon vetëm mbështjellësi:
 shihni „Configure your Worker project" dhe komandën `npx wrangler deploy`,
 jeni në rrugën e Workers-it — dhe `wrangler.jsonc` është aty për këtë.
 
+### Cili variant është aktiv
+
+Projekti pritet si **Pages**. `wrangler.jsonc` përmban `pages_build_output_dir`,
+fushën që Pages kërkon — pa të, wrangler e injoron file-in dhe paralajmëron në
+çdo deploy.
+
+`src/index.js` (Worker-i) mbetet në projekt si alternativë, por **nuk përdoret**
+në këtë konfigurim. Për të kaluar te Workers duhet ndryshuar `wrangler.jsonc`;
+komentet brenda tij e shpjegojnë. Të dyja format nuk rrinë dot në të njëjtin file.
+
 ### Workers — konfigurimi te dashboard-i
 
 | Fusha | Vlera |

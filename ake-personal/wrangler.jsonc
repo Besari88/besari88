@@ -1,14 +1,21 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ake-personal",
-  "main": "src/index.js",
   "compatibility_date": "2025-01-01",
 
-  // File-t statike. `.assetsignore` percakton se cfare NUK ngarkohet.
-  "assets": {
-    "directory": "./",
-    "binding": "ASSETS",
-    // Nje URL e panjohur kthen 404.html me statusin e duhur.
-    "not_found_handling": "404-page"
-  }
+  // Ky projekt pritet si Cloudflare PAGES. `pages_build_output_dir` eshte
+  // fusha qe Pages kerkon; pa te wrangler e injoron krejt kete file dhe
+  // shfaq nje paralajmerim ne cdo deploy.
+  //
+  // "." = file-t statike jane ne te njejtin folder me kete konfigurim.
+  // `functions/` kompilohet vecmas dhe nuk shfaqet si file statik.
+  "pages_build_output_dir": "."
+
+  // PER WORKERS (ne vend te Pages) ky file duhet tjeter: hiq
+  // `pages_build_output_dir` dhe vendos ne vend te tij:
+  //   "main": "src/index.js",
+  //   "assets": { "directory": "./", "binding": "ASSETS",
+  //               "not_found_handling": "404-page" }
+  // Te dyja format nuk rrine dot ne te njejtin file — wrangler e lexon
+  // si Pages sapo sheh `pages_build_output_dir`.
 }

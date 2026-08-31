@@ -1,0 +1,11 @@
+# Gjendja lokale e wrangler-it — krijohet ne cdo deploy.
+# Pa kete, `wrangler` ankohet «working directory has uncommitted changes».
+.wrangler/
+
+node_modules/
+
+# Sekretet per testim lokal (`wrangler pages dev`). ASNJEHERE ne Git.
+.dev.vars
+.dev.vars.*
+
+.DS_Store

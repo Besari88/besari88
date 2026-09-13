@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 <title>ProCare Massage</title>
 <meta name="description" content="Mobile Massage in Singen und Umgebung — wir kommen zu Ihnen nach Hause. Klassische Massage, Sportmassage, Aroma, Hot Stone, Peeling und mehr. Täglich 8 bis 18 Uhr.">
-<meta name="theme-color" content="#2FA396">
+<meta name="theme-color" content="#0F8B84">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300&family=Figtree:wght@400;500;600;700&display=swap">
@@ -9,33 +9,35 @@
 <style>
 /* ==========================================================================
    ProCare Massage — Design-System
-   Palette: weiches Mint, Puderrosé, warme Creme, Türkis aus dem Logo.
+   Palette: helles Aqua und warme Creme mit einem Hauch Pfirsich;
+   das Türkis des Logos trägt die Marke.
    ========================================================================== */
 :root{
   /* Flächen */
-  --ground:#F4F8F6;
-  --mint:#E3F0EA;
-  --mint-deep:#D2E7DE;
-  --cream:#FBF4EC;
-  --blush:#F6E2DE;
+  --ground:#F3FAF9;
+  --mint:#DFF2F0;
+  --mint-deep:#CDE9E6;
+  --cream:#FDF4EC;
+  --blush:#FCE7E0;
   --surface:#FFFFFF;
 
   /* Text */
-  --ink:#24403B;
-  --ink-soft:#4C6660;
-  --muted:#7D948D;
+  --ink:#33484B;
+  --ink-soft:#5C7477;
+  --muted:#8CA3A5;
 
   /* Marke */
-  --accent:#2FA396;
-  --accent-deep:#1B7A70;
-  --accent-soft:#BFE4DD;
+  --accent:#0F8B84;
+  --accent-deep:#0A6C67;
+  --accent-soft:#C9EDE9;
+  --brand:#3FCFC6;
 
   /* Linien & Tiefe */
-  --line:#D8E6E0;
-  --line-soft:#E6EFEA;
-  --shadow-s:0 2px 8px -4px rgba(36,64,59,.18);
-  --shadow-m:0 10px 30px -18px rgba(36,64,59,.40);
-  --shadow-l:0 26px 60px -34px rgba(36,64,59,.50);
+  --line:#D6E9E6;
+  --line-soft:#E7F3F1;
+  --shadow-s:0 2px 8px -4px rgba(30,58,58,.16);
+  --shadow-m:0 10px 30px -18px rgba(30,58,58,.34);
+  --shadow-l:0 26px 60px -34px rgba(30,58,58,.44);
 
   --r-s:12px;
   --r-m:22px;
@@ -44,40 +46,42 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --ground:#141E1C;
-    --mint:#1B2926;
-    --mint-deep:#20322E;
-    --cream:#241F1B;
-    --blush:#2C2320;
-    --surface:#1B2A27;
-    --ink:#E8F0EC;
-    --ink-soft:#BCCFC9;
-    --muted:#8CA49D;
-    --accent:#5CC4B6;
-    --accent-deep:#8AD9CE;
-    --accent-soft:#27413C;
-    --line:#2C413C;
-    --line-soft:#243531;
+    --ground:#101A1B;
+    --mint:#162425;
+    --mint-deep:#1C2D2E;
+    --cream:#1E1D19;
+    --blush:#241D1B;
+    --surface:#182626;
+    --ink:#E7F2F1;
+    --ink-soft:#C0D3D2;
+    --muted:#8FA5A4;
+    --accent:#4FD0C5;
+    --accent-deep:#86E3DA;
+    --accent-soft:#1E3836;
+    --brand:#5FE0D6;
+    --line:#2A3C3C;
+    --line-soft:#223131;
     --shadow-s:0 2px 8px -4px rgba(0,0,0,.6);
     --shadow-m:0 10px 30px -18px rgba(0,0,0,.8);
     --shadow-l:0 26px 60px -34px rgba(0,0,0,.9);
   }
 }
 :root[data-theme="dark"]{
-  --ground:#141E1C;
-  --mint:#1B2926;
-  --mint-deep:#20322E;
-  --cream:#241F1B;
-  --blush:#2C2320;
-  --surface:#1B2A27;
-  --ink:#E8F0EC;
-  --ink-soft:#BCCFC9;
-  --muted:#8CA49D;
-  --accent:#5CC4B6;
-  --accent-deep:#8AD9CE;
-  --accent-soft:#27413C;
-  --line:#2C413C;
-  --line-soft:#243531;
+  --ground:#101A1B;
+  --mint:#162425;
+  --mint-deep:#1C2D2E;
+  --cream:#1E1D19;
+  --blush:#241D1B;
+  --surface:#182626;
+  --ink:#E7F2F1;
+  --ink-soft:#C0D3D2;
+  --muted:#8FA5A4;
+  --accent:#4FD0C5;
+  --accent-deep:#86E3DA;
+  --accent-soft:#1E3836;
+  --brand:#5FE0D6;
+  --line:#2A3C3C;
+  --line-soft:#223131;
   --shadow-s:0 2px 8px -4px rgba(0,0,0,.6);
   --shadow-m:0 10px 30px -18px rgba(0,0,0,.8);
   --shadow-l:0 26px 60px -34px rgba(0,0,0,.9);
@@ -122,8 +126,8 @@ h1,h2,h3,h4{
 .btn svg{width:18px;height:18px;flex:none}
 .btn-wa{background:var(--accent);color:#FFF;box-shadow:var(--shadow-s)}
 .btn-wa:hover{background:var(--accent-deep);transform:translateY(-2px);box-shadow:var(--shadow-m)}
-:root[data-theme="dark"] .btn-wa{color:#10201D}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .btn-wa{color:#10201D} }
+:root[data-theme="dark"] .btn-wa{color:#0B1817}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .btn-wa{color:#0B1817} }
 .btn-line{border-color:var(--line);color:var(--ink);background:var(--surface)}
 .btn-line:hover{border-color:var(--accent);color:var(--accent-deep);transform:translateY(-2px)}
 .btn-sm{padding:10px 18px;font-size:14.5px}
@@ -366,12 +370,12 @@ details p{padding:0 24px 22px;color:var(--ink-soft);font-size:15.5px}
   <div class="wrap head-inner">
     <a class="brand" href="#top" aria-label="ProCare Massage, zum Seitenanfang">
       <svg viewBox="0 0 48 48" aria-hidden="true">
-        <circle cx="24" cy="24" r="22.5" fill="none" stroke="var(--accent)" stroke-width="1.6"></circle>
-        <ellipse cx="16" cy="31" rx="8" ry="3.1" fill="var(--accent)" opacity=".85"></ellipse>
-        <ellipse cx="16" cy="25.5" rx="6.3" ry="2.5" fill="var(--accent)" opacity=".6"></ellipse>
-        <ellipse cx="16" cy="21" rx="4.6" ry="1.9" fill="var(--accent)" opacity=".4"></ellipse>
-        <path d="M16 17c0-2.2 2.2-3 2.2-5.2" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"></path>
-        <path d="M31 33c-1.5-5 1-9.5 5.5-11-.2 5-2 9.2-5.5 11z" fill="var(--accent)" opacity=".75"></path>
+        <circle cx="24" cy="24" r="22.5" fill="none" stroke="var(--brand)" stroke-width="1.6"></circle>
+        <ellipse cx="16" cy="31" rx="8" ry="3.1" fill="var(--brand)" opacity=".85"></ellipse>
+        <ellipse cx="16" cy="25.5" rx="6.3" ry="2.5" fill="var(--brand)" opacity=".6"></ellipse>
+        <ellipse cx="16" cy="21" rx="4.6" ry="1.9" fill="var(--brand)" opacity=".4"></ellipse>
+        <path d="M16 17c0-2.2 2.2-3 2.2-5.2" fill="none" stroke="var(--brand)" stroke-width="1.5" stroke-linecap="round"></path>
+        <path d="M31 33c-1.5-5 1-9.5 5.5-11-.2 5-2 9.2-5.5 11z" fill="var(--brand)" opacity=".75"></path>
         <path d="M31 33.5c.4-4 1.9-7.3 5-9.6" fill="none" stroke="var(--surface)" stroke-width="1.1" stroke-linecap="round"></path>
       </svg>
       <span class="brand-txt">

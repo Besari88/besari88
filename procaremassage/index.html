@@ -218,8 +218,9 @@ section{scroll-margin-top:90px}
 .sec-head.center{margin-inline:auto;text-align:center}
 
 /* ---------------- Behandlungen ---------------- */
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:26px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:26px}
 .card{
+  min-width:0;
   background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-l);
   overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-s);
   transition:transform .25s, box-shadow .25s;
@@ -232,9 +233,10 @@ section{scroll-margin-top:90px}
 .card-body h3{font-size:24px}
 .card-body>p{font-size:15.5px;color:var(--ink-soft)}
 .durations{display:flex;flex-direction:column;gap:0;margin-top:auto;border-top:1px solid var(--line-soft);padding-top:14px}
-.durations div{display:flex;justify-content:space-between;gap:16px;padding:5px 0;font-size:15px}
-.durations dt{color:var(--ink-soft)}
-.durations dd{margin:0;font-weight:600;font-variant-numeric:tabular-nums}
+.durations div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:5px 0;font-size:15px}
+.durations dt{color:var(--ink-soft);min-width:0;overflow-wrap:anywhere}
+.durations dt .sub{display:block;font-size:13px;color:var(--muted);line-height:1.35}
+.durations dd{margin:0;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;flex:none}
 .card .btn{margin-top:4px}
 
 /* ---------------- Ablauf ---------------- */
@@ -489,7 +491,7 @@ details p{padding:0 24px 22px;color:var(--ink-soft);font-size:15.5px}
             <p>Die kombinierte Massage umfasst Techniken für den gesamten Körper sowie spezielle Massagen für Gesicht und Füße. Sie bietet eine ganzheitliche Entspannung, stimuliert das Lymphsystem und unterstützt die Wiederherstellung des energetischen Gleichgewichts.</p>
             <dl class="durations">
               <div><dt>90 Min</dt><dd>120 €</dd></div>
-              <div><dt>120 Min &middot; inkl. Gesicht &amp; Füße</dt><dd>150 €</dd></div>
+              <div><dt>120 Min <span class="sub">inkl. Gesicht &amp; Füße</span></dt><dd>150 €</dd></div>
             </dl>
             <a class="btn btn-wa btn-block btn-sm" href="https://wa.me/491783134721?text=Hallo%2C%20ich%20m%C3%B6chte%20eine%20Regenerations-%20bzw.%20Entspannungsmassage%20buchen." target="_blank" rel="noopener">Jetzt buchen</a>
           </div>

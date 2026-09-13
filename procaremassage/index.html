@@ -268,6 +268,27 @@ section{scroll-margin-top:90px}
 .ptable .dur span,.ptable .price span{display:block;padding:1px 0}
 .pnote{margin-top:22px;font-size:14.5px;color:var(--muted);max-width:64ch}
 
+/* Preise auf kleinen Bildschirmen: keine Tabelle mehr, sondern gestapelte
+   Karten — so bleibt der Preis immer sichtbar, ohne seitliches Scrollen. */
+@media (max-width:700px){
+  .tscroll{overflow:visible;background:transparent;box-shadow:none;border-radius:0;padding:0}
+  .ptable{min-width:0;display:block;font-size:15.5px}
+  .ptable thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .ptable tbody{display:block}
+  .ptable tr{
+    display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:18px;
+    background:var(--surface);border-radius:var(--r-m);box-shadow:var(--shadow-s);
+    padding:18px 20px;margin-bottom:12px;
+  }
+  .ptable tbody tr:hover{background:var(--surface)}
+  .ptable td{display:block;padding:0;border-bottom:0}
+  .ptable .name{grid-column:1 / -1;font-size:18px;margin-bottom:12px}
+  .ptable .note{margin-top:4px}
+  .ptable .dur{grid-column:1;color:var(--ink-soft)}
+  .ptable .price{grid-column:2;text-align:right}
+  .ptable .dur span,.ptable .price span{padding:3px 0}
+}
+
 /* ---------------- FAQ ---------------- */
 .faq{max-width:780px;margin-inline:auto}
 details{background:var(--surface);border-radius:var(--r-m);margin-bottom:12px;box-shadow:var(--shadow-s);overflow:hidden}
@@ -309,7 +330,7 @@ details p{padding:0 24px 22px;color:var(--ink-soft);font-size:15.5px}
 .area b{display:block;font-family:"Fraunces",Georgia,serif;font-size:18px;font-weight:500;color:var(--ink);margin-bottom:6px}
 
 /* ---------------- Fuß ---------------- */
-.site-foot{background:var(--mint);border-top:1px solid var(--line-soft);padding-block:34px;font-size:14.5px;color:var(--ink-soft)}
+.site-foot{background:var(--mint);border-top:1px solid var(--line-soft);padding-block:34px 34px;font-size:14.5px;color:var(--ink-soft)}
 .foot-inner{display:flex;gap:18px;flex-wrap:wrap;align-items:center;justify-content:space-between}
 .foot-links{display:flex;gap:22px;flex-wrap:wrap}
 .foot-links a{text-decoration:none}
@@ -322,7 +343,7 @@ details p{padding:0 24px 22px;color:var(--ink-soft);font-size:15.5px}
   align-items:center;justify-content:center;box-shadow:var(--shadow-m);text-decoration:none;
 }
 .fab svg{width:27px;height:27px}
-@media (max-width:700px){ .fab{display:flex} }
+@media (max-width:700px){ .fab{display:flex} .site-foot{padding-bottom:92px} }
 </style>
 
 <!-- =========================================================================

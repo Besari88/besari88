@@ -14,7 +14,7 @@
   @font-face { font-family: "Jura"; src: url(fonts/Jura-Medium.ttf); font-weight: 500; }
   html, body { margin: 0; padding: 0; background: transparent; }
   #page { position: relative; width: 2245px; height: 3179px; overflow: hidden; }
-  #page.preview { background: #1b1f24; }
+  #page.preview { background: #232a31; }
   svg { position: absolute; left: 0; top: 0; }
   .t { position: absolute; margin: 0; white-space: nowrap; color: #EEF1F4; }
   .mono { font-family: "Mono"; font-size: 22px; letter-spacing: 0.16em; text-transform: uppercase; }
@@ -26,23 +26,26 @@
 <div id="page"></div>
 <script>
 // ---------- system ----------
-const W = 2245, H = 3179, M = 96;
-const C = { void: "#050608", paper: "#EEF1F4", accent: "#2BD4FF", muted: "#7C8791", line: "#2A3038" };
+const W = 2245, H = 3179, M = 96, CW = W - 2 * M;
+const C = { void: "#050608", paper: "#EEF1F4", accent: "#2BD4FF", muted: "#7C8791" };
+const GAP = 36, CUT = 64;
 
-// hero passport aperture: 35 x 45 ratio
-const hero = { x: M, y: 262, w: 1040, h: Math.round(1040 * 45 / 35) };
-// capsules
-const capW = 312, capGap = (W - 2 * M - 6 * capW) / 5, base = 2694;
-const capH = [760, 860, 650, 820, 700, 860];
-const caps = capH.map((h, i) => ({ x: M + i * (capW + capGap), y: base - h, w: capW, h }));
-// face measurement (fractions of photo height, image 4:5 cover-fit to aperture)
-const face = { crown: 0.075, eyes: 0.392, chin: 0.683, cx: 0.5, halfW: 0.19 };
+// Band A — biometric focus (≈24% of the sheet)
+const hero = { x: M, y: 250, w: 560, h: 720 };                     // exact 35 × 45
+const face = { crown: 0.085, eyes: 0.372, chin: 0.628, halfW: 0.185 };
+// Band B — application & business portraits (≈25%)
+const bTop = 1066, bH = 790;
+const bW = (W - M - (M + 640 + 40) - GAP) / 2;
+const bPanels = [0, 1].map(i => ({ x: M + 680 + i * (bW + GAP), y: bTop, w: bW, h: bH }));
+// Band C — further services
+const cBase = 2832, cHs = [770, 846, 770, 846];
+const cW = (CW - 3 * GAP) / 4;
+const cPanels = cHs.map((h, i) => ({ x: M + i * (cW + GAP), y: cBase - h, w: cW, h }));
 
-const pillPath = (r) => {
-  const rad = r.w / 2;
-  return `M${r.x} ${r.y + rad} A${rad} ${rad} 0 0 1 ${r.x + r.w} ${r.y + rad} L${r.x + r.w} ${r.y + r.h - rad} A${rad} ${rad} 0 0 1 ${r.x} ${r.y + r.h - rad} Z`;
-};
+const chamfer = (r, c = CUT) =>
+  `M${r.x} ${r.y} H${r.x + r.w - c} L${r.x + r.w} ${r.y + c} V${r.y + r.h} H${r.x + c} L${r.x} ${r.y + r.h - c} Z`;
 const rectPath = (r) => `M${r.x} ${r.y} H${r.x + r.w} V${r.y + r.h} H${r.x} Z`;
+const panels = [...bPanels, ...cPanels];
 
 const preview = location.hash.includes("preview");
 const page = document.getElementById("page");
@@ -51,116 +54,83 @@ if (preview) page.classList.add("preview");
 let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
 s += `<defs>
   <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="${C.accent}" stop-opacity="0.10"/>
+    <stop offset="0" stop-color="${C.accent}" stop-opacity="0.13"/>
     <stop offset="1" stop-color="${C.accent}" stop-opacity="0"/>
   </radialGradient>
-  <linearGradient id="fadeR" x1="0" x2="1"><stop offset="0" stop-color="${C.accent}" stop-opacity="0.9"/><stop offset="1" stop-color="${C.accent}" stop-opacity="0"/></linearGradient>
+  <linearGradient id="shade" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="${C.void}" stop-opacity="0"/>
+    <stop offset="0.55" stop-color="${C.void}" stop-opacity="0.72"/>
+    <stop offset="1" stop-color="${C.void}" stop-opacity="0.94"/>
+  </linearGradient>
+  <clipPath id="outsideHero"><path fill-rule="evenodd" d="M0 0 H${W} V${H} H0 Z ${rectPath({ x: hero.x - 14, y: hero.y - 14, w: hero.w + 28, h: hero.h + 28 })}"/></clipPath>
 </defs>`;
 
-// 1. the void, with photo apertures cut out (evenodd)
-s += `<path fill="${C.void}" fill-rule="evenodd" d="M0 0 H${W} V${H} H0 Z ${rectPath(hero)} ${caps.map(pillPath).join(" ")}"/>`;
+// 1. the void with apertures cut out
+s += `<path fill="${C.void}" fill-rule="evenodd" d="M0 0 H${W} V${H} H0 Z ${rectPath(hero)} ${panels.map(p => chamfer(p)).join(" ")}"/>`;
 
-// 2. light spill behind the hero
+// 2. light spill
 const eyeY = hero.y + face.eyes * hero.h, fcx = hero.x + hero.w / 2;
-s += `<circle cx="${fcx + 380}" cy="${eyeY}" r="1150" fill="url(#glow)"/>`;
+s += `<circle cx="${1450}" cy="${560}" r="1000" fill="url(#glow)"/>`;
+s += `<circle cx="${420}" cy="${1480}" r="760" fill="url(#glow)" opacity="0.8"/>`;
 
-// 3. dot field — patient accumulation, masked away from apertures by drawing only on void
-const inside = (x, y) => {
-  if (x > hero.x - 24 && x < hero.x + hero.w + 24 && y > hero.y - 24 && y < hero.y + hero.h + 24) return true;
-  for (const c of caps) if (x > c.x - 20 && x < c.x + c.w + 20 && y > c.y - 20 && y < c.y + c.h + 20) return true;
-  return false;
-};
-let dots = "";
-for (let y = 240; y < 2800; y += 48) for (let x = M; x <= W - M; x += 48) {
-  if (!inside(x, y)) dots += `M${x} ${y}h1.6v1.6h-1.6z`;
-}
-s += `<path d="${dots}" fill="${C.paper}" opacity="0.10"/>`;
-
-// 4. concentric focus rings around the eye line (only visible on void; photo holes stay clean since rings clip below)
-s += `<g fill="none" stroke="${C.accent}" stroke-width="1.2">`;
-[640, 720, 800].forEach((r, i) => {
-  s += `<circle cx="${fcx}" cy="${eyeY}" r="${r}" opacity="${0.34 - i * 0.1}"/>`;
-});
+// 3. focus rings from the eye, outside the aperture
+s += `<g fill="none" stroke="${C.accent}" stroke-width="1.2" clip-path="url(#outsideHero)">`;
+[400, 460, 520].forEach((r, i) => s += `<circle cx="${fcx}" cy="${eyeY}" r="${r}" opacity="${0.4 - i * 0.12}"/>`);
 s += `</g>`;
-// repaint void inside hero ring overlap area? rings pass behind apertures -> mask them from holes
-// (rings are drawn after the void, so we clip them against apertures)
-s = s.replace(`<g fill="none" stroke="${C.accent}" stroke-width="1.2">`,
-  `<clipPath id="outside"><path fill-rule="evenodd" d="M0 0 H${W} V${H} H0 Z ${rectPath({x:hero.x-18,y:hero.y-18,w:hero.w+36,h:hero.h+36})}"/></clipPath><g fill="none" stroke="${C.accent}" stroke-width="1.2" clip-path="url(#outside)">`);
 
-// 5. header rule with ticks
+// 4. header rule with ticks
 const hy = 196;
-s += `<line x1="${M}" y1="${hy}" x2="${W - M}" y2="${hy}" stroke="${C.paper}" stroke-opacity="0.35" stroke-width="1"/>`;
-for (let x = M, i = 0; x <= W - M + 0.1; x += (W - 2 * M) / 80, i++) {
-  const l = i % 10 === 0 ? 14 : i % 5 === 0 ? 9 : 5;
-  s += `<line x1="${x}" y1="${hy}" x2="${x}" y2="${hy + l}" stroke="${C.paper}" stroke-opacity="${i % 10 === 0 ? 0.7 : 0.3}" stroke-width="1"/>`;
+s += `<line x1="${M}" y1="${hy}" x2="${W - M}" y2="${hy}" stroke="${C.paper}" stroke-opacity="0.35"/>`;
+for (let i = 0; i <= 80; i++) {
+  const x = M + i * CW / 80, l = i % 10 === 0 ? 14 : i % 5 === 0 ? 9 : 5;
+  s += `<line x1="${x}" y1="${hy}" x2="${x}" y2="${hy + l}" stroke="${C.paper}" stroke-opacity="${i % 10 === 0 ? 0.7 : 0.3}"/>`;
 }
 
-// 6. hero aperture instrumentation
+// 5. hero instrumentation
 const hx2 = hero.x + hero.w, hy2 = hero.y + hero.h;
-// corner brackets
-const br = 44, bo = 16;
+const br = 36, bo = 14;
 [[hero.x - bo, hero.y - bo, 1, 1], [hx2 + bo, hero.y - bo, -1, 1], [hero.x - bo, hy2 + bo, 1, -1], [hx2 + bo, hy2 + bo, -1, -1]].forEach(([x, y, dx, dy]) => {
   s += `<path d="M${x} ${y + dy * br} V${y} H${x + dx * br}" fill="none" stroke="${C.accent}" stroke-width="3"/>`;
 });
-// right-edge millimetre ruler 0..45
 const rx = hx2 + 30;
 for (let mm = 0; mm <= 45; mm++) {
-  const y = hero.y + (mm / 45) * hero.h;
-  const l = mm % 5 === 0 ? 22 : 10;
+  const y = hero.y + (mm / 45) * hero.h, l = mm % 5 === 0 ? 18 : 8;
   s += `<line x1="${rx}" y1="${y}" x2="${rx + l}" y2="${y}" stroke="${C.paper}" stroke-opacity="${mm % 5 === 0 ? 0.75 : 0.35}" stroke-width="1.2"/>`;
 }
-// bottom-edge ruler 0..35
-const ry = hy2 + 30;
-for (let mm = 0; mm <= 35; mm++) {
-  const x = hero.x + (mm / 35) * hero.w;
-  const l = mm % 5 === 0 ? 22 : 10;
-  s += `<line x1="${x}" y1="${ry}" x2="${x}" y2="${ry + l}" stroke="${C.paper}" stroke-opacity="${mm % 5 === 0 ? 0.75 : 0.35}" stroke-width="1.2"/>`;
-}
-
-// 7. biometric template drawn OVER the photo aperture
 const crownY = hero.y + face.crown * hero.h, chinY = hero.y + face.chin * hero.h;
 const g = `stroke="${C.accent}" fill="none"`;
-// face oval
-const ovRx = face.halfW * hero.w * 1.12, ovRy = (chinY - crownY) / 2 * 1.02, ovCy = (crownY + chinY) / 2 + 6;
-s += `<ellipse cx="${fcx}" cy="${ovCy}" rx="${ovRx}" ry="${ovRy}" ${g} stroke-width="2" stroke-dasharray="3 11" stroke-linecap="round" opacity="0.9"/>`;
-// vertical axis
-s += `<line x1="${fcx}" y1="${hero.y + 22}" x2="${fcx}" y2="${hy2 - 22}" ${g} stroke-width="1" opacity="0.35" stroke-dasharray="2 8"/>`;
-// crown & chin guides (short, inside aperture) + measure bar outside
-[[crownY, "SCHEITEL"], [chinY, "KINN"]].forEach(([y]) => {
-  s += `<line x1="${hero.x}" y1="${y}" x2="${hero.x + 110}" y2="${y}" ${g} stroke-width="2"/>`;
-  s += `<line x1="${hx2 - 110}" y1="${y}" x2="${hx2}" y2="${y}" ${g} stroke-width="2"/>`;
+const ovRx = face.halfW * hero.w * 1.15, ovRy = (chinY - crownY) / 2 * 1.03, ovCy = (crownY + chinY) / 2 + 4;
+s += `<ellipse cx="${fcx}" cy="${ovCy}" rx="${ovRx}" ry="${ovRy}" ${g} stroke-width="1.8" stroke-dasharray="2 9" stroke-linecap="round" opacity="0.9"/>`;
+s += `<line x1="${fcx}" y1="${hero.y + 16}" x2="${fcx}" y2="${hy2 - 16}" ${g} stroke-width="1" opacity="0.3" stroke-dasharray="2 7"/>`;
+[crownY, chinY, eyeY].forEach((y, i) => {
+  const l = i === 2 ? 90 : 64;
+  s += `<line x1="${hero.x}" y1="${y}" x2="${hero.x + l}" y2="${y}" ${g} stroke-width="2"/>`;
+  s += `<line x1="${hx2 - l}" y1="${y}" x2="${hx2}" y2="${y}" ${g} stroke-width="2"/>`;
 });
-// eye line: crosses the aperture and continues into the right column as the scan line
-s += `<line x1="${hero.x}" y1="${eyeY}" x2="${hero.x + 150}" y2="${eyeY}" ${g} stroke-width="2"/>`;
-s += `<line x1="${hx2 - 150}" y1="${eyeY}" x2="${hx2 + 70}" y2="${eyeY}" ${g} stroke-width="2"/>`;
-s += `<circle cx="${hx2 + 70}" cy="${eyeY}" r="7" fill="${C.accent}"/>`;
-// head-height dimension bar on the right ruler
-s += `<line x1="${rx + 44}" y1="${crownY}" x2="${rx + 44}" y2="${chinY}" stroke="${C.accent}" stroke-width="2"/>`;
-[crownY, chinY].forEach(y => s += `<line x1="${rx + 34}" y1="${y}" x2="${rx + 54}" y2="${y}" stroke="${C.accent}" stroke-width="2"/>`);
+s += `<line x1="${rx + 34}" y1="${crownY}" x2="${rx + 34}" y2="${chinY}" stroke="${C.accent}" stroke-width="2"/>`;
+[crownY, chinY].forEach(y => s += `<line x1="${rx + 26}" y1="${y}" x2="${rx + 42}" y2="${y}" stroke="${C.accent}" stroke-width="2"/>`);
+s += `<circle cx="${rx + 34}" cy="${eyeY}" r="6" fill="${C.accent}"/>`;
 
-// 8. section rule + capsule instrumentation
-const sy = 1786;
-s += `<line x1="${M}" y1="${sy}" x2="${W - M}" y2="${sy}" stroke="${C.paper}" stroke-opacity="0.35" stroke-width="1"/>`;
-caps.forEach((c, i) => {
-  // hairline rim a few px outside each capsule
-  const o = 10, r = { x: c.x - o, y: c.y - o, w: c.w + 2 * o, h: c.h + 2 * o };
-  s += `<path d="${pillPath(r)}" fill="none" stroke="${i % 2 ? C.paper : C.accent}" stroke-opacity="${i % 2 ? 0.28 : 0.7}" stroke-width="1.4"/>`;
-  // height ticks under
-  s += `<line x1="${c.x + c.w / 2}" y1="${base + 22}" x2="${c.x + c.w / 2}" y2="${base + 46}" stroke="${C.accent}" stroke-width="2"/>`;
+// 6. panel treatment: shade for captions, rim, corner index
+panels.forEach((p, i) => {
+  s += `<clipPath id="pc${i}"><path d="${chamfer(p)}"/></clipPath>`;
+  s += `<rect x="${p.x}" y="${p.y + p.h - 300}" width="${p.w}" height="300" fill="url(#shade)" clip-path="url(#pc${i})"/>`;
+  const o = 9, r = { x: p.x - o, y: p.y - o, w: p.w + 2 * o, h: p.h + 2 * o };
+  s += `<path d="${chamfer(r, CUT + 4)}" fill="none" stroke="${i < 2 ? C.accent : C.paper}" stroke-opacity="${i < 2 ? 0.75 : 0.3}" stroke-width="1.4"/>`;
+  // accent notch on the cut corner
+  s += `<line x1="${p.x + p.w - CUT + 14}" y1="${p.y - 22}" x2="${p.x + p.w + 22}" y2="${p.y + CUT - 14}" stroke="${C.accent}" stroke-width="3"/>`;
 });
-// baseline
-s += `<line x1="${M}" y1="${base + 34}" x2="${W - M}" y2="${base + 34}" stroke="${C.paper}" stroke-opacity="0.22" stroke-width="1"/>`;
 
-// 9. footer rule
-const fy = 2896;
-s += `<line x1="${M}" y1="${fy}" x2="${W - M}" y2="${fy}" stroke="${C.paper}" stroke-opacity="0.35" stroke-width="1"/>`;
+// 7. section rules
+const bRule = 1024, cRule = 1900, fRule = 2900;
+[bRule, cRule, fRule].forEach(y => s += `<line x1="${M}" y1="${y}" x2="${W - M}" y2="${y}" stroke="${C.paper}" stroke-opacity="0.32"/>`);
 
-// 10. registration marks in the corners
-const reg = (x, y) => `<g stroke="${C.paper}" stroke-opacity="0.5" stroke-width="1" fill="none"><circle cx="${x}" cy="${y}" r="10"/><line x1="${x - 18}" y1="${y}" x2="${x + 18}" y2="${y}"/><line x1="${x}" y1="${y - 18}" x2="${x}" y2="${y + 18}"/></g>`;
+// 8. registration marks
+const reg = (x, y) => `<g stroke="${C.paper}" stroke-opacity="0.5" fill="none"><circle cx="${x}" cy="${y}" r="10"/><line x1="${x - 18}" y1="${y}" x2="${x + 18}" y2="${y}"/><line x1="${x}" y1="${y - 18}" x2="${x}" y2="${y + 18}"/></g>`;
 s += reg(48, 48) + reg(W - 48, 48) + reg(48, H - 48) + reg(W - 48, H - 48);
-
 s += `</svg>`;
 page.insertAdjacentHTML("beforeend", s);
+const svg = page.querySelector("svg");
 
 // ---------- typography ----------
 const T = (html, css, cls = "") => {
@@ -169,95 +139,81 @@ const T = (html, css, cls = "") => {
   Object.assign(el.style, css); page.appendChild(el); return el;
 };
 const px = n => n + "px";
+const fit = (text, left, top, width, css = {}) => {
+  const el = T(text, Object.assign({ left: px(left), top: px(top), fontFamily: "BigShoulders", fontWeight: 700, lineHeight: "0.8", fontSize: "100px", letterSpacing: "-0.01em" }, css));
+  el.style.fontSize = px(100 * width / el.getBoundingClientRect().width);
+  return el;
+};
+const bottom = el => el.getBoundingClientRect().bottom;
 
 // header
 T(`<span style="font-family:BigShoulders;font-weight:700;font-size:44px;letter-spacing:0.08em">HEGART</span><span class="muted" style="font-family:Mono;font-size:20px;letter-spacing:0.22em;margin-left:22px">STUDIO · FOTOGRAFIE &amp; DESIGN</span>`, { left: px(M), top: px(112) });
 T(`SINGEN (HOHENTWIEL) <span class="accent">·</span> 47.76° N / 8.84° O`, { right: px(M), top: px(128) }, "mono muted");
 
-// hero labels on the instrument
-T(`35 × 45 MM`, { left: px(hero.x), top: px(ry + 38) }, "mono accent");
-T(`FORMAT · REISEPASS`, { left: px(hero.x + hero.w), top: px(ry + 38), transform: "translateX(-100%)" }, "mono muted");
-T(`AUGENLINIE`, { left: px(hero.x + 18), top: px(eyeY - 38), fontSize: "18px" }, "mono accent");
-T(`SCHEITEL`, { left: px(hero.x + 18), top: px(crownY - 34), fontSize: "18px" }, "mono accent");
-T(`KINN`, { left: px(hero.x + 18), top: px(chinY + 14), fontSize: "18px" }, "mono accent");
+// hero micro-labels (on the photo edge)
+const lab = { fontSize: "15px", letterSpacing: "0.2em" };
+T(`SCHEITEL`, Object.assign({ left: px(hero.x + 14), top: px(crownY - 26) }, lab), "mono accent");
+T(`AUGEN`, Object.assign({ left: px(hero.x + 14), top: px(eyeY - 26) }, lab), "mono accent");
+T(`KINN`, Object.assign({ left: px(hero.x + 14), top: px(chinY + 10) }, lab), "mono accent");
 
-// right column
-const RX = hx2 + 150, RW = W - M - RX;
-T(`01 <span class="muted">/</span> IM FOKUS`, { left: px(RX), top: px(262) }, "mono accent");
+// Band A text
+const RX = hx2 + 130, RW = W - M - RX;
+T(`01 <span class="muted">/</span> IM FOKUS <span class="muted">—</span> BIOMETRIE`, { left: px(RX), top: px(hero.y) }, "mono accent");
+const a1 = T(`BIOMETRISCHE`, { left: px(RX), top: px(hero.y + 52), fontFamily: "BigShoulders", fontWeight: 700, fontSize: "132px", lineHeight: "0.8", letterSpacing: "0.02em", color: C.accent });
+const a2 = fit(`PASSFOTOS`, RX, bottom(a1) + 16, RW);
+T(`Für Reisepass, Personalausweis, Visum &amp; alle amtlichen Dokumente.`, { left: px(RX), top: px(bottom(a2) + 34), fontFamily: "Outfit", fontSize: "38px" });
 
-const fit = (text, top, weight = 700, lh = 0.8) => {
-  const el = T(text, { left: px(RX), top: px(top), fontFamily: "BigShoulders", fontWeight: weight, lineHeight: String(lh), fontSize: "100px", letterSpacing: "-0.01em" });
-  const size = 100 * RW / el.getBoundingClientRect().width;
-  el.style.fontSize = px(size);
-  // optically align the left edge of the cap to RX
-  return el;
-};
-const l1 = fit("BIOMETRISCHE", 318);
-const l2 = fit("PASS", l1.getBoundingClientRect().bottom + 18);
-const l3 = fit("FOTOS", l2.getBoundingClientRect().bottom + 6);
-const headBottom = l3.getBoundingClientRect().bottom;
-
-const subTop = headBottom + 56;
-T(`Für Reisepass, Personalausweis, Visum<br>und alle amtlichen Dokumente.`, {
-  left: px(RX), top: px(subTop), fontFamily: "Outfit", fontSize: "40px", lineHeight: "1.3", whiteSpace: "normal", width: px(RW)
-});
-
-const docs = ["Reisepass", "Personalausweis", "Visum", "Führerschein", "Aufenthaltstitel", "Kinderreisepass"];
-const gridTop = subTop + 150;
-docs.forEach((d, i) => {
-  const col = i % 2, row = Math.floor(i / 2);
-  T(`<span class="accent" style="display:inline-block;width:14px;height:14px;border:2px solid #2BD4FF;margin-right:18px;vertical-align:1px"></span>${d}`,
-    { left: px(RX + col * (RW / 2)), top: px(gridTop + row * 52) }, "mono");
-});
-
-// spec strip — three measured facts, bottom-aligned with the aperture
-const specTop = hy2 - 118;
-const specs = [["35×45", "MILLIMETER"], ["ICAO", "NORMGERECHT"], ["DIGITAL", "&amp; GEDRUCKT"]];
-const sw = RW / 3;
+const specTop = hy2 - 104;
+const specs = [["35×45", "MILLIMETER"], ["ICAO", "NORMGERECHT"], ["DIGITAL", "&amp; GEDRUCKT"], ["ALLE", "DOKUMENTE"]];
+const sw = RW / specs.length;
 specs.forEach(([big, small], i) => {
-  T(`<div style="font-family:BigShoulders;font-weight:400;font-size:84px;line-height:1">${big}</div><div class="mono muted" style="margin-top:12px;font-size:19px">${small}</div>`,
-    { left: px(RX + i * sw + (i ? 28 : 0)), top: px(specTop) });
+  T(`<div style="font-family:BigShoulders;font-weight:400;font-size:70px;line-height:1">${big}</div><div class="mono muted" style="margin-top:10px;font-size:18px">${small}</div>`,
+    { left: px(RX + i * sw + (i ? 26 : 0)), top: px(specTop) });
 });
-page.querySelector("svg").insertAdjacentHTML("beforeend",
-  `<line x1="${RX}" y1="${specTop - 30}" x2="${W - M}" y2="${specTop - 30}" stroke="${C.paper}" stroke-opacity="0.3"/>` +
-  [1, 2].map(i => `<line x1="${RX + i * sw}" y1="${specTop - 4}" x2="${RX + i * sw}" y2="${hy2}" stroke="${C.paper}" stroke-opacity="0.3"/>`).join(""));
-T(`Präzise nach Norm. <span class="accent">Perfekt im Licht.</span>`, {
-  left: px(RX), top: px((gridTop + 3 * 52 + specTop - 30) / 2 - 26), fontFamily: "Jura", fontWeight: 300, fontSize: "44px", lineHeight: "1"
-});
-window.CHECK = { gridBottom: gridTop + 3 * 52, specLine: specTop - 30 };
+svg.insertAdjacentHTML("beforeend",
+  `<line x1="${RX}" y1="${specTop - 26}" x2="${W - M}" y2="${specTop - 26}" stroke="${C.paper}" stroke-opacity="0.3"/>` +
+  [1, 2, 3].map(i => `<line x1="${RX + i * sw}" y1="${specTop - 4}" x2="${RX + i * sw}" y2="${hy2}" stroke="${C.paper}" stroke-opacity="0.3"/>`).join(""));
 
-// section 2 header
-T(`02—07 <span class="muted">/</span> WEITERE LEISTUNGEN`, { left: px(M), top: px(sy - 44) }, "mono accent");
-T(`PEOPLE · BUSINESS · PRODUCT`, { right: px(M), top: px(sy - 44) }, "mono muted");
-
-// capsule labels
-const services = [
-  ["02", "Bewerbungsfotos", "LinkedIn · Profil"],
-  ["03", "Businessfotos", "Team · Porträt"],
-  ["04", "Babyfotos", "Erste Momente"],
-  ["05", "Babybauch", "Schwangerschaft"],
-  ["06", "Produktfotos", "E-Commerce · Katalog"],
-  ["07", "Marketing", "Kampagne · Social"],
-];
-services.forEach(([n, name, sub], i) => {
-  const c = caps[i];
-  T(`<div class="mono accent" style="font-size:20px">${n}</div>
-     <div style="font-family:Outfit;font-weight:700;font-size:36px;letter-spacing:-0.01em;margin-top:10px">${name}</div>
-     <div class="mono muted" style="font-size:17px;letter-spacing:0.12em;margin-top:10px">${sub}</div>`,
-    { left: px(c.x), top: px(base + 66) });
+// Band B text column
+const BX = M, BWt = 600;
+T(`02—03 <span class="muted">/</span> PORTRAIT`, { left: px(BX), top: px(bTop) }, "mono accent");
+const b1 = fit(`BEWERBUNGS-`, BX, bTop + 56, BWt);
+const b2 = fit(`FOTOS &amp;`, BX, bottom(b1) + 12, BWt * 0.74);
+const b3 = fit(`BUSINESS`, BX, bottom(b2) + 12, BWt, { color: C.accent });
+const b4 = fit(`PORTRAITS`, BX, bottom(b3) + 12, BWt);
+const items = ["Bewerbungsfotos", "LinkedIn-Profil", "Business-Porträts", "Team &amp; Firma"];
+items.forEach((d, i) => {
+  T(`<span style="display:inline-block;width:12px;height:12px;border:2px solid #2BD4FF;margin-right:16px;vertical-align:1px"></span>${d}`,
+    { left: px(BX + (i % 2) * 300), top: px(bottom(b4) + 52 + Math.floor(i / 2) * 48), fontSize: "19px" }, "mono");
 });
+T(`Der erste Eindruck zählt.`, { left: px(BX), top: px(bTop + bH - 50), fontFamily: "Jura", fontWeight: 300, fontSize: "46px", lineHeight: "1" });
+
+// panel captions (inside the shade)
+const caption = (p, n, name, sub, big = false) => {
+  T(`<div class="mono accent" style="font-size:19px">${n}</div>
+     <div style="font-family:Outfit;font-weight:700;font-size:${big ? 50 : 42}px;letter-spacing:-0.01em;margin-top:8px;line-height:1.05">${name}</div>
+     <div class="mono" style="font-size:16px;letter-spacing:0.14em;margin-top:12px;color:#B9C2CA">${sub}</div>`,
+    { left: px(p.x + CUT + 6), top: px(p.y + p.h - (big ? 172 : 160)) });
+};
+caption(bPanels[0], "02", "Bewerbungsfotos", "LinkedIn · Karriere · Profil", true);
+caption(bPanels[1], "03", "Business-Portraits", "Management · Team · Firma", true);
+
+// Band C
+T(`04—07 <span class="muted">/</span> WEITERE LEISTUNGEN`, { left: px(M), top: px(cRule + 22) }, "mono accent");
+T(`FAMILIE · MARKETING · UNTERNEHMEN`, { right: px(M), top: px(cRule + 22) }, "mono muted");
+[["04", "Babyfotos", "Die ersten Momente"],
+ ["05", "Babybauch", "Schwangerschaft"],
+ ["06", "Marketing", "Kampagne · Social Media"],
+ ["07", "Business-Ambiente", "Räume · Office · Location"]].forEach(([n, name, sub], i) => caption(cPanels[i], n, name, sub));
 
 // footer
-const wm = T(`HEGART STUDIO`, { left: px(M), top: px(fy + 44), fontFamily: "BigShoulders", fontWeight: 700, fontSize: "100px", lineHeight: "0.8", letterSpacing: "0.01em" });
-wm.style.fontSize = px(100 * 1040 / wm.getBoundingClientRect().width);
-T(`FOTOGRAFIE · GRAFIKDESIGN · MARKETING`, { left: px(M), top: px(fy + 44 + wm.getBoundingClientRect().height + 22) }, "mono muted");
+const wm = fit(`HEGART STUDIO`, M, fRule + 40, 960);
+T(`FOTOGRAFIE · GRAFIKDESIGN · MARKETING`, { left: px(M), top: px(bottom(wm) + 20) }, "mono muted");
+T(`hegart.de`, { right: px(M), top: px(fRule + 30), fontFamily: "Outfit", fontWeight: 700, fontSize: "84px", lineHeight: "1", color: C.accent });
+T(`Thurgauer Str. 5 · 78224 Singen (Hohentwiel)`, { right: px(M), top: px(fRule + 128), fontFamily: "Outfit", fontSize: "32px" });
+T(`TERMIN ONLINE ODER VOR ORT →`, { right: px(M), top: px(fRule + 180) }, "mono accent");
 
-T(`hegart.de`, { right: px(M), top: px(fy + 36), fontFamily: "Outfit", fontWeight: 700, fontSize: "84px", lineHeight: "1", color: C.accent });
-T(`Thurgauer Str. 5 · 78224 Singen (Hohentwiel)`, { right: px(M), top: px(fy + 150), fontFamily: "Outfit", fontSize: "32px" });
-T(`TERMIN ONLINE ODER VOR ORT →`, { right: px(M), top: px(fy + 206) }, "mono accent");
-
-// export geometry for the photo placement step
-window.LAYOUT = { W, H, hero, caps };
+window.LAYOUT = { W, H, hero, bPanels, cPanels };
 document.title = "ready";
 </script>
 </body>

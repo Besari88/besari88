@@ -4,133 +4,84 @@
 <meta charset="utf-8">
 <title>Hegart Studio — A1 Poster</title>
 <style>
-  @font-face { font-family: "BigShoulders"; src: url(fonts/BigShoulders-Bold.ttf); font-weight: 700; }
-  @font-face { font-family: "BigShoulders"; src: url(fonts/BigShoulders-Regular.ttf); font-weight: 400; }
   @font-face { font-family: "Outfit"; src: url(fonts/Outfit-Regular.ttf); font-weight: 400; }
   @font-face { font-family: "Outfit"; src: url(fonts/Outfit-Bold.ttf); font-weight: 700; }
-  @font-face { font-family: "Mono"; src: url(fonts/GeistMono-Regular.ttf); font-weight: 400; }
-  @font-face { font-family: "Mono"; src: url(fonts/GeistMono-Bold.ttf); font-weight: 700; }
-  @font-face { font-family: "Jura"; src: url(fonts/Jura-Light.ttf); font-weight: 300; }
-  @font-face { font-family: "Jura"; src: url(fonts/Jura-Medium.ttf); font-weight: 500; }
+  @font-face { font-family: "Serif"; src: url(fonts/InstrumentSerif-Regular.ttf); font-style: normal; }
+  @font-face { font-family: "Serif"; src: url(fonts/InstrumentSerif-Italic.ttf); font-style: italic; }
   html, body { margin: 0; padding: 0; background: transparent; }
-  #page { position: relative; width: 2245px; height: 3179px; overflow: hidden; }
-  #page.preview { background: #232a31; }
+  #page { position: relative; width: 2245px; height: 3179px; overflow: hidden; font-family: "Outfit"; }
+  #page.preview { background: repeating-linear-gradient(45deg, #c9c3bb 0 20px, #bdb6ad 20px 40px); }
   svg { position: absolute; left: 0; top: 0; }
-  .t { position: absolute; margin: 0; white-space: nowrap; color: #EEF1F4; }
-  .mono { font-family: "Mono"; font-size: 22px; letter-spacing: 0.16em; text-transform: uppercase; }
-  .accent { color: #2BD4FF; }
-  .muted { color: #7C8791; }
+  .t { position: absolute; margin: 0; white-space: nowrap; color: #1E2B3C; }
+  .serif { font-family: "Serif"; font-style: italic; font-weight: 400; }
+  .caps { font-size: 22px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 700; }
+  .coral { color: #EE6A4D; }
+  .muted { color: #6E7581; }
+  .pill { display: inline-block; padding: 14px 30px; border-radius: 999px; font-size: 28px; }
 </style>
 </head>
 <body>
 <div id="page"></div>
 <script>
-// ---------- system ----------
 const W = 2245, H = 3179, M = 96, CW = W - 2 * M;
-const C = { void: "#050608", paper: "#EEF1F4", accent: "#2BD4FF", muted: "#7C8791" };
-const GAP = 36, CUT = 64;
+const C = { bg: "#FBF7F2", ink: "#1E2B3C", coral: "#EE6A4D", peach: "#FCE3D8", blush: "#F7D3CC",
+            sage: "#DDEBE2", sky: "#DDE9F5", sand: "#F3E6D3", muted: "#6E7581", white: "#FFFFFF" };
+const GAP = 40;
 
-// Band A — biometric focus (≈24% of the sheet)
-const hero = { x: M, y: 250, w: 560, h: 720 };                     // exact 35 × 45
-const face = { crown: 0.085, eyes: 0.372, chin: 0.628, halfW: 0.185 };
-// Band B — application & business portraits (≈25%)
-const bTop = 1066, bH = 790;
-const bW = (W - M - (M + 640 + 40) - GAP) / 2;
-const bPanels = [0, 1].map(i => ({ x: M + 680 + i * (bW + GAP), y: bTop, w: bW, h: bH }));
+// Band A — biometric focus (≈ 24 % of the sheet)
+const aPanel = { x: M, y: 232, w: CW, h: 760, r: 56 };
+const hero = { x: M + 64, y: 232 + 60, w: 480, h: Math.round(480 * 45 / 35), r: 26 };        // 35 × 45
+// Band B — Bewerbung & LinkedIn (≈ 25 %)
+const bTop = 1060, bH = 780;
+const bX = M + 700, bW = (W - M - bX - GAP) / 2;
+const bPhotos = [
+  { x: bX, y: bTop, w: bW, h: bH - 40, r: 44 },
+  { x: bX + bW + GAP, y: bTop + 40, w: bW, h: bH - 40, r: 44 },
+];
 // Band C — further services
-const cBase = 2832, cHs = [770, 846, 770, 846];
+const cTop = 2050, cH = 640, cStagger = 56;
 const cW = (CW - 3 * GAP) / 4;
-const cPanels = cHs.map((h, i) => ({ x: M + i * (cW + GAP), y: cBase - h, w: cW, h }));
+const cPhotos = [0, 1, 2, 3].map(i => ({ x: M + i * (cW + GAP), y: cTop + (i % 2) * cStagger, w: cW, h: cH, r: 40 }));
+const fTop = 2940;
 
-const chamfer = (r, c = CUT) =>
-  `M${r.x} ${r.y} H${r.x + r.w - c} L${r.x + r.w} ${r.y + c} V${r.y + r.h} H${r.x + c} L${r.x} ${r.y + r.h - c} Z`;
-const rectPath = (r) => `M${r.x} ${r.y} H${r.x + r.w} V${r.y + r.h} H${r.x} Z`;
-const panels = [...bPanels, ...cPanels];
+const holes = [hero, ...bPhotos, ...cPhotos];
+const rr = (r, fill, extra = "") => `<rect x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" rx="${r.r || 0}" fill="${fill}" ${extra}/>`;
 
 const preview = location.hash.includes("preview");
 const page = document.getElementById("page");
 if (preview) page.classList.add("preview");
 
-let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
-s += `<defs>
-  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="${C.accent}" stop-opacity="0.13"/>
-    <stop offset="1" stop-color="${C.accent}" stop-opacity="0"/>
-  </radialGradient>
-  <linearGradient id="shade" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="${C.void}" stop-opacity="0"/>
-    <stop offset="0.55" stop-color="${C.void}" stop-opacity="0.72"/>
-    <stop offset="1" stop-color="${C.void}" stop-opacity="0.94"/>
-  </linearGradient>
-  <clipPath id="outsideHero"><path fill-rule="evenodd" d="M0 0 H${W} V${H} H0 Z ${rectPath({ x: hero.x - 14, y: hero.y - 14, w: hero.w + 28, h: hero.h + 28 })}"/></clipPath>
-</defs>`;
+let body = "";
+body += `<rect width="${W}" height="${H}" fill="${C.bg}"/>`;
+// soft decorative shapes
+body += `<circle cx="${W - 60}" cy="120" r="260" fill="${C.sand}" opacity="0.7"/>`;
+body += `<circle cx="-40" cy="1500" r="300" fill="${C.sage}" opacity="0.6"/>`;
+// Band A panel
+body += rr(aPanel, C.peach);
+body += `<clipPath id="ap">${rr(aPanel, '#000')}</clipPath><circle cx="${aPanel.x + aPanel.w - 60}" cy="${aPanel.y + aPanel.h - 40}" r="260" fill="${C.blush}" opacity="0.8" clip-path="url(#ap)"/>`;
+body += `<circle cx="${hero.x + hero.w + 10}" cy="${hero.y + 70}" r="120" fill="${C.coral}" opacity="0.9"/>`;
+// Band B blob behind photos
+body += `<rect x="${bX - 40}" y="${bTop + 120}" width="${W - 50 - bX + 40}" height="${bH - 60}" rx="60" fill="${C.sky}"/>`;
+// Band C offset tiles behind each card
+const tints = [C.blush, C.sand, C.peach, C.sage];
+cPhotos.forEach((p, i) => body += rr({ x: p.x + 22, y: p.y + 22, w: p.w, h: p.h, r: p.r }, tints[i]));
+// Footer band
+body += `<rect x="0" y="${fTop}" width="${W}" height="${H - fTop}" fill="${C.coral}"/>`;
+body += `<clipPath id="fp"><rect x="0" y="${fTop}" width="${W}" height="${H - fTop}"/></clipPath><circle cx="${W * 0.55}" cy="${H + 60}" r="300" fill="#F2826A" opacity="0.9" clip-path="url(#fp)"/><circle cx="${W - 40}" cy="${fTop}" r="120" fill="#F2826A" clip-path="url(#fp)"/>`;
 
-// 1. the void with apertures cut out
-s += `<path fill="${C.void}" fill-rule="evenodd" d="M0 0 H${W} V${H} H0 Z ${rectPath(hero)} ${panels.map(p => chamfer(p)).join(" ")}"/>`;
+let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+<defs><mask id="holes"><rect width="${W}" height="${H}" fill="#fff"/>${holes.map(h => rr(h, "#000")).join("")}</mask></defs>
+<g mask="url(#holes)">${body}</g>`;
 
-// 2. light spill
-const eyeY = hero.y + face.eyes * hero.h, fcx = hero.x + hero.w / 2;
-s += `<circle cx="${1450}" cy="${560}" r="1000" fill="url(#glow)"/>`;
-s += `<circle cx="${420}" cy="${1480}" r="760" fill="url(#glow)" opacity="0.8"/>`;
-
-// 3. focus rings from the eye, outside the aperture
-s += `<g fill="none" stroke="${C.accent}" stroke-width="1.2" clip-path="url(#outsideHero)">`;
-[400, 460, 520].forEach((r, i) => s += `<circle cx="${fcx}" cy="${eyeY}" r="${r}" opacity="${0.4 - i * 0.12}"/>`);
-s += `</g>`;
-
-// 4. header rule with ticks
-const hy = 196;
-s += `<line x1="${M}" y1="${hy}" x2="${W - M}" y2="${hy}" stroke="${C.paper}" stroke-opacity="0.35"/>`;
-for (let i = 0; i <= 80; i++) {
-  const x = M + i * CW / 80, l = i % 10 === 0 ? 14 : i % 5 === 0 ? 9 : 5;
-  s += `<line x1="${x}" y1="${hy}" x2="${x}" y2="${hy + l}" stroke="${C.paper}" stroke-opacity="${i % 10 === 0 ? 0.7 : 0.3}"/>`;
-}
-
-// 5. hero instrumentation
+// biometric dimension marks (friendly, thin, coral)
+const dim = (x1, y1, x2, y2) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${C.coral}" stroke-width="3" stroke-linecap="round"/>`;
 const hx2 = hero.x + hero.w, hy2 = hero.y + hero.h;
-const br = 36, bo = 14;
-[[hero.x - bo, hero.y - bo, 1, 1], [hx2 + bo, hero.y - bo, -1, 1], [hero.x - bo, hy2 + bo, 1, -1], [hx2 + bo, hy2 + bo, -1, -1]].forEach(([x, y, dx, dy]) => {
-  s += `<path d="M${x} ${y + dy * br} V${y} H${x + dx * br}" fill="none" stroke="${C.accent}" stroke-width="3"/>`;
-});
-const rx = hx2 + 30;
-for (let mm = 0; mm <= 45; mm++) {
-  const y = hero.y + (mm / 45) * hero.h, l = mm % 5 === 0 ? 18 : 8;
-  s += `<line x1="${rx}" y1="${y}" x2="${rx + l}" y2="${y}" stroke="${C.paper}" stroke-opacity="${mm % 5 === 0 ? 0.75 : 0.35}" stroke-width="1.2"/>`;
-}
-const crownY = hero.y + face.crown * hero.h, chinY = hero.y + face.chin * hero.h;
-const g = `stroke="${C.accent}" fill="none"`;
-const ovRx = face.halfW * hero.w * 1.15, ovRy = (chinY - crownY) / 2 * 1.03, ovCy = (crownY + chinY) / 2 + 4;
-s += `<ellipse cx="${fcx}" cy="${ovCy}" rx="${ovRx}" ry="${ovRy}" ${g} stroke-width="1.8" stroke-dasharray="2 9" stroke-linecap="round" opacity="0.9"/>`;
-s += `<line x1="${fcx}" y1="${hero.y + 16}" x2="${fcx}" y2="${hy2 - 16}" ${g} stroke-width="1" opacity="0.3" stroke-dasharray="2 7"/>`;
-[crownY, chinY, eyeY].forEach((y, i) => {
-  const l = i === 2 ? 90 : 64;
-  s += `<line x1="${hero.x}" y1="${y}" x2="${hero.x + l}" y2="${y}" ${g} stroke-width="2"/>`;
-  s += `<line x1="${hx2 - l}" y1="${y}" x2="${hx2}" y2="${y}" ${g} stroke-width="2"/>`;
-});
-s += `<line x1="${rx + 34}" y1="${crownY}" x2="${rx + 34}" y2="${chinY}" stroke="${C.accent}" stroke-width="2"/>`;
-[crownY, chinY].forEach(y => s += `<line x1="${rx + 26}" y1="${y}" x2="${rx + 42}" y2="${y}" stroke="${C.accent}" stroke-width="2"/>`);
-s += `<circle cx="${rx + 34}" cy="${eyeY}" r="6" fill="${C.accent}"/>`;
-
-// 6. panel treatment: shade for captions, rim, corner index
-panels.forEach((p, i) => {
-  s += `<clipPath id="pc${i}"><path d="${chamfer(p)}"/></clipPath>`;
-  s += `<rect x="${p.x}" y="${p.y + p.h - 300}" width="${p.w}" height="300" fill="url(#shade)" clip-path="url(#pc${i})"/>`;
-  const o = 9, r = { x: p.x - o, y: p.y - o, w: p.w + 2 * o, h: p.h + 2 * o };
-  s += `<path d="${chamfer(r, CUT + 4)}" fill="none" stroke="${i < 2 ? C.accent : C.paper}" stroke-opacity="${i < 2 ? 0.75 : 0.3}" stroke-width="1.4"/>`;
-  // accent notch on the cut corner
-  s += `<line x1="${p.x + p.w - CUT + 14}" y1="${p.y - 22}" x2="${p.x + p.w + 22}" y2="${p.y + CUT - 14}" stroke="${C.accent}" stroke-width="3"/>`;
-});
-
-// 7. section rules
-const bRule = 1024, cRule = 1900, fRule = 2900;
-[bRule, cRule, fRule].forEach(y => s += `<line x1="${M}" y1="${y}" x2="${W - M}" y2="${y}" stroke="${C.paper}" stroke-opacity="0.32"/>`);
-
-// 8. registration marks
-const reg = (x, y) => `<g stroke="${C.paper}" stroke-opacity="0.5" fill="none"><circle cx="${x}" cy="${y}" r="10"/><line x1="${x - 18}" y1="${y}" x2="${x + 18}" y2="${y}"/><line x1="${x}" y1="${y - 18}" x2="${x}" y2="${y + 18}"/></g>`;
-s += reg(48, 48) + reg(W - 48, 48) + reg(48, H - 48) + reg(W - 48, H - 48);
+s += dim(hx2 + 30, hero.y, hx2 + 30, hy2) + dim(hx2 + 20, hero.y, hx2 + 40, hero.y) + dim(hx2 + 20, hy2, hx2 + 40, hy2);
+s += dim(hero.x, hy2 + 26, hx2, hy2 + 26) + dim(hero.x, hy2 + 16, hero.x, hy2 + 36) + dim(hx2, hy2 + 16, hx2, hy2 + 36);
+// soft white keyline around every photo
+holes.forEach(h => s += `<rect x="${h.x - 7}" y="${h.y - 7}" width="${h.w + 14}" height="${h.h + 14}" rx="${h.r + 7}" fill="none" stroke="#fff" stroke-width="8"/>`);
 s += `</svg>`;
 page.insertAdjacentHTML("beforeend", s);
-const svg = page.querySelector("svg");
 
 // ---------- typography ----------
 const T = (html, css, cls = "") => {
@@ -139,81 +90,62 @@ const T = (html, css, cls = "") => {
   Object.assign(el.style, css); page.appendChild(el); return el;
 };
 const px = n => n + "px";
-const fit = (text, left, top, width, css = {}) => {
-  const el = T(text, Object.assign({ left: px(left), top: px(top), fontFamily: "BigShoulders", fontWeight: 700, lineHeight: "0.8", fontSize: "100px", letterSpacing: "-0.01em" }, css));
-  el.style.fontSize = px(100 * width / el.getBoundingClientRect().width);
-  return el;
-};
-const bottom = el => el.getBoundingClientRect().bottom;
+const R = el => el.getBoundingClientRect();
+const fitW = (el, w) => { el.style.fontSize = px(parseFloat(el.style.fontSize) * w / R(el).width); return el; };
 
 // header
-T(`<span style="font-family:BigShoulders;font-weight:700;font-size:44px;letter-spacing:0.08em">HEGART</span><span class="muted" style="font-family:Mono;font-size:20px;letter-spacing:0.22em;margin-left:22px">STUDIO · FOTOGRAFIE &amp; DESIGN</span>`, { left: px(M), top: px(112) });
-T(`SINGEN (HOHENTWIEL) <span class="accent">·</span> 47.76° N / 8.84° O`, { right: px(M), top: px(128) }, "mono muted");
-
-// hero micro-labels (on the photo edge)
-const lab = { fontSize: "15px", letterSpacing: "0.2em" };
-T(`SCHEITEL`, Object.assign({ left: px(hero.x + 14), top: px(crownY - 26) }, lab), "mono accent");
-T(`AUGEN`, Object.assign({ left: px(hero.x + 14), top: px(eyeY - 26) }, lab), "mono accent");
-T(`KINN`, Object.assign({ left: px(hero.x + 14), top: px(chinY + 10) }, lab), "mono accent");
+T(`<span style="font-weight:700;font-size:58px;letter-spacing:0.08em">HEGART</span><span class="serif coral" style="font-size:58px;margin-left:14px">Studio</span>`, { left: px(M), top: px(92) });
+T(`Fotografie · Grafikdesign · Marketing · Events`, { left: px(M + 470), top: px(118), fontSize: "26px" }, "muted");
+T(`<span class="pill" style="background:#fff;font-weight:700;font-size:26px">hegart.de</span>`, { right: px(M), top: px(100) });
 
 // Band A text
-const RX = hx2 + 130, RW = W - M - RX;
-T(`01 <span class="muted">/</span> IM FOKUS <span class="muted">—</span> BIOMETRIE`, { left: px(RX), top: px(hero.y) }, "mono accent");
-const a1 = T(`BIOMETRISCHE`, { left: px(RX), top: px(hero.y + 52), fontFamily: "BigShoulders", fontWeight: 700, fontSize: "132px", lineHeight: "0.8", letterSpacing: "0.02em", color: C.accent });
-const a2 = fit(`PASSFOTOS`, RX, bottom(a1) + 16, RW);
-T(`Für Reisepass, Personalausweis, Visum &amp; alle amtlichen Dokumente.`, { left: px(RX), top: px(bottom(a2) + 34), fontFamily: "Outfit", fontSize: "38px" });
+T(`${35} × ${45} mm`, { left: px(hero.x + hero.w / 2), top: px(hy2 + 40), transform: "translateX(-50%)", fontSize: "22px", fontWeight: 700, letterSpacing: "0.12em" }, "coral");
+const AX = hx2 + 140, AW = aPanel.x + aPanel.w - 70 - AX;
+T(`<span class="pill caps" style="background:${C.coral};color:#fff;font-size:22px;padding:12px 28px">★ Unser Schwerpunkt</span>`, { left: px(AX), top: px(aPanel.y + 64) });
+const a1 = T(`Biometrische`, { left: px(AX), top: px(aPanel.y + 120), fontSize: "150px", lineHeight: "1" }, "serif");
+const a2 = fitW(T(`Passfotos`, { left: px(AX - 6), top: px(R(a1).bottom - 34), fontSize: "200px", fontWeight: 700, lineHeight: "1", letterSpacing: "-0.03em" }), AW * 0.86);
+const a3 = T(`für Reisepass, Personalausweis, Visum &amp; alle amtlichen Dokumente`, { left: px(AX), top: px(R(a2).bottom + 14), fontSize: "38px" });
+const chips = ["Reisepass", "Personalausweis", "Visum", "Führerschein", "Aufenthaltstitel"];
+const chipRow = T(chips.map(c => `<span class="pill" style="background:#fff;margin-right:14px;font-size:27px">${c}</span>`).join(""), { left: px(AX), top: px(R(a3).bottom + 34) });
+const checks = ["35 × 45 mm", "ICAO-konform", "Digital &amp; gedruckt"];
+T(checks.map(c => `<span style="display:inline-flex;align-items:center;margin-right:44px"><span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:${C.coral};color:#fff;font-size:24px;font-weight:700;margin-right:14px">✓</span>${c}</span>`).join(""),
+  { left: px(AX), top: px(R(chipRow).bottom + 34), fontSize: "32px", fontWeight: 700, display: "flex" });
 
-const specTop = hy2 - 104;
-const specs = [["35×45", "MILLIMETER"], ["ICAO", "NORMGERECHT"], ["DIGITAL", "&amp; GEDRUCKT"], ["ALLE", "DOKUMENTE"]];
-const sw = RW / specs.length;
-specs.forEach(([big, small], i) => {
-  T(`<div style="font-family:BigShoulders;font-weight:400;font-size:70px;line-height:1">${big}</div><div class="mono muted" style="margin-top:10px;font-size:18px">${small}</div>`,
-    { left: px(RX + i * sw + (i ? 26 : 0)), top: px(specTop) });
-});
-svg.insertAdjacentHTML("beforeend",
-  `<line x1="${RX}" y1="${specTop - 26}" x2="${W - M}" y2="${specTop - 26}" stroke="${C.paper}" stroke-opacity="0.3"/>` +
-  [1, 2, 3].map(i => `<line x1="${RX + i * sw}" y1="${specTop - 4}" x2="${RX + i * sw}" y2="${hy2}" stroke="${C.paper}" stroke-opacity="0.3"/>`).join(""));
-
-// Band B text column
-const BX = M, BWt = 600;
-T(`02—03 <span class="muted">/</span> PORTRAIT`, { left: px(BX), top: px(bTop) }, "mono accent");
-const b1 = fit(`BEWERBUNGS-`, BX, bTop + 56, BWt);
-const b2 = fit(`FOTOS &amp;`, BX, bottom(b1) + 12, BWt * 0.74);
-const b3 = fit(`BUSINESS`, BX, bottom(b2) + 12, BWt, { color: C.accent });
-const b4 = fit(`PORTRAITS`, BX, bottom(b3) + 12, BWt);
-const items = ["Bewerbungsfotos", "LinkedIn-Profil", "Business-Porträts", "Team &amp; Firma"];
-items.forEach((d, i) => {
-  T(`<span style="display:inline-block;width:12px;height:12px;border:2px solid #2BD4FF;margin-right:16px;vertical-align:1px"></span>${d}`,
-    { left: px(BX + (i % 2) * 300), top: px(bottom(b4) + 52 + Math.floor(i / 2) * 48), fontSize: "19px" }, "mono");
-});
-T(`Der erste Eindruck zählt.`, { left: px(BX), top: px(bTop + bH - 50), fontFamily: "Jura", fontWeight: 300, fontSize: "46px", lineHeight: "1" });
-
-// panel captions (inside the shade)
-const caption = (p, n, name, sub, big = false) => {
-  T(`<div class="mono accent" style="font-size:19px">${n}</div>
-     <div style="font-family:Outfit;font-weight:700;font-size:${big ? 50 : 42}px;letter-spacing:-0.01em;margin-top:8px;line-height:1.05">${name}</div>
-     <div class="mono" style="font-size:16px;letter-spacing:0.14em;margin-top:12px;color:#B9C2CA">${sub}</div>`,
-    { left: px(p.x + CUT + 6), top: px(p.y + p.h - (big ? 172 : 160)) });
-};
-caption(bPanels[0], "02", "Bewerbungsfotos", "LinkedIn · Karriere · Profil", true);
-caption(bPanels[1], "03", "Business-Portraits", "Management · Team · Firma", true);
+// Band B text
+const BX = M, BW = bX - M - 80;
+T(`Portrait · Karriere`, { left: px(BX), top: px(bTop + 10) }, "caps coral");
+const b1 = fitW(T(`Bewerbungs-`, { left: px(BX - 4), top: px(bTop + 56), fontSize: "120px", fontWeight: 700, lineHeight: "1", letterSpacing: "-0.02em" }), BW);
+const b2 = T(`fotos &amp;`, { left: px(BX - 4), top: px(R(b1).bottom - 8), fontSize: b1.style.fontSize, fontWeight: 700, lineHeight: "1", letterSpacing: "-0.02em" });
+const b3 = fitW(T(`LinkedIn-Portraits`, { left: px(BX), top: px(R(b2).bottom - 2), fontSize: "120px", lineHeight: "1" }, "serif coral"), BW);
+const items = ["Bewerbung &amp; Karriere", "LinkedIn &amp; XING Profil", "Business-Porträts", "Team- &amp; Firmenfotos"];
+items.forEach((d, i) => T(`<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${C.coral};margin-right:18px;vertical-align:4px"></span>${d}`,
+  { left: px(BX), top: px(R(b3).bottom + 40 + i * 56), fontSize: "32px" }));
+T(`„Der erste Eindruck zählt.“`, { left: px(BX), top: px(bTop + bH - 70), fontSize: "58px", lineHeight: "1" }, "serif");
+const tag = (p, text) => T(`<span class="pill" style="background:#fff;font-weight:700;font-size:28px;box-shadow:0 6px 20px rgba(30,43,60,.18)">${text}</span>`,
+  { left: px(p.x + 28), top: px(p.y + p.h - 92) });
+tag(bPhotos[0], "Bewerbungsfoto");
+tag(bPhotos[1], "LinkedIn · Business");
 
 // Band C
-T(`04—07 <span class="muted">/</span> WEITERE LEISTUNGEN`, { left: px(M), top: px(cRule + 22) }, "mono accent");
-T(`FAMILIE · MARKETING · UNTERNEHMEN`, { right: px(M), top: px(cRule + 22) }, "mono muted");
-[["04", "Babyfotos", "Die ersten Momente"],
- ["05", "Babybauch", "Schwangerschaft"],
- ["06", "Marketing", "Kampagne · Social Media"],
- ["07", "Business-Ambiente", "Räume · Office · Location"]].forEach(([n, name, sub], i) => caption(cPanels[i], n, name, sub));
+const cHeadTop = 1904;
+const c1 = T(`Mehr <span class="serif coral" style="font-size:112px">Momente,</span> die bleiben.`, { left: px(M), top: px(cHeadTop), fontSize: "92px", fontWeight: 700, lineHeight: "1", letterSpacing: "-0.02em" });
+T(`Familie · Hochzeit · Marketing · Unternehmen`, { right: px(M), top: px(cHeadTop + 50), fontSize: "28px" }, "muted");
+[["Baby &amp; Babybauch", "Schwangerschaft · Familie"],
+ ["Hochzeit &amp; Events", "Trauung · Feiern · Firmenevents"],
+ ["Marketing", "Kampagnen · Social Media"],
+ ["Business-Ambiente", "Salon · Praxis · Office"]].forEach(([name, sub], i) => {
+  const p = cPhotos[i];
+  T(`<div style="font-weight:700;font-size:42px;letter-spacing:-0.01em">${name}</div><div class="muted" style="font-size:25px;margin-top:8px">${sub}</div>`,
+    { left: px(p.x + 4), top: px(p.y + p.h + 44) });
+});
 
 // footer
-const wm = fit(`HEGART STUDIO`, M, fRule + 40, 960);
-T(`FOTOGRAFIE · GRAFIKDESIGN · MARKETING`, { left: px(M), top: px(bottom(wm) + 20) }, "mono muted");
-T(`hegart.de`, { right: px(M), top: px(fRule + 30), fontFamily: "Outfit", fontWeight: 700, fontSize: "84px", lineHeight: "1", color: C.accent });
-T(`Thurgauer Str. 5 · 78224 Singen (Hohentwiel)`, { right: px(M), top: px(fRule + 128), fontFamily: "Outfit", fontSize: "32px" });
-T(`TERMIN ONLINE ODER VOR ORT →`, { right: px(M), top: px(fRule + 180) }, "mono accent");
+const f1 = T(`HEGART <span class="serif" style="font-weight:400">Studio</span>`, { left: px(M), top: px(fTop + 58), fontSize: "120px", fontWeight: 700, lineHeight: "1", color: "#fff", letterSpacing: "0.02em" });
+T(`Thurgauer Str. 5 · 78224 Singen (Hohentwiel)`, { left: px(M), top: px(R(f1).bottom + 18), fontSize: "32px", color: "#fff" });
+T(`hegart.de`, { right: px(M), top: px(fTop + 50), fontSize: "96px", fontWeight: 700, lineHeight: "1", color: "#fff" });
+T(`<span class="pill" style="background:#fff;color:${C.coral};font-weight:700;font-size:30px;padding:16px 36px">Jetzt Termin vereinbaren →</span>`, { right: px(M), top: px(fTop + 162) });
 
-window.LAYOUT = { W, H, hero, bPanels, cPanels };
+window.LAYOUT = { W, H, hero, bPhotos, cPhotos };
 document.title = "ready";
 </script>
 </body>

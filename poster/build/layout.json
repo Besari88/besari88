@@ -53,5 +53,127 @@
    "h": 640,
    "r": 40
   }
+ ],
+ "shapes": [
+  {
+   "name": "Hintergrund",
+   "x": 0,
+   "y": 0,
+   "w": 2245,
+   "h": 3179,
+   "fill": "#F8F7F2",
+   "r": 0,
+   "opacity": 1
+  },
+  {
+   "name": "Kreis oben rechts",
+   "x": 1925,
+   "y": -140,
+   "w": 520,
+   "h": 520,
+   "fill": "#F1ECE1",
+   "r": 260,
+   "opacity": 0.8
+  },
+  {
+   "name": "Kreis links",
+   "x": -340,
+   "y": 1200,
+   "w": 600,
+   "h": 600,
+   "fill": "#E6EFE4",
+   "r": 300,
+   "opacity": 0.7
+  },
+  {
+   "name": "Panel Passfotos",
+   "x": 96,
+   "y": 232,
+   "w": 2053,
+   "h": 760,
+   "fill": "#E2F7EC",
+   "r": 56,
+   "opacity": 1
+  },
+  {
+   "name": "Kreis Passfoto",
+   "x": 530,
+   "y": 242,
+   "w": 240,
+   "h": 240,
+   "fill": "#67DEA4",
+   "r": 120,
+   "opacity": 1
+  },
+  {
+   "name": "Fläche Portraits",
+   "x": 756,
+   "y": 1180,
+   "w": 1439,
+   "h": 720,
+   "fill": "#E3ECF5",
+   "r": 60,
+   "opacity": 1
+  },
+  {
+   "name": "Kachel 1",
+   "x": 118,
+   "y": 2072,
+   "w": 483.25,
+   "h": 640,
+   "fill": "#D3F2E2",
+   "r": 40,
+   "opacity": 1
+  },
+  {
+   "name": "Kachel 2",
+   "x": 641.25,
+   "y": 2128,
+   "w": 483.25,
+   "h": 640,
+   "fill": "#F1ECE1",
+   "r": 40,
+   "opacity": 1
+  },
+  {
+   "name": "Kachel 3",
+   "x": 1164.5,
+   "y": 2072,
+   "w": 483.25,
+   "h": 640,
+   "fill": "#E2F7EC",
+   "r": 40,
+   "opacity": 1
+  },
+  {
+   "name": "Kachel 4",
+   "x": 1687.75,
+   "y": 2128,
+   "w": 483.25,
+   "h": 640,
+   "fill": "#E6EFE4",
+   "r": 40,
+   "opacity": 1
+  },
+  {
+   "name": "Footer",
+   "x": 0,
+   "y": 2940,
+   "w": 2245,
+   "h": 239,
+   "fill": "#67DEA4",
+   "r": 0,
+   "opacity": 1
+  },
+  {
+   "name": "Kreis Footer",
+   "x": 934.75,
+   "y": 2939,
+   "w": 600,
+   "h": 600,
+   "fill": "#86E6B8",
+   "r": 300,
+   "opacity": 1
+  }
  ]
 }

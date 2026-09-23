@@ -10,12 +10,12 @@
   @font-face { font-family: "Serif"; src: url(fonts/InstrumentSerif-Italic.ttf); font-style: italic; }
   html, body { margin: 0; padding: 0; background: transparent; }
   #page { position: relative; width: 2245px; height: 3179px; overflow: hidden; font-family: "Outfit"; }
-  #page.preview { background: repeating-linear-gradient(45deg, #c9c3bb 0 20px, #bdb6ad 20px 40px); }
+  
   svg { position: absolute; left: 0; top: 0; }
-  .t { position: absolute; margin: 0; white-space: nowrap; color: #1E2B3C; }
+  .t { position: absolute; margin: 0; white-space: nowrap; color: #101B2D; }
   .serif { font-family: "Serif"; font-style: italic; font-weight: 400; }
   .caps { font-size: 22px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 700; }
-  .coral { color: #EE6A4D; }
+  .coral { color: #17915A; }
   .muted { color: #6E7581; }
   .pill { display: inline-block; padding: 14px 30px; border-radius: 999px; font-size: 28px; }
 </style>
@@ -24,8 +24,9 @@
 <div id="page"></div>
 <script>
 const W = 2245, H = 3179, M = 96, CW = W - 2 * M;
-const C = { bg: "#FBF7F2", ink: "#1E2B3C", coral: "#EE6A4D", peach: "#FCE3D8", blush: "#F7D3CC",
-            sage: "#DDEBE2", sky: "#DDE9F5", sand: "#F3E6D3", muted: "#6E7581", white: "#FFFFFF" };
+// brand green #67DEA4 for fills, a deeper green for readable accent text
+const C = { bg: "#F8F7F2", ink: "#101B2D", coral: "#67DEA4", deep: "#17915A", peach: "#E2F7EC", blush: "#D3F2E2",
+            sage: "#E6EFE4", sky: "#E3ECF5", sand: "#F1ECE1", muted: "#5F6875", white: "#FFFFFF", footerCircle: "#86E6B8" };
 const GAP = 40;
 
 // Band A — biometric focus (≈ 24 % of the sheet)
@@ -51,30 +52,27 @@ const preview = location.hash.includes("preview");
 const page = document.getElementById("page");
 if (preview) page.classList.add("preview");
 
-let body = "";
-body += `<rect width="${W}" height="${H}" fill="${C.bg}"/>`;
-// soft decorative shapes
-body += `<circle cx="${W - 60}" cy="120" r="260" fill="${C.sand}" opacity="0.7"/>`;
-body += `<circle cx="-40" cy="1500" r="300" fill="${C.sage}" opacity="0.6"/>`;
-// Band A panel
-body += rr(aPanel, C.peach);
-body += `<clipPath id="ap">${rr(aPanel, '#000')}</clipPath><circle cx="${aPanel.x + aPanel.w - 60}" cy="${aPanel.y + aPanel.h - 40}" r="260" fill="${C.blush}" opacity="0.8" clip-path="url(#ap)"/>`;
-body += `<circle cx="${hero.x + hero.w + 10}" cy="${hero.y + 70}" r="120" fill="${C.coral}" opacity="0.9"/>`;
-// Band B blob behind photos
-body += `<rect x="${bX - 40}" y="${bTop + 120}" width="${W - 50 - bX + 40}" height="${bH - 60}" rx="60" fill="${C.sky}"/>`;
-// Band C offset tiles behind each card
+// ---- background shapes: exported as separate, recolourable Canva elements ----
+const shapes = [];
+const shape = (name, x, y, w, h, fill, r = 0, opacity = 1) => shapes.push({ name, x, y, w, h, fill, r, opacity });
+shape("Hintergrund", 0, 0, W, H, C.bg);
+shape("Kreis oben rechts", W - 320, -140, 520, 520, C.sand, 260, 0.8);
+shape("Kreis links", -340, 1200, 600, 600, C.sage, 300, 0.7);
+shape("Panel Passfotos", aPanel.x, aPanel.y, aPanel.w, aPanel.h, C.peach, aPanel.r);
+shape("Kreis Passfoto", hero.x + hero.w - 110, hero.y - 50, 240, 240, C.coral, 120);
+shape("Fläche Portraits", bX - 40, bTop + 120, W - 50 - bX + 40, bH - 60, C.sky, 60);
 const tints = [C.blush, C.sand, C.peach, C.sage];
-cPhotos.forEach((p, i) => body += rr({ x: p.x + 22, y: p.y + 22, w: p.w, h: p.h, r: p.r }, tints[i]));
-// Footer band
-body += `<rect x="0" y="${fTop}" width="${W}" height="${H - fTop}" fill="${C.coral}"/>`;
-body += `<clipPath id="fp"><rect x="0" y="${fTop}" width="${W}" height="${H - fTop}"/></clipPath><circle cx="${W * 0.55}" cy="${H + 60}" r="300" fill="#F2826A" opacity="0.9" clip-path="url(#fp)"/><circle cx="${W - 40}" cy="${fTop}" r="120" fill="#F2826A" clip-path="url(#fp)"/>`;
+cPhotos.forEach((p, i) => shape(`Kachel ${i + 1}`, p.x + 22, p.y + 22, p.w, p.h, tints[i], p.r));
+shape("Footer", 0, fTop, W, H - fTop, C.coral);
+shape("Kreis Footer", W * 0.55 - 300, H - 240, 600, 600, C.footerCircle, 300);
 
-let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
-<defs><mask id="holes"><rect width="${W}" height="${H}" fill="#fff"/>${holes.map(h => rr(h, "#000")).join("")}</mask></defs>
-<g mask="url(#holes)">${body}</g>`;
-
+let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+if (preview) {
+  shapes.forEach(sh => s += `<rect x="${sh.x}" y="${sh.y}" width="${sh.w}" height="${sh.h}" rx="${sh.r}" fill="${sh.fill}" opacity="${sh.opacity}"/>`);
+  holes.forEach(h => s += rr(h, "#B9B2A9"));
+}
 // biometric dimension marks (friendly, thin, coral)
-const dim = (x1, y1, x2, y2) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${C.coral}" stroke-width="3" stroke-linecap="round"/>`;
+const dim = (x1, y1, x2, y2) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${C.deep}" stroke-width="3" stroke-linecap="round"/>`;
 const hx2 = hero.x + hero.w, hy2 = hero.y + hero.h;
 s += dim(hx2 + 30, hero.y, hx2 + 30, hy2) + dim(hx2 + 20, hero.y, hx2 + 40, hero.y) + dim(hx2 + 20, hy2, hx2 + 40, hy2);
 s += dim(hero.x, hy2 + 26, hx2, hy2 + 26) + dim(hero.x, hy2 + 16, hero.x, hy2 + 36) + dim(hx2, hy2 + 16, hx2, hy2 + 36);
@@ -101,14 +99,14 @@ T(`<span class="pill" style="background:#fff;font-weight:700;font-size:26px">heg
 // Band A text
 T(`${35} × ${45} mm`, { left: px(hero.x + hero.w / 2), top: px(hy2 + 40), transform: "translateX(-50%)", fontSize: "22px", fontWeight: 700, letterSpacing: "0.12em" }, "coral");
 const AX = hx2 + 140, AW = aPanel.x + aPanel.w - 70 - AX;
-T(`<span class="pill caps" style="background:${C.coral};color:#fff;font-size:22px;padding:12px 28px">★ Unser Schwerpunkt</span>`, { left: px(AX), top: px(aPanel.y + 64) });
+T(`<span class="pill caps" style="background:${C.coral};color:${C.ink};font-size:22px;padding:12px 28px">★ Unser Schwerpunkt</span>`, { left: px(AX), top: px(aPanel.y + 64) });
 const a1 = T(`Biometrische`, { left: px(AX), top: px(aPanel.y + 120), fontSize: "150px", lineHeight: "1" }, "serif");
 const a2 = fitW(T(`Passfotos`, { left: px(AX - 6), top: px(R(a1).bottom - 34), fontSize: "200px", fontWeight: 700, lineHeight: "1", letterSpacing: "-0.03em" }), AW * 0.86);
 const a3 = T(`für Reisepass, Personalausweis, Visum &amp; alle amtlichen Dokumente`, { left: px(AX), top: px(R(a2).bottom + 14), fontSize: "38px" });
 const chips = ["Reisepass", "Personalausweis", "Visum", "Führerschein", "Aufenthaltstitel"];
 const chipRow = T(chips.map(c => `<span class="pill" style="background:#fff;margin-right:14px;font-size:27px">${c}</span>`).join(""), { left: px(AX), top: px(R(a3).bottom + 34) });
 const checks = ["35 × 45 mm", "ICAO-konform", "Digital &amp; gedruckt"];
-T(checks.map(c => `<span style="display:inline-flex;align-items:center;margin-right:44px"><span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:${C.coral};color:#fff;font-size:24px;font-weight:700;margin-right:14px">✓</span>${c}</span>`).join(""),
+T(checks.map(c => `<span style="display:inline-flex;align-items:center;margin-right:44px"><span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:${C.coral};color:${C.ink};font-size:24px;font-weight:700;margin-right:14px">✓</span>${c}</span>`).join(""),
   { left: px(AX), top: px(R(chipRow).bottom + 34), fontSize: "32px", fontWeight: 700, display: "flex" });
 
 // Band B text
@@ -140,12 +138,12 @@ T(`Familie · Hochzeit · Marketing · Unternehmen`, { right: px(M), top: px(cHe
 });
 
 // footer
-const f1 = T(`HEGART <span class="serif" style="font-weight:400">Studio</span>`, { left: px(M), top: px(fTop + 58), fontSize: "120px", fontWeight: 700, lineHeight: "1", color: "#fff", letterSpacing: "0.02em" });
-T(`Thurgauer Str. 5 · 78224 Singen (Hohentwiel)`, { left: px(M), top: px(R(f1).bottom + 18), fontSize: "32px", color: "#fff" });
-T(`hegart.de`, { right: px(M), top: px(fTop + 50), fontSize: "96px", fontWeight: 700, lineHeight: "1", color: "#fff" });
-T(`<span class="pill" style="background:#fff;color:${C.coral};font-weight:700;font-size:30px;padding:16px 36px">Jetzt Termin vereinbaren →</span>`, { right: px(M), top: px(fTop + 162) });
+const f1 = T(`HEGART <span class="serif" style="font-weight:400">Studio</span>`, { left: px(M), top: px(fTop + 58), fontSize: "120px", fontWeight: 700, lineHeight: "1", color: C.ink, letterSpacing: "0.02em" });
+T(`Thurgauer Str. 5 · 78224 Singen (Hohentwiel)`, { left: px(M), top: px(R(f1).bottom + 18), fontSize: "32px", color: C.ink });
+T(`hegart.de`, { right: px(M), top: px(fTop + 50), fontSize: "96px", fontWeight: 700, lineHeight: "1", color: C.ink });
+T(`<span class="pill" style="background:${C.ink};color:#fff;font-weight:700;font-size:30px;padding:16px 36px">Jetzt Termin vereinbaren →</span>`, { right: px(M), top: px(fTop + 162) });
 
-window.LAYOUT = { W, H, hero, bPhotos, cPhotos };
+window.LAYOUT = { W, H, hero, bPhotos, cPhotos, shapes };
 document.title = "ready";
 </script>
 </body>

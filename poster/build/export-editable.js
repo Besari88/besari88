@@ -10,7 +10,7 @@ const fs = require('fs');
   await p.evaluate(() => document.fonts.ready);
   const items = await p.evaluate(() => {
     const out = [];
-    const fam = f => /Serif/.test(f) ? "'Instrument Serif', serif" : "'Outfit', sans-serif";
+    const fam = f => /Serif/.test(f) ? "'Instrument Serif', serif" : "'Poppins', sans-serif";
     const hasDeco = cs => (cs.backgroundColor !== 'rgba(0, 0, 0, 0)' && cs.backgroundColor !== 'transparent') || parseFloat(cs.borderTopWidth) > 0;
     const textStyle = cs => ({
       fontFamily: fam(cs.fontFamily), fontSize: cs.fontSize, fontWeight: cs.fontWeight, fontStyle: cs.fontStyle,
@@ -29,15 +29,6 @@ const fs = require('fs');
     document.querySelectorAll('.t').forEach(t => {
       const decos = [...t.querySelectorAll('*')].filter(e => hasDeco(getComputedStyle(e)));
       const alignRight = t.style.right !== '';
-      if (!decos.length) {
-        const r = t.getBoundingClientRect(), cs = getComputedStyle(t);
-        const clone = t.cloneNode(true); document.body.appendChild(clone); clone.style.cssText = t.style.cssText;
-        inlineStyles(clone); const html = clone.innerHTML; clone.remove();
-        // captions etc. keep their inner structure (runs, line breaks) in one text box
-        const c2 = t.cloneNode(true); inlineStyles(t); const inner = t.innerHTML;
-        pushText(inner, r, cs, alignRight ? 'right' : 'left');
-        return;
-      }
       decos.forEach(d => {
         const r = d.getBoundingClientRect(), cs = getComputedStyle(d);
         out.push({ kind: 'box', x: r.left, y: r.top, w: r.width, h: r.height, bg: cs.backgroundColor,
@@ -48,7 +39,7 @@ const fs = require('fs');
       const walker = document.createTreeWalker(t, NodeFilter.SHOW_TEXT);
       let n; while ((n = walker.nextNode())) {
         if (!n.textContent.trim()) continue;
-        const range = document.createRange(); range.selectNodeContents(n);
+        const tc = n.textContent, lead = tc.length - tc.trimStart().length, trail = tc.length - tc.trimEnd().length; const range = document.createRange(); range.setStart(n, lead); range.setEnd(n, tc.length - trail);
         const r = range.getBoundingClientRect();
         pushText(n.textContent.trim().replace(/&/g, '&amp;'), r, getComputedStyle(n.parentElement), 'left');
       }

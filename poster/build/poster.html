@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <title>Hegart Studio — A1 Poster</title>
 <style>
-  @font-face { font-family: "Outfit"; src: url(fonts/Outfit-Regular.ttf); font-weight: 400; }
-  @font-face { font-family: "Outfit"; src: url(fonts/Outfit-Bold.ttf); font-weight: 700; }
+  @font-face { font-family: "Outfit"; src: url(fonts/Poppins-Regular.woff2); font-weight: 400; }
+  @font-face { font-family: "Outfit"; src: url(fonts/Poppins-Bold.woff2); font-weight: 700; }
   @font-face { font-family: "Serif"; src: url(fonts/InstrumentSerif-Regular.ttf); font-style: normal; }
   @font-face { font-family: "Serif"; src: url(fonts/InstrumentSerif-Italic.ttf); font-style: italic; }
   html, body { margin: 0; padding: 0; background: transparent; }
@@ -23,6 +23,8 @@
 <body>
 <div id="page"></div>
 <script>
+(async () => {
+await Promise.all(["400 40px Outfit","700 40px Outfit","italic 40px Serif","40px Serif"].map(f => document.fonts.load(f)));
 const W = 2245, H = 3179, M = 96, CW = W - 2 * M;
 // brand green #67DEA4 for fills, a deeper green for readable accent text
 const C = { bg: "#F8F7F2", ink: "#101B2D", coral: "#67DEA4", deep: "#17915A", peach: "#E2F7EC", blush: "#D3F2E2",
@@ -145,6 +147,7 @@ T(`<span class="pill" style="background:${C.ink};color:#fff;font-weight:700;font
 
 window.LAYOUT = { W, H, hero, bPhotos, cPhotos, shapes };
 document.title = "ready";
+})();
 </script>
 </body>
 </html>

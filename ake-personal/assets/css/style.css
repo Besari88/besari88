@@ -845,6 +845,50 @@ a.kontakt-row__value:hover { color: var(--c-accent); text-decoration: underline;
   .js .reveal { opacity: 1; transform: none; }
 }
 
+/* ---------- 20b. Rregullime te vogla ----------
+   .card ka `height: 100%` qe kartat ne nje rresht te jene njelloj te larta.
+   Ne nje layout teksti + liste kjo e zgjat karten kot; .card--auto e heq. */
+.card--auto { height: auto; }
+
+/* Butoni dytesor mbi sfondin turkez: --c-brand mbi --c-teal del nen 4.5:1.
+   Petroli i erret + korniza e bardhe e ngrejne kontrastin. */
+.section--teal .btn--ghost { color: var(--c-brand-dark); border-color: rgba(255,255,255,.8); }
+.section--teal .btn--ghost:hover { background: #fff; border-color: #fff; color: var(--c-brand-dark); }
+
+/* ---------- 21. Shenimi ligjor te footer-i ---------- */
+.footer__legalnote {
+  margin-top: 2.5rem;
+  max-width: 100ch;
+  font-size: var(--fs-xs);
+  line-height: 1.7;
+  color: #8fb0ae;
+}
+.footer__grid + .footer__legalnote {
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(255, 255, 255, .1);
+}
+.footer__legalnote strong { color: #fff; }
+.footer__legalnote + .footer__bottom { margin-top: 1.75rem; }
+
+/* ---------- 22. Hyrje para nje pill-list ---------- */
+.pill-list__intro {
+  font-family: var(--font-serif);
+  font-size: var(--fs-lg);
+  color: var(--c-ink);
+  margin-bottom: 1rem;
+}
+
+/* ---------- 23. Butoni WhatsApp ----------
+   Ngjyra e markes WhatsApp, me tekst te erret per kontrast te lexueshem.
+   white-space: normal sepse numri e ben etiketen te gjate per panelin e ngushte. */
+.btn--whatsapp { background: #25d366; color: #0b2e1c; border-color: #25d366; }
+.btn--whatsapp:hover {
+  background: #1da851; border-color: #1da851; color: #fff;
+  box-shadow: var(--shadow-md);
+}
+.kontakt-wa { white-space: normal; padding-inline: 1.25rem; text-align: center; }
+.kontakt-wa svg { flex-shrink: 0; }
+
 /* ---------- 21. Print ---------- */
 @media print {
   .site-header, .site-footer, .btn, .cta-band, .nav__toggle { display: none !important; }

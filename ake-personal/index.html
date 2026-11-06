@@ -20,6 +20,8 @@
 <meta name="theme-color" content="#034c4d">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/css/style.css">
+<link rel="preload" as="image" href="assets/img/hero-foto-960.webp" media="(max-width: 960px)" fetchpriority="high">
+<link rel="preload" as="image" href="assets/img/hero-foto.webp" media="(min-width: 961px)" fetchpriority="high">
 
 <script type="application/ld+json">
 {
@@ -81,20 +83,20 @@
 <main id="main">
 
   <!-- ============ HERO ============ -->
-  <section class="section" style="padding-block:clamp(3rem,7vw,5.5rem)">
+  <section class="section hero-photo" style="padding-block:clamp(3.5rem,8vw,6rem)">
     <div class="container container--narrow center">
       <h1 style="margin-bottom:2rem">Anerkennung, Aufenthalt, Ergebnisse</h1>
-      <p style="font-weight:700;color:var(--c-ink);font-size:var(--fs-lg);margin-bottom:1rem">
+      <p class="hero-photo__claim">
         Ihre ausländische Qualifikation verdient eine offizielle Anerkennung und einen klaren Weg.
       </p>
-      <p style="margin-bottom:2.5rem">
+      <p class="hero-photo__text">
         Wir begleiten Sie auf Ihrem Weg, in Deutschland zu arbeiten, zu bleiben und
         erfolgreich zu sein. Wir kombinieren Erfahrung, vertrauensvolle Begleitung und
         praktische Unterstützung, um Anerkennung, Anträge, Übersetzungen und den
         Berufseinstieg zu vereinfachen – zuverlässig und vertraulich.
       </p>
       <div class="btn-row center">
-        <a class="btn btn--brand btn--lg btn--pill" href="#kontakt">Starten Sie Ihre Beratung</a>
+        <a class="btn btn--primary btn--lg btn--pill" href="#kontakt">Starten Sie Ihre Beratung</a>
       </div>
     </div>
   </section>

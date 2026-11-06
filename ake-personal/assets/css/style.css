@@ -845,6 +845,36 @@ a.kontakt-row__value:hover { color: var(--c-accent); text-decoration: underline;
   .js .reveal { opacity: 1; transform: none; }
 }
 
+/* ---------- 13c-ter. Hero me foto ----------
+   Foto e ambientit + nje shtrese petroli siper, qe teksti i bardhe te kete
+   kontrast te mjaftueshem edhe mbi dritaret e ndritshme. Dy madhesi: celulari
+   merr versionin 960px (40 KB) ne vend te atij 1920px (90 KB). */
+:root { --hero-veil: linear-gradient(180deg, rgba(2,51,53,.90) 0%, rgba(2,51,53,.76) 45%, rgba(2,51,53,.92) 100%); }
+
+.hero-photo {
+  background-color: var(--c-brand-dark);
+  background-image: var(--hero-veil), url("../img/hero-foto-960.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #cadedd;
+  display: grid;
+  align-items: center;
+  min-height: clamp(400px, 56vh, 600px);
+}
+@media (min-width: 961px) {
+  .hero-photo { background-image: var(--hero-veil), url("../img/hero-foto.webp"); }
+}
+.hero-photo h1 { color: #fff; }
+/* Titulli i hero-s eshte i shkurter: lere fjalet te plota ne vend qe
+   `hyphens: auto` te prodhoje "Auf-enthalt" ne celular. */
+.hero-photo h1 { hyphens: manual; }
+.hero-photo__claim {
+  color: #fff; font-weight: 700;
+  font-size: var(--fs-lg); margin-bottom: 1rem;
+}
+.hero-photo__text { margin-bottom: 2.5rem; color: #dcebe9; }
+
 /* ---------- 20b. Rregullime te vogla ----------
    .card ka `height: 100%` qe kartat ne nje rresht te jene njelloj te larta.
    Ne nje layout teksti + liste kjo e zgjat karten kot; .card--auto e heq. */

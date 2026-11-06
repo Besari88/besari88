@@ -9,6 +9,7 @@
 /kontakt.php     /404.html   404
 /.htaccess       /404.html   404
 /README.md       /404.html   404
+/NDRYSHIMET.md   /404.html   404
 
 # Cloudflare Pages — ridrejtimet (zëvendëson Redirect 301 të .htaccess).
 # Formati:  /rruga-e-vjeter  /rruga-e-re  301

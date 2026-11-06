@@ -849,7 +849,13 @@ a.kontakt-row__value:hover { color: var(--c-accent); text-decoration: underline;
    Foto e ambientit + nje shtrese petroli siper, qe teksti i bardhe te kete
    kontrast te mjaftueshem edhe mbi dritaret e ndritshme. Dy madhesi: celulari
    merr versionin 960px (40 KB) ne vend te atij 1920px (90 KB). */
-:root { --hero-veil: linear-gradient(180deg, rgba(2,51,53,.90) 0%, rgba(2,51,53,.76) 45%, rgba(2,51,53,.92) 100%); }
+:root {
+  /* Hero-ja: fotoja ka dritare te bardha te ndezura, ndaj i duhet mbulese e trashe.
+     Shiriti: fotoja eshte vete me e erret — me pak mbulese njerezit duken,
+     dhe teksti i bardhe mbetet mbi 5:1 edhe mbi tullat me te ndritshme. */
+  --hero-veil: linear-gradient(180deg, rgba(2,51,53,.90) 0%, rgba(2,51,53,.76) 45%, rgba(2,51,53,.92) 100%);
+  --band-veil: linear-gradient(180deg, rgba(2,51,53,.74) 0%, rgba(2,51,53,.54) 45%, rgba(2,51,53,.76) 100%);
+}
 
 .hero-photo {
   background-color: var(--c-brand-dark);
@@ -874,6 +880,23 @@ a.kontakt-row__value:hover { color: var(--c-accent); text-decoration: underline;
   font-size: var(--fs-lg); margin-bottom: 1rem;
 }
 .hero-photo__text { margin-bottom: 2.5rem; color: #dcebe9; }
+
+/* ---------- 13c-quater. Shirit seksioni me foto ----------
+   Njesoj si .hero-photo. `center 38%` e mban fokusin te fytyrat kur shiriti
+   pritet ne lartesi te vogel. */
+.band-photo {
+  background-color: var(--c-brand-dark);
+  background-image: var(--band-veil), url("../img/jobs-foto-960.webp");
+  background-size: cover;
+  background-position: center 38%;
+  background-repeat: no-repeat;
+  display: grid;
+  align-items: center;
+  min-height: clamp(300px, 36vw, 460px);
+}
+@media (min-width: 961px) {
+  .band-photo { background-image: var(--band-veil), url("../img/jobs-foto.webp"); }
+}
 
 /* ---------- 20b. Rregullime te vogla ----------
    .card ka `height: 100%` qe kartat ne nje rresht te jene njelloj te larta.

@@ -111,3 +111,30 @@ Shtuar te footer-i i **të 7 faqeve**:
 2. **Përkthyesi** — nëse keni përkthyes të autorizuar, teksti mund të kthehet.
 3. **Steuerunterlagen** — teksti i pikës 10 nuk u shtua, sepse faqja nuk e përmend
    fare këtë shërbim.
+
+---
+
+# 11. Formulari u hoq (06.11.2026)
+
+Formulari i kontaktit u hoq komplet. Në vend të tij, seksioni **Kontakt** ka
+tri pllaka veprimi — **E-Mail**, **Telefon**, **WhatsApp** — dhe nën to një
+kartelë me adresën, orarin dhe gjuhët e këshillimit.
+
+**File që u fshinë:**
+`functions/api/kontakt.js` · `src/contact.js` · `danke.html` · `kontakt.php`
+
+**Që ndryshuan:**
+- `index.html` — seksioni i kontaktit i rindërtuar
+- `assets/css/style.css` — CSS-ja e formularit (175 rreshta) hequr, 95 të reja
+- `assets/js/main.js` — validimi dhe dërgimi hequr (254 → 143 rreshta)
+- `src/index.js` — rruga `/api/kontakt` hequr
+- `datenschutz.html` — seksioni 7 rishkruar, seksioni Brevo hequr
+- `robots.txt`, `_headers`, `_redirects`, `.htaccess` — referencat e vjetra hequr
+
+**Pasoja praktike:**
+- Faqja s'ka më **asnjë Pages Function** → ngarkimi i zip-it nga dashboard-i
+  i Cloudflare punon pa asnjë rrezik
+- **Brevo nuk nevojitet më.** Sekretet `BREVO_API_KEY`, `MAIL_TO`, `MAIL_FROM`
+  mund të fshihen nga projekti; llogaria e Brevo-s mund të mbyllet
+- Çdo buton `Beratung starten` / `Gespräch vereinbaren` çon te ky seksion,
+  ku vizitori zgjedh vetë si të kontaktojë

@@ -86,7 +86,7 @@ ErrorDocument 404 /404.html
 
   # CSP: e ngushtë sepse faqja nuk përdor asgjë të jashtme.
   # Nëse shtoni Google Maps / Analytics, kjo duhet zgjeruar.
-  Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; form-action 'self' https://formspree.io; frame-ancestors 'self'; base-uri 'self'"
+  Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'"
 
   # Hiq header-in që tregon versionin e PHP
   Header unset X-Powered-By

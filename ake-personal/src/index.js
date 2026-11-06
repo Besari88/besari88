@@ -1,16 +1,13 @@
 /**
  * Hyrja e Worker-it (Cloudflare Workers me static assets).
  *
- *   POST /api/kontakt  → formulari
- *   çdo gjë tjetër     → file-t statikë përmes binding-ut ASSETS
+ * Te gjitha kerkesat → file-t statike permes binding-ut ASSETS.
  *
  * Header-at e sigurisë vendosen KETU, jo te `_headers`. Arsyeja: `_headers`
  * eshte konvente e Pages-it; duke i vendosur ne kod, ato zbatohen sigurt
  * pavaresisht se si e pret Cloudflare projektin. File-i `_headers` mbetet ne
  * projekt per rastin kur perdoret Pages.
  */
-import { handleContact } from './contact.js';
-
 const SECURITY_HEADERS = {
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'SAMEORIGIN',
@@ -27,13 +24,6 @@ const SECURITY_HEADERS = {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-
-    if (url.pathname === '/api/kontakt') {
-      if (request.method !== 'POST') {
-        return new Response('Method Not Allowed', { status: 405, headers: { allow: 'POST' } });
-      }
-      return handleContact(request, env);
-    }
 
     const res = await env.ASSETS.fetch(request);
 

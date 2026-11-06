@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /kontakt.php
 
 Sitemap: https://www.ake-personal.de/sitemap.xml

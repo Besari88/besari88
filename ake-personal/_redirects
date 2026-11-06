@@ -1,12 +1,11 @@
 # ---- Mbyll file-t qe nuk jane pjese e faqes ----
 # Pages i ngarkon te gjithe file-t si asete statike dhe NUK e lexon
 # .assetsignore (ai vlen vetem per Workers). Pa keto rregulla, adresa si
-# /src/contact.js ose /kontakt.php do te kthenin kodin burimor.
+# /src/index.js do te kthente kodin burimor.
 /src/*           /404.html   404
 /wrangler.jsonc  /404.html   404
 /.gitignore      /404.html   404
 /.assetsignore   /404.html   404
-/kontakt.php     /404.html   404
 /.htaccess       /404.html   404
 /README.md       /404.html   404
 /NDRYSHIMET.md   /404.html   404

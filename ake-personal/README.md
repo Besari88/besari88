@@ -1,3 +1,8 @@
+> **Përditësim 06.11.2026 — formulari u hoq.**
+> Seksioni i kontaktit tani ka vetëm E-Mail, Telefon dhe WhatsApp. Pjesët e këtij
+> dokumenti që flasin për formularin, Brevo-n, `kontakt.php`, `danke.html` ose
+> `/api/kontakt` nuk vlejnë më. Shih `NDRYSHIMET.md`, pika 11.
+
 # AKE – Agentur für Karriere und Entwicklung — rindërtim nga Wix në HTML/CSS/JS
 
 Projekt i plotë për të hequr faqen nga Wix dhe për ta pritur në server-in tuaj.

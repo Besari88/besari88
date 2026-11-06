@@ -125,117 +125,7 @@
     map.forEach((_, sec) => io.observe(sec));
   }
 
-  /* ---------- 7. Formulari i kontaktit ---------- */
-  function initForm() {
-    const form = $('#contact-form');
-    if (!form) return;
-
-    const note   = $('#form-note');
-    const submit = form.querySelector('[type="submit"]');
-
-    const showNote = (type, msg) => {
-      if (!note) return;
-      note.className = 'form-note is-visible form-note--' + type;
-      note.textContent = msg;
-      note.setAttribute('role', 'status');
-      note.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    };
-
-    const setError = (field, msg) => {
-      const box = field.closest('.field') || field.closest('.check');
-      const out = box?.querySelector('.field__error');
-      field.setAttribute('aria-invalid', msg ? 'true' : 'false');
-      if (out) out.textContent = msg || '';
-      return !msg;
-    };
-
-    const validate = () => {
-      let ok = true;
-      form.querySelectorAll('[required]').forEach((f) => {
-        let msg = '';
-        if (f.type === 'checkbox') {
-          if (!f.checked) msg = 'Bitte bestätigen Sie dieses Feld.';
-        } else if (!f.value.trim()) {
-          msg = 'Bitte füllen Sie dieses Feld aus.';
-        } else if (f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(f.value.trim())) {
-          msg = 'Bitte geben Sie eine gültige E-Mail-Adresse ein.';
-        } else if (f.type === 'tel' && !/^[\d\s+()/-]{6,}$/.test(f.value.trim())) {
-          msg = 'Bitte geben Sie eine gültige Telefonnummer ein.';
-        }
-        if (!setError(f, msg)) ok = false;
-      });
-      return ok;
-    };
-
-    form.addEventListener('input', (e) => {
-      if (e.target.getAttribute('aria-invalid') === 'true') setError(e.target, '');
-    });
-
-    /* Rezerve: nese dergimi deshton (celes i gabuar, ofrues i rene, rrjet),
-       vizitori nuk mbetet ne rruge te mbyllur — i ofrohet i njejti mesazh
-       i gatshem ne programin e tij te email-it. Pa kete, nje gabim serveri
-       do te thoshte thjesht nje klient i humbur. */
-    const offerMailFallback = () => {
-      if (document.getElementById('mail-fallback')) return;
-
-      const v = (n) => (form.querySelector('[name="' + n + '"]')?.value || '').trim();
-      const body = [
-        'Name:    ' + v('vorname') + ' ' + v('nachname'),
-        'E-Mail:  ' + v('email'),
-        'Telefon: ' + (v('telefon') || '-'),
-        '',
-        v('nachricht') || '',
-      ].join('\n');
-
-      const href = 'mailto:info@ake-personal.de'
-        + '?subject=' + encodeURIComponent('Anfrage über ake-personal.de')
-        + '&body=' + encodeURIComponent(body);
-
-      const box = document.createElement('div');
-      box.id = 'mail-fallback';
-      box.className = 'mail-fallback';
-      box.innerHTML =
-        '<p>Sie können uns Ihre Anfrage direkt senden — Ihre Angaben sind bereits eingetragen:</p>'
-        + '<a class="btn btn--brand btn--pill" href="' + href + '">E-Mail-Programm öffnen</a>'
-        + '<p class="mail-fallback__alt">Oder rufen Sie an: '
-        + '<a href="tel:+491783486195">+49 178 3486195</a></p>';
-
-      note.insertAdjacentElement('afterend', box);
-      box.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    };
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!validate()) {
-        showNote('err', 'Bitte prüfen Sie die markierten Felder.');
-        form.querySelector('[aria-invalid="true"]')?.focus();
-        return;
-      }
-
-      const original = submit.textContent;
-      submit.disabled = true;
-      submit.textContent = 'Wird gesendet …';
-
-      try {
-        const res = await fetch(form.action, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: { Accept: 'application/json' }
-        });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        form.reset();
-        showNote('ok', 'Vielen Dank! Ihre Nachricht ist bei uns eingegangen. Wir melden uns in der Regel innerhalb von 24 Stunden.');
-      } catch (err) {
-        showNote('err', 'Die Nachricht konnte nicht gesendet werden.');
-        offerMailFallback();
-      } finally {
-        submit.disabled = false;
-        submit.textContent = original;
-      }
-    });
-  }
-
-  /* ---------- 8. Viti aktual ne footer ---------- */
+  /* ---------- 7. Viti aktual ne footer ---------- */
   function initYear() {
     $$('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
   }
@@ -248,7 +138,6 @@
     initReveal();
     initAccordion();
     initScrollSpy();
-    initForm();
     initYear();
   });
 })();

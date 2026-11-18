@@ -1,0 +1,66 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Hegart Studio — m7-statement</title>
+<style>
+:root{--navy:#0D1B2E;--night:#070E1A;--cream:#FCF6EC;--ink:#0B0B0C;--blue:#0589C2;--mint:#05E19F;--paper:#F4F4F1;--b:3mm}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#3a3a3a}
+body{font-family:"Inter",sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-feature-settings:"ss01","cv11"}
+.sheet{display:flex;flex-direction:column;gap:10mm;align-items:center;padding:10mm}
+@media print{.sheet{padding:0;gap:0}html,body{background:none}}
+.card{position:relative;overflow:hidden;break-after:page;width:calc(var(--W) + 2*var(--b));height:calc(var(--H) + 2*var(--b))}
+.safe{position:absolute;inset:calc(var(--b) + 4mm)}
+.abs{position:absolute}
+.disp{font-family:"Inter Display","Inter",sans-serif;font-weight:800;letter-spacing:-.045em;line-height:.8}
+.lbl{font-size:4.8pt;font-weight:500;letter-spacing:.01em}
+.mark{display:block;overflow:visible}
+.qr svg{display:block;width:100%;height:100%}
+.trim{position:absolute;inset:var(--b)}
+
+@page{size:91mm 61mm;margin:0}
+.card{--W:85mm;--H:55mm}
+
+ .f{background:var(--navy);color:var(--cream)}
+ .f .st{left:-.2mm;bottom:-.4mm;width:61mm}
+ .f .st div{line-height:.86}
+ .f .st .disp{letter-spacing:-.05em;line-height:.86}
+ .f .st .amp{color:var(--blue)} .f .st .on{color:var(--mint)}
+ .f .mk{right:0;top:0;width:6.5mm;color:var(--cream);--bar:var(--mint)}
+ .f .br{right:0;bottom:0;text-align:right;line-height:1.35;color:rgba(252,246,236,.65)}
+ .f .br b{color:var(--cream);font-weight:700}
+ .b{background:var(--cream);color:var(--ink)}
+ .b .mk{left:0;top:0;width:7mm;color:var(--navy);--bar:var(--blue)}
+ .b .nm{left:0;top:10.5mm;font-family:"Inter Display";font-weight:800;font-size:12pt;letter-spacing:-.04em;color:var(--navy)}
+ .b .tr{right:0;top:0;text-align:right;color:var(--blue);font-weight:600;line-height:1.35}
+ .b .grid{left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(3,auto);justify-content:space-between;font-size:6pt;line-height:1.55;color:var(--navy)}
+ .b .grid i{display:block;font-style:normal;font-size:4.6pt;font-weight:600;color:var(--blue);margin-bottom:.8mm}
+</style></head><body><svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="hg" viewBox="15 11 212 193"><g stroke="currentColor" stroke-width="12.6" stroke-linecap="square" fill="none">
+<line x1="22" y1="17.5" x2="22" y2="197.5"/><line x1="112" y1="17.5" x2="112" y2="197.5"/><line x1="22" y1="107.5" x2="112" y2="107.5"/>
+<line x1="112" y1="17.5" x2="220" y2="17.5"/><line x1="220" y1="40.5" x2="220" y2="197.5"/><line x1="112" y1="197.5" x2="220" y2="197.5"/>
+<line style="stroke:var(--bar,currentColor)" x1="166" y1="107.5" x2="220" y2="107.5"/></g></symbol>
+<filter id="duo" color-interpolation-filters="sRGB">
+ <feColorMatrix type="matrix" values=".33 .33 .33 0 0  .33 .33 .33 0 0  .33 .33 .33 0 0  0 0 0 1 0"/>
+ <feComponentTransfer><feFuncR type="table" tableValues="0.027 0.02"/><feFuncG type="table" tableValues="0.055 0.88"/><feFuncB type="table" tableValues="0.10 0.62"/></feComponentTransfer>
+</filter></defs></svg><div class="sheet">
+<section class="card f"><div class="safe">
+ <div class="abs st">
+  <div><span class="disp" data-fit>Momente</span></div>
+  <div><span class="disp" data-fit><span class="amp">&amp;</span> Marken,</span></div>
+  <div><span class="disp" data-fit>die <span class="on">bleiben.</span></span></div>
+ </div>
+ <div class="abs mk"><svg class="mark " viewBox="0 0 212 193"><use href="#hg" width="212" height="193"/></svg></div>
+ <div class="abs br lbl"><b>Hegart Studio</b><br>Singen</div></div></section>
+<section class="card b"><div class="safe">
+ <div class="abs mk"><svg class="mark " viewBox="0 0 212 193"><use href="#hg" width="212" height="193"/></svg></div>
+ <div class="abs nm">Hegart Studio</div>
+ <div class="abs tr lbl">Fotografie · Grafikdesign<br>Marketing · Events</div>
+ <div class="abs grid">
+  <div><i>Telefon</i>+49 178 5536715<br>+49 7731 9452988</div>
+  <div><i>Online</i>info@hegart.de<br>hegart.de</div>
+  <div><i>Studio</i>Thurgauerstraße 5<br>78224 Singen (Hohentwiel)</div>
+ </div></div></section>
+</div><script>
+document.fonts.ready.then(()=>{document.querySelectorAll('[data-fit]').forEach(el=>{
+ const box=el.parentElement.getBoundingClientRect().width*(+el.dataset.fit||1);
+ let s=100; el.style.fontSize=s+'px'; el.style.whiteSpace='nowrap'; el.style.display='inline-block';
+ s=s*box/el.getBoundingClientRect().width; el.style.fontSize=s+'px';});document.body.dataset.ready=1;});
+</script></body></html>

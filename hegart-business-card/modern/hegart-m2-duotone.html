@@ -1,0 +1,71 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Hegart Studio — m2-duotone</title>
+<style>
+:root{--navy:#0D1B2E;--night:#070E1A;--cream:#FCF6EC;--ink:#0B0B0C;--blue:#0589C2;--mint:#05E19F;--paper:#F4F4F1;--b:3mm}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#3a3a3a}
+body{font-family:"Inter",sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-feature-settings:"ss01","cv11"}
+.sheet{display:flex;flex-direction:column;gap:10mm;align-items:center;padding:10mm}
+@media print{.sheet{padding:0;gap:0}html,body{background:none}}
+.card{position:relative;overflow:hidden;break-after:page;width:calc(var(--W) + 2*var(--b));height:calc(var(--H) + 2*var(--b))}
+.safe{position:absolute;inset:calc(var(--b) + 4mm)}
+.abs{position:absolute}
+.disp{font-family:"Inter Display","Inter",sans-serif;font-weight:800;letter-spacing:-.045em;line-height:.8}
+.lbl{font-size:4.8pt;font-weight:500;letter-spacing:.01em}
+.mark{display:block;overflow:visible}
+.qr svg{display:block;width:100%;height:100%}
+.trim{position:absolute;inset:var(--b)}
+
+@page{size:61mm 91mm;margin:0}
+.card{--W:55mm;--H:85mm}
+
+ .f{background:var(--navy);color:#fff}
+ .f .ph{position:absolute;left:0;right:0;top:0;height:calc(var(--b) + 52mm);background:url(../assets/photos/mode.jpg) 50% 18%/cover;filter:url(#duo)}
+ .f .low{position:absolute;left:calc(var(--b) + 4mm);right:calc(var(--b) + 4mm);bottom:calc(var(--b) + 4mm);top:calc(var(--b) + 56mm)}
+ .f .nm{left:0;right:0;top:0}
+ .f .nm .disp{color:#fff}
+ .f .st{left:0;bottom:0;color:var(--mint)}
+ .f .sv{right:0;bottom:0;text-align:right;color:rgba(255,255,255,.6);line-height:1.35}
+ .f .mk{position:absolute;right:calc(var(--b) + 4mm);top:calc(var(--b) + 4mm);width:6mm;color:#fff;--bar:var(--mint)}
+ .b{background:var(--paper);color:var(--ink)}
+ .b .mk{left:0;top:0;width:7mm;color:var(--ink);--bar:var(--blue)}
+ .b .nm{left:0;top:11mm;font-family:"Inter Display";font-weight:800;font-size:13pt;letter-spacing:-.04em;line-height:.95}
+ .b .nm span{color:var(--blue)}
+ .b .lst{left:0;top:26mm;font-size:6.3pt;line-height:1.6}
+ .b .lst i{display:block;font-style:normal;font-size:4.6pt;font-weight:600;color:var(--blue);margin-top:2.4mm}
+ .b .lst i:first-child{margin-top:0}
+ .b .qrw{left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:2mm;background:#fff;border-radius:2.4mm}
+ .b .qr{width:13mm;height:13mm}
+ .b .cta{font-size:6.4pt;font-weight:600;line-height:1.3;text-align:right;padding-right:1mm}
+ .b .cta span{display:block;font-weight:400;font-size:5pt;color:#6b6b6b}
+</style></head><body><svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="hg" viewBox="15 11 212 193"><g stroke="currentColor" stroke-width="12.6" stroke-linecap="square" fill="none">
+<line x1="22" y1="17.5" x2="22" y2="197.5"/><line x1="112" y1="17.5" x2="112" y2="197.5"/><line x1="22" y1="107.5" x2="112" y2="107.5"/>
+<line x1="112" y1="17.5" x2="220" y2="17.5"/><line x1="220" y1="40.5" x2="220" y2="197.5"/><line x1="112" y1="197.5" x2="220" y2="197.5"/>
+<line style="stroke:var(--bar,currentColor)" x1="166" y1="107.5" x2="220" y2="107.5"/></g></symbol>
+<filter id="duo" color-interpolation-filters="sRGB">
+ <feColorMatrix type="matrix" values=".33 .33 .33 0 0  .33 .33 .33 0 0  .33 .33 .33 0 0  0 0 0 1 0"/>
+ <feComponentTransfer><feFuncR type="table" tableValues="0.027 0.02"/><feFuncG type="table" tableValues="0.055 0.88"/><feFuncB type="table" tableValues="0.10 0.62"/></feComponentTransfer>
+</filter></defs></svg><div class="sheet">
+<section class="card f">
+ <div class="ph"></div>
+ <div class="mk"><svg class="mark " viewBox="0 0 212 193"><use href="#hg" width="212" height="193"/></svg></div>
+ <div class="low">
+  <div class="abs nm"><span class="disp" data-fit>Hegart</span></div>
+  <div class="abs st lbl">Studio</div>
+  <div class="abs sv lbl">Fotografie · Design<br>Marketing · Events</div>
+ </div></section>
+<section class="card b"><div class="safe">
+ <div class="abs mk"><svg class="mark " viewBox="0 0 212 193"><use href="#hg" width="212" height="193"/></svg></div>
+ <div class="abs nm">Hegart<br><span>Studio</span></div>
+ <div class="abs lst">
+  <i>Telefon</i>+49 178 5536715<br>+49 7731 9452988
+  <i>Online</i>info@hegart.de<br>hegart.de
+  <i>Studio</i>Thurgauerstraße 5<br>78224 Singen (Hohentwiel)
+ </div>
+ <div class="abs qrw"><div class="qr"><svg viewBox="0 0 25 25" shape-rendering="crispEdges"><path fill="#0B0B0C" d="M0,0h1v1h-1zM1,0h1v1h-1zM2,0h1v1h-1zM3,0h1v1h-1zM4,0h1v1h-1zM5,0h1v1h-1zM6,0h1v1h-1zM8,0h1v1h-1zM9,0h1v1h-1zM14,0h1v1h-1zM15,0h1v1h-1zM16,0h1v1h-1zM18,0h1v1h-1zM19,0h1v1h-1zM20,0h1v1h-1zM21,0h1v1h-1zM22,0h1v1h-1zM23,0h1v1h-1zM24,0h1v1h-1zM0,1h1v1h-1zM6,1h1v1h-1zM9,1h1v1h-1zM10,1h1v1h-1zM13,1h1v1h-1zM14,1h1v1h-1zM16,1h1v1h-1zM18,1h1v1h-1zM24,1h1v1h-1zM0,2h1v1h-1zM2,2h1v1h-1zM3,2h1v1h-1zM4,2h1v1h-1zM6,2h1v1h-1zM8,2h1v1h-1zM12,2h1v1h-1zM14,2h1v1h-1zM15,2h1v1h-1zM18,2h1v1h-1zM20,2h1v1h-1zM21,2h1v1h-1zM22,2h1v1h-1zM24,2h1v1h-1zM0,3h1v1h-1zM2,3h1v1h-1zM3,3h1v1h-1zM4,3h1v1h-1zM6,3h1v1h-1zM9,3h1v1h-1zM10,3h1v1h-1zM14,3h1v1h-1zM18,3h1v1h-1zM20,3h1v1h-1zM21,3h1v1h-1zM22,3h1v1h-1zM24,3h1v1h-1zM0,4h1v1h-1zM2,4h1v1h-1zM3,4h1v1h-1zM4,4h1v1h-1zM6,4h1v1h-1zM10,4h1v1h-1zM13,4h1v1h-1zM14,4h1v1h-1zM18,4h1v1h-1zM20,4h1v1h-1zM21,4h1v1h-1zM22,4h1v1h-1zM24,4h1v1h-1zM0,5h1v1h-1zM6,5h1v1h-1zM8,5h1v1h-1zM10,5h1v1h-1zM11,5h1v1h-1zM12,5h1v1h-1zM18,5h1v1h-1zM24,5h1v1h-1zM0,6h1v1h-1zM1,6h1v1h-1zM2,6h1v1h-1zM3,6h1v1h-1zM4,6h1v1h-1zM5,6h1v1h-1zM6,6h1v1h-1zM8,6h1v1h-1zM10,6h1v1h-1zM12,6h1v1h-1zM14,6h1v1h-1zM16,6h1v1h-1zM18,6h1v1h-1zM19,6h1v1h-1zM20,6h1v1h-1zM21,6h1v1h-1zM22,6h1v1h-1zM23,6h1v1h-1zM24,6h1v1h-1zM9,7h1v1h-1zM10,7h1v1h-1zM12,7h1v1h-1zM14,7h1v1h-1zM16,7h1v1h-1zM0,8h1v1h-1zM2,8h1v1h-1zM6,8h1v1h-1zM7,8h1v1h-1zM9,8h1v1h-1zM10,8h1v1h-1zM11,8h1v1h-1zM13,8h1v1h-1zM14,8h1v1h-1zM15,8h1v1h-1zM16,8h1v1h-1zM19,8h1v1h-1zM22,8h1v1h-1zM24,8h1v1h-1zM1,9h1v1h-1zM5,9h1v1h-1zM7,9h1v1h-1zM8,9h1v1h-1zM9,9h1v1h-1zM11,9h1v1h-1zM12,9h1v1h-1zM13,9h1v1h-1zM14,9h1v1h-1zM15,9h1v1h-1zM16,9h1v1h-1zM18,9h1v1h-1zM19,9h1v1h-1zM21,9h1v1h-1zM23,9h1v1h-1zM24,9h1v1h-1zM0,10h1v1h-1zM2,10h1v1h-1zM3,10h1v1h-1zM4,10h1v1h-1zM6,10h1v1h-1zM7,10h1v1h-1zM8,10h1v1h-1zM15,10h1v1h-1zM16,10h1v1h-1zM18,10h1v1h-1zM19,10h1v1h-1zM20,10h1v1h-1zM21,10h1v1h-1zM22,10h1v1h-1zM24,10h1v1h-1zM0,11h1v1h-1zM1,11h1v1h-1zM3,11h1v1h-1zM4,11h1v1h-1zM7,11h1v1h-1zM8,11h1v1h-1zM11,11h1v1h-1zM12,11h1v1h-1zM13,11h1v1h-1zM15,11h1v1h-1zM16,11h1v1h-1zM17,11h1v1h-1zM20,11h1v1h-1zM21,11h1v1h-1zM2,12h1v1h-1zM4,12h1v1h-1zM6,12h1v1h-1zM10,12h1v1h-1zM12,12h1v1h-1zM13,12h1v1h-1zM16,12h1v1h-1zM18,12h1v1h-1zM19,12h1v1h-1zM24,12h1v1h-1zM2,13h1v1h-1zM9,13h1v1h-1zM10,13h1v1h-1zM12,13h1v1h-1zM15,13h1v1h-1zM18,13h1v1h-1zM19,13h1v1h-1zM23,13h1v1h-1zM24,13h1v1h-1zM0,14h1v1h-1zM1,14h1v1h-1zM2,14h1v1h-1zM3,14h1v1h-1zM4,14h1v1h-1zM5,14h1v1h-1zM6,14h1v1h-1zM8,14h1v1h-1zM9,14h1v1h-1zM12,14h1v1h-1zM13,14h1v1h-1zM14,14h1v1h-1zM15,14h1v1h-1zM16,14h1v1h-1zM18,14h1v1h-1zM21,14h1v1h-1zM22,14h1v1h-1zM24,14h1v1h-1zM4,15h1v1h-1zM5,15h1v1h-1zM8,15h1v1h-1zM9,15h1v1h-1zM10,15h1v1h-1zM11,15h1v1h-1zM12,15h1v1h-1zM14,15h1v1h-1zM16,15h1v1h-1zM17,15h1v1h-1zM18,15h1v1h-1zM19,15h1v1h-1zM20,15h1v1h-1zM21,15h1v1h-1zM0,16h1v1h-1zM1,16h1v1h-1zM2,16h1v1h-1zM3,16h1v1h-1zM5,16h1v1h-1zM6,16h1v1h-1zM7,16h1v1h-1zM8,16h1v1h-1zM9,16h1v1h-1zM10,16h1v1h-1zM13,16h1v1h-1zM14,16h1v1h-1zM15,16h1v1h-1zM16,16h1v1h-1zM17,16h1v1h-1zM18,16h1v1h-1zM19,16h1v1h-1zM20,16h1v1h-1zM23,16h1v1h-1zM8,17h1v1h-1zM13,17h1v1h-1zM14,17h1v1h-1zM15,17h1v1h-1zM16,17h1v1h-1zM20,17h1v1h-1zM24,17h1v1h-1zM0,18h1v1h-1zM1,18h1v1h-1zM2,18h1v1h-1zM3,18h1v1h-1zM4,18h1v1h-1zM5,18h1v1h-1zM6,18h1v1h-1zM8,18h1v1h-1zM9,18h1v1h-1zM11,18h1v1h-1zM16,18h1v1h-1zM18,18h1v1h-1zM20,18h1v1h-1zM24,18h1v1h-1zM0,19h1v1h-1zM6,19h1v1h-1zM13,19h1v1h-1zM15,19h1v1h-1zM16,19h1v1h-1zM20,19h1v1h-1zM23,19h1v1h-1zM0,20h1v1h-1zM2,20h1v1h-1zM3,20h1v1h-1zM4,20h1v1h-1zM6,20h1v1h-1zM9,20h1v1h-1zM10,20h1v1h-1zM11,20h1v1h-1zM12,20h1v1h-1zM13,20h1v1h-1zM15,20h1v1h-1zM16,20h1v1h-1zM17,20h1v1h-1zM18,20h1v1h-1zM19,20h1v1h-1zM20,20h1v1h-1zM23,20h1v1h-1zM24,20h1v1h-1zM0,21h1v1h-1zM2,21h1v1h-1zM3,21h1v1h-1zM4,21h1v1h-1zM6,21h1v1h-1zM10,21h1v1h-1zM12,21h1v1h-1zM16,21h1v1h-1zM17,21h1v1h-1zM20,21h1v1h-1zM22,21h1v1h-1zM23,21h1v1h-1zM0,22h1v1h-1zM2,22h1v1h-1zM3,22h1v1h-1zM4,22h1v1h-1zM6,22h1v1h-1zM8,22h1v1h-1zM10,22h1v1h-1zM12,22h1v1h-1zM13,22h1v1h-1zM14,22h1v1h-1zM15,22h1v1h-1zM16,22h1v1h-1zM17,22h1v1h-1zM19,22h1v1h-1zM20,22h1v1h-1zM21,22h1v1h-1zM23,22h1v1h-1zM24,22h1v1h-1zM0,23h1v1h-1zM6,23h1v1h-1zM10,23h1v1h-1zM11,23h1v1h-1zM12,23h1v1h-1zM14,23h1v1h-1zM15,23h1v1h-1zM16,23h1v1h-1zM19,23h1v1h-1zM20,23h1v1h-1zM0,24h1v1h-1zM1,24h1v1h-1zM2,24h1v1h-1zM3,24h1v1h-1zM4,24h1v1h-1zM5,24h1v1h-1zM6,24h1v1h-1zM8,24h1v1h-1zM9,24h1v1h-1zM13,24h1v1h-1zM14,24h1v1h-1zM16,24h1v1h-1zM18,24h1v1h-1zM21,24h1v1h-1zM24,24h1v1h-1z"/></svg></div><div class="cta">Termin buchen →<span>Scannen, Wunschtermin wählen</span></div></div></div></section>
+</div><script>
+document.fonts.ready.then(()=>{document.querySelectorAll('[data-fit]').forEach(el=>{
+ const box=el.parentElement.getBoundingClientRect().width*(+el.dataset.fit||1);
+ let s=100; el.style.fontSize=s+'px'; el.style.whiteSpace='nowrap'; el.style.display='inline-block';
+ s=s*box/el.getBoundingClientRect().width; el.style.fontSize=s+'px';});document.body.dataset.ready=1;});
+</script></body></html>

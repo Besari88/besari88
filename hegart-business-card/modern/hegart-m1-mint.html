@@ -1,0 +1,61 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Hegart Studio — m1-mint</title>
+<style>
+:root{--navy:#0D1B2E;--night:#070E1A;--cream:#FCF6EC;--ink:#0B0B0C;--blue:#0589C2;--mint:#05E19F;--paper:#F4F4F1;--b:3mm}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#3a3a3a}
+body{font-family:"Inter",sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-feature-settings:"ss01","cv11"}
+.sheet{display:flex;flex-direction:column;gap:10mm;align-items:center;padding:10mm}
+@media print{.sheet{padding:0;gap:0}html,body{background:none}}
+.card{position:relative;overflow:hidden;break-after:page;width:calc(var(--W) + 2*var(--b));height:calc(var(--H) + 2*var(--b))}
+.safe{position:absolute;inset:calc(var(--b) + 4mm)}
+.abs{position:absolute}
+.disp{font-family:"Inter Display","Inter",sans-serif;font-weight:800;letter-spacing:-.045em;line-height:.8}
+.lbl{font-size:4.8pt;font-weight:500;letter-spacing:.01em}
+.mark{display:block;overflow:visible}
+.qr svg{display:block;width:100%;height:100%}
+.trim{position:absolute;inset:var(--b)}
+
+@page{size:91mm 61mm;margin:0}
+.card{--W:85mm;--H:55mm}
+
+ .f{background:var(--mint);color:var(--ink)}
+ .f .mk{left:0;top:0;width:7mm;color:var(--ink)}
+ .f .tr{right:0;top:0;text-align:right;line-height:1.35}
+ .f .big{left:calc(var(--b) + 3.2mm);right:calc(var(--b) + 3.2mm);bottom:calc(var(--b) - 3.1mm)}
+ .f .big span{color:var(--ink)}
+ .b{background:var(--ink);color:#fff}
+ .b .mk{left:0;top:0;width:6mm;color:#fff;--bar:var(--mint)}
+ .b .mail{left:0;top:12mm;font-family:"Inter Display";font-weight:700;font-size:15pt;letter-spacing:-.03em}
+ .b .grid{left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(3,auto);justify-content:space-between;font-size:6pt;line-height:1.5}
+ .b .grid i{display:block;font-style:normal;font-size:4.6pt;color:var(--mint);margin-bottom:1mm;font-weight:600;letter-spacing:.02em}
+ .b .tr{right:0;top:0;text-align:right;color:rgba(255,255,255,.55);line-height:1.35}
+</style></head><body><svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="hg" viewBox="15 11 212 193"><g stroke="currentColor" stroke-width="12.6" stroke-linecap="square" fill="none">
+<line x1="22" y1="17.5" x2="22" y2="197.5"/><line x1="112" y1="17.5" x2="112" y2="197.5"/><line x1="22" y1="107.5" x2="112" y2="107.5"/>
+<line x1="112" y1="17.5" x2="220" y2="17.5"/><line x1="220" y1="40.5" x2="220" y2="197.5"/><line x1="112" y1="197.5" x2="220" y2="197.5"/>
+<line style="stroke:var(--bar,currentColor)" x1="166" y1="107.5" x2="220" y2="107.5"/></g></symbol>
+<filter id="duo" color-interpolation-filters="sRGB">
+ <feColorMatrix type="matrix" values=".33 .33 .33 0 0  .33 .33 .33 0 0  .33 .33 .33 0 0  0 0 0 1 0"/>
+ <feComponentTransfer><feFuncR type="table" tableValues="0.027 0.02"/><feFuncG type="table" tableValues="0.055 0.88"/><feFuncB type="table" tableValues="0.10 0.62"/></feComponentTransfer>
+</filter></defs></svg><div class="sheet">
+<section class="card f">
+ <div class="safe">
+  <div class="abs mk"><svg class="mark " viewBox="0 0 212 193"><use href="#hg" width="212" height="193"/></svg></div>
+  <div class="abs tr lbl">Fotografie, Grafikdesign,<br>Marketing &amp; Events</div>
+ </div>
+ <div class="abs big"><span class="disp" data-fit>hegart</span></div></section>
+<section class="card b"><div class="safe">
+ <div class="abs mk"><svg class="mark " viewBox="0 0 212 193"><use href="#hg" width="212" height="193"/></svg></div>
+ <div class="abs tr lbl">Studio in<br>Singen am Hohentwiel</div>
+ <div class="abs mail">info@hegart.de</div>
+ <div class="abs grid">
+  <div><i>Telefon</i>+49 178 5536715<br>+49 7731 9452988</div>
+  <div><i>Online</i>hegart.de<br>@hegartstudio</div>
+  <div><i>Studio</i>Thurgauerstraße 5<br>78224 Singen (Hohentwiel)</div>
+ </div></div></section>
+</div><script>
+document.fonts.ready.then(()=>{document.querySelectorAll('[data-fit]').forEach(el=>{
+ const box=el.parentElement.getBoundingClientRect().width*(+el.dataset.fit||1);
+ let s=100; el.style.fontSize=s+'px'; el.style.whiteSpace='nowrap'; el.style.display='inline-block';
+ s=s*box/el.getBoundingClientRect().width; el.style.fontSize=s+'px';});document.body.dataset.ready=1;});
+</script></body></html>

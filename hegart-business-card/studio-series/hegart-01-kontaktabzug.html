@@ -1,0 +1,63 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Hegart Studio — 01-kontaktabzug</title>
+<style>
+@font-face{font-family:"Fraunces";src:url(../assets/fonts/fraunces-latin-full-normal.woff2) format("woff2");font-weight:100 900;font-style:normal}
+@font-face{font-family:"Fraunces";src:url(../assets/fonts/fraunces-latin-full-italic.woff2) format("woff2");font-weight:100 900;font-style:italic}
+@font-face{font-family:"Work Sans";src:url(../assets/fonts/work-sans-latin-300-normal.woff2) format("woff2");font-weight:300}
+@font-face{font-family:"Work Sans";src:url(../assets/fonts/work-sans-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:"Work Sans";src:url(../assets/fonts/work-sans-latin-500-normal.woff2) format("woff2");font-weight:500}
+@font-face{font-family:"Work Sans";src:url(../assets/fonts/work-sans-latin-600-normal.woff2) format("woff2");font-weight:600}
+:root{--navy:#0D1B2E;--navy2:#16273F;--night:#070E1A;--cream:#FCF6EC;--ink:#2E2A26;--blue:#0589C2;--mint:#05E19F;--b:3mm}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#3a3a3a}
+body{font-family:"Work Sans",sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-kerning:normal;text-rendering:geometricPrecision}
+.sheet{display:flex;flex-direction:column;gap:10mm;align-items:center;padding:10mm}
+@media print{.sheet{padding:0;gap:0}html,body{background:none}}
+.card{position:relative;overflow:hidden;break-after:page;width:calc(var(--W) + 2*var(--b));height:calc(var(--H) + 2*var(--b))}
+.safe{position:absolute;inset:calc(var(--b) + 4mm)}
+.serif{font-family:"Fraunces",serif;font-weight:600;font-variation-settings:"opsz" 144,"SOFT" 0,"WONK" 0;letter-spacing:-.01em}
+.serif i,.it{font-style:italic;font-weight:500}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:4.6pt;letter-spacing:.14em;text-transform:uppercase}
+.mark{display:block;overflow:visible}
+.qr svg{display:block;width:100%;height:100%}
+.abs{position:absolute}
+
+@page{size:91mm 61mm;margin:0}
+.card{--W:85mm;--H:55mm}
+
+ .f{background:var(--cream);color:var(--ink)}
+ .f .mk{left:0;top:0;width:6.2mm;color:var(--navy);--bar:var(--blue)}
+ .f .eb{right:0;top:.6mm;color:var(--blue)}
+ .f .ttl{left:-.4mm;bottom:-1.2mm;font-size:25pt;line-height:.86;color:var(--navy)}
+ .f .ttl i{color:var(--blue)}
+ .f .side{right:0;bottom:0;font-size:5.2pt;line-height:1.55;text-align:right;color:var(--ink);opacity:.78}
+ .b{background:var(--navy);color:var(--cream)}
+ .b .strip{left:0;right:0;top:0;display:grid;grid-template-columns:repeat(4,1fr);gap:1.1mm}
+ .b .strip figure{position:relative}
+ .b .strip .ph{height:16mm;background-size:cover;background-position:center}
+ .b .strip figcaption{margin-top:1.2mm;display:flex;gap:1.4mm;font-family:"JetBrains Mono",monospace;font-size:4.2pt;letter-spacing:.06em;color:var(--mint)}
+ .b .strip figcaption span{color:rgba(252,246,236,.45)}
+ .b .rule{left:0;right:0;top:21mm;height:.12mm;background:rgba(252,246,236,.18)}
+ .b .who{left:0;bottom:0}
+ .b .who .n{font-size:10.5pt;line-height:1}
+ .b .who .n i{color:var(--mint)}
+ .b .who .a{margin-top:1.8mm;font-size:5.5pt;line-height:1.5;opacity:.72}
+ .b .ct{right:0;bottom:0;font-size:6.1pt;line-height:1.62;text-align:right}
+ .b .ct b{font-weight:500}
+</style></head><body><svg width="0" height="0" style="position:absolute"><defs><symbol id="hg" viewBox="15 11 212 193">
+<g stroke="currentColor" stroke-width="12.6" stroke-linecap="square" fill="none">
+<line x1="22" y1="17.5" x2="22" y2="197.5"/><line x1="112" y1="17.5" x2="112" y2="197.5"/><line x1="22" y1="107.5" x2="112" y2="107.5"/>
+<line x1="112" y1="17.5" x2="220" y2="17.5"/><line x1="220" y1="40.5" x2="220" y2="197.5"/><line x1="112" y1="197.5" x2="220" y2="197.5"/>
+<line style="stroke:var(--bar,currentColor)" x1="166" y1="107.5" x2="220" y2="107.5"/></g></symbol></defs></svg><div class="sheet">
+<section class="card f"><div class="safe">
+ <div class="abs mk"><svg class="mark " viewBox="0 0 212 193"><use href="#hg" width="212" height="193"/></svg></div>
+ <div class="abs eb eyebrow">Kreativstudio · Singen</div>
+ <div class="abs ttl serif">Hegart<br><i>Studio</i></div>
+ <div class="abs side">Fotografie<br>Grafikdesign<br>Marketing<br>Events</div></div></section>
+<section class="card b"><div class="safe">
+ <div class="abs strip">
+  <figure><div class="ph" style="background-image:url(../assets/photos/hochzeit.jpg)"></div><figcaption>14<span>Fotografie</span></figcaption></figure><figure><div class="ph" style="background-image:url(../assets/photos/granatapfel.jpg)"></div><figcaption>15<span>Portrait</span></figcaption></figure><figure><div class="ph" style="background-image:url(../assets/photos/gastro.jpg)"></div><figcaption>16<span>Gastro</span></figcaption></figure><figure><div class="ph" style="background-image:url(../assets/photos/filigran.jpg)"></div><figcaption>17<span>Produkt</span></figcaption></figure>
+ </div>
+ 
+ <div class="abs who"><div class="n serif">Hegart <i>Studio</i></div><div class="a">Thurgauerstraße 5<br>78224 Singen (Hohentwiel)</div></div>
+ <div class="abs ct"><b>+49 178 5536715</b><br>+49 7731 9452988<br>info@hegart.de<br>hegart.de</div></div></section>
+</div></body></html>

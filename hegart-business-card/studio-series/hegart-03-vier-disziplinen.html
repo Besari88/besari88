@@ -1,0 +1,67 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Hegart Studio — 03-vier-disziplinen</title>
+<style>
+@font-face{font-family:"Fraunces";src:url(../assets/fonts/fraunces-latin-full-normal.woff2) format("woff2");font-weight:100 900;font-style:normal}
+@font-face{font-family:"Fraunces";src:url(../assets/fonts/fraunces-latin-full-italic.woff2) format("woff2");font-weight:100 900;font-style:italic}
+@font-face{font-family:"Work Sans";src:url(../assets/fonts/work-sans-latin-300-normal.woff2) format("woff2");font-weight:300}
+@font-face{font-family:"Work Sans";src:url(../assets/fonts/work-sans-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:"Work Sans";src:url(../assets/fonts/work-sans-latin-500-normal.woff2) format("woff2");font-weight:500}
+@font-face{font-family:"Work Sans";src:url(../assets/fonts/work-sans-latin-600-normal.woff2) format("woff2");font-weight:600}
+:root{--navy:#0D1B2E;--navy2:#16273F;--night:#070E1A;--cream:#FCF6EC;--ink:#2E2A26;--blue:#0589C2;--mint:#05E19F;--b:3mm}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#3a3a3a}
+body{font-family:"Work Sans",sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-kerning:normal;text-rendering:geometricPrecision}
+.sheet{display:flex;flex-direction:column;gap:10mm;align-items:center;padding:10mm}
+@media print{.sheet{padding:0;gap:0}html,body{background:none}}
+.card{position:relative;overflow:hidden;break-after:page;width:calc(var(--W) + 2*var(--b));height:calc(var(--H) + 2*var(--b))}
+.safe{position:absolute;inset:calc(var(--b) + 4mm)}
+.serif{font-family:"Fraunces",serif;font-weight:600;font-variation-settings:"opsz" 144,"SOFT" 0,"WONK" 0;letter-spacing:-.01em}
+.serif i,.it{font-style:italic;font-weight:500}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:4.6pt;letter-spacing:.14em;text-transform:uppercase}
+.mark{display:block;overflow:visible}
+.qr svg{display:block;width:100%;height:100%}
+.abs{position:absolute}
+
+@page{size:91mm 61mm;margin:0}
+.card{--W:85mm;--H:55mm}
+
+ .f{background:var(--cream);color:var(--navy)}
+ .f .l{left:0;top:0;bottom:0;width:22mm;display:flex;flex-direction:column;justify-content:space-between}
+ .f .mk{width:9mm;color:var(--navy);--bar:var(--blue)}
+ .f .nm{font-size:10pt;line-height:1}
+ .f .nm i{color:var(--blue)}
+ .f .list{right:0;top:-.6mm;width:42mm}
+ .f .row{display:flex;align-items:baseline;gap:2.4mm;padding:1.55mm 0 1.45mm;border-bottom:.14mm solid rgba(13,27,46,.22)}
+ .f .row:first-child{border-top:.14mm solid rgba(13,27,46,.22)}
+ .f .row .n{font-family:"JetBrains Mono",monospace;font-size:4.3pt;color:var(--blue);width:3.4mm;letter-spacing:.04em}
+ .f .row .t{font-size:10.5pt;line-height:1}
+ .f .foot{right:0;bottom:0;width:42mm;font-size:6.6pt;line-height:1.25;color:var(--ink)}
+ .f .foot i{color:var(--blue)}
+ .b{background:var(--navy);color:var(--cream)}
+ .b .nm{left:0;top:0;font-size:10pt;line-height:1}
+ .b .nm i{color:var(--mint)}
+ .b .eb{right:0;top:.8mm;color:var(--mint)}
+ .b .cols{left:0;right:0;bottom:0;display:grid;grid-template-columns:auto auto auto;justify-content:space-between;padding-top:3mm;border-top:.14mm solid rgba(252,246,236,.2)}
+ .b .cols .k{font-family:"JetBrains Mono",monospace;font-size:4.2pt;letter-spacing:.14em;text-transform:uppercase;color:var(--mint);margin-bottom:1.3mm}
+ .b .cols .v{font-size:5.9pt;line-height:1.55;white-space:nowrap}
+ .b .big{left:0;top:13mm;font-size:12.5pt;line-height:1;font-weight:400}
+</style></head><body><svg width="0" height="0" style="position:absolute"><defs><symbol id="hg" viewBox="15 11 212 193">
+<g stroke="currentColor" stroke-width="12.6" stroke-linecap="square" fill="none">
+<line x1="22" y1="17.5" x2="22" y2="197.5"/><line x1="112" y1="17.5" x2="112" y2="197.5"/><line x1="22" y1="107.5" x2="112" y2="107.5"/>
+<line x1="112" y1="17.5" x2="220" y2="17.5"/><line x1="220" y1="40.5" x2="220" y2="197.5"/><line x1="112" y1="197.5" x2="220" y2="197.5"/>
+<line style="stroke:var(--bar,currentColor)" x1="166" y1="107.5" x2="220" y2="107.5"/></g></symbol></defs></svg><div class="sheet">
+<section class="card f"><div class="safe">
+ <div class="abs l"><svg class="mark mk" viewBox="0 0 212 193"><use href="#hg" width="212" height="193"/></svg><div class="nm serif">Hegart<br><i>Studio</i></div></div>
+ <div class="abs list">
+  <div class="row"><span class="n">01</span><span class="t serif">Fotografie</span></div><div class="row"><span class="n">02</span><span class="t serif">Grafikdesign</span></div><div class="row"><span class="n">03</span><span class="t serif">Marketing</span></div><div class="row"><span class="n">04</span><span class="t serif">Events</span></div>
+ </div>
+ <div class="abs foot serif it">Vier Disziplinen, ein Studio, <i>eine Handschrift.</i></div></div></section>
+<section class="card b"><div class="safe">
+ <div class="abs nm serif">Hegart <i>Studio</i></div>
+ <div class="abs eb eyebrow">Singen am Hohentwiel</div>
+ <div class="abs big serif it">info@hegart.de</div>
+ <div class="abs cols">
+  <div><div class="k">Telefon</div><div class="v">+49 178 5536715<br>+49 7731 9452988</div></div>
+  <div><div class="k">Online</div><div class="v">hegart.de<br>@hegartstudio</div></div>
+  <div><div class="k">Studio</div><div class="v">Thurgauerstraße 5<br>78224 Singen (Hohentwiel)</div></div>
+ </div></div></section>
+</div></body></html>
